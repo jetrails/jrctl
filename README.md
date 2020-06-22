@@ -19,7 +19,9 @@ $ brew install jrctl
 ## Installation (Linux)
 
 ```shell
-$
+$ curl -Ls https://github.com/jetrails/jrctl/releases/download/1.0.0/jrctl_linux_amd64 -o jrctl
+$ chmod +x jrctl
+$ sudo mv jrctl /usr/local/bin/jrctl
 ```
 
 ## Currently Exposed Services
