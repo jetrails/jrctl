@@ -2,7 +2,7 @@
 > Command line tool to help interact with our API
 
 ![](https://img.shields.io/badge/License-JetRails_License-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
-![](https://img.shields.io/badge/Version-1.0.0-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
+![](https://img.shields.io/badge/Version-1.0.1-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 ![](https://img.shields.io/badge/OS-MacOS/Linux-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 
 ## About
@@ -19,7 +19,7 @@ $ brew install jrctl
 ## Installation (Linux)
 
 ```shell
-$ curl -Ls https://github.com/jetrails/jrctl/releases/download/1.0.0/jrctl_linux_amd64 -o jrctl
+$ curl -Ls https://github.com/jetrails/jrctl/releases/download/1.0.1/jrctl_linux_amd64 -o jrctl
 $ chmod +x jrctl
 $ sudo mv jrctl /usr/local/bin/jrctl
 ```

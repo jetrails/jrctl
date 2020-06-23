@@ -12,7 +12,7 @@ var jetrails = color.GreenString (">") + "jetrails" + color.GreenString ("_")
 var rootCmd = &cobra.Command {
 	Use:   "jrctl",
 	Short: "Command line tool to help interact with the " + jetrails + " API",
-	Version: "1.0.0",
+	Version: "1.0.1",
 }
 
 func Execute () {
