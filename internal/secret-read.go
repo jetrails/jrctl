@@ -21,7 +21,6 @@ var readCmd = &cobra.Command {
 		identifier := args [ 0 ]
 		copyToClipBoard, _ := cmd.Flags ().GetBool ("clipboard")
 		password, _ := cmd.Flags ().GetString ("password")
-		password = utils.PromptPassword ( "Enter Secret Password: ", password )
 		var request = secret.SecretReadRequest {
 			Identifier: identifier,
 			Password: password,
@@ -37,6 +36,6 @@ var readCmd = &cobra.Command {
 
 func init () {
 	secretCmd.AddCommand ( readCmd )
-	readCmd.Flags ().StringP ( "password", "p", "", "secret password (prompted if not supplied)" )
+	readCmd.Flags ().StringP ( "password", "p", "", "password to access secret" )
 	readCmd.Flags ().BoolP ( "clipboard", "c", false, "copy contents to clipboard" )
 }

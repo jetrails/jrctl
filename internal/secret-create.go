@@ -35,7 +35,9 @@ var secretCreateCmd = &cobra.Command {
 		var url = fmt.Sprintf ( "https://secret%s.jetrails.cloud/secret/%s", postfix, response.Identifier )
 		fmt.Println ()
 		fmt.Printf ( "Identifier:  %s\n", response.Identifier )
-		fmt.Printf ( "Password:    %s\n", response.Password )
+		if response.Password != "" {
+			fmt.Printf ( "Password:    %s\n", response.Password )
+		}
 		fmt.Printf ( "TTL:         %d seconds\n", response.TTL )
 		fmt.Printf ( "\n%s\n\n", url )
 		if copyToClipBoard {
@@ -48,7 +50,7 @@ func init () {
 	secretCmd.AddCommand ( secretCreateCmd )
 	secretCreateCmd.Flags ().IntP ( "ttl", "t", 1 * 24 * 60 * 60, "specify custom ttl in seconds" )
 	secretCreateCmd.Flags ().BoolP ( "auto-generate", "a", false, "automatically generate password" )
-	secretCreateCmd.Flags ().StringP ( "password", "p", "", "specify custom password for secret, required" )
+	secretCreateCmd.Flags ().StringP ( "password", "p", "", "password for secret, blank for no password, required" )
 	secretCreateCmd.Flags ().StringP ( "file", "f", "", "use file contents as secret data" )
 	secretCreateCmd.Flags ().BoolP ( "clipboard", "c", false, "copy secret url to clipboard" )
 	secretCreateCmd.MarkFlagRequired ("password")
