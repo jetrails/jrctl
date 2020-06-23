@@ -5,8 +5,9 @@ import "github.com/jetrails/jrctl/sdk/utils"
 
 type SecretCreateRequest struct {
 	Data string             `json:"data"`
-	Password string         `json:"password,omitempty"`
+	Password string         `json:"password"`
 	TTL int                 `json:"ttl,omitempty"`
+	AutoGenerate bool       `json:"auto_generate"`
 }
 
 type SecretReadRequest struct {
