@@ -25,8 +25,11 @@ type ReleaseResponse struct {
 }
 
 var rootCmd = &cobra.Command {
-	Use:   "jrctl",
-	Short: "Command line tool to help interact with the " + jetrails + " API",
+	Use:    "jrctl",
+	Short:  "Command line tool to help interact with the " + jetrails + " API",
+	Long:   "Command line tool to help interact with the " + jetrails + " API\n" +
+			"Hosted on Github, " + color.GreenString ("https://github.com/jetrails/jrctl") + ".\n" +
+			"For issues/requests, please open an issue in our Github repository.",
 	Version: Version,
 }
 
@@ -50,7 +53,7 @@ func checkVersion () {
 			fmt.Printf (
 				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
 				cachedVersion,
-				color.GreenString ( fmt.Sprintf ( TagUrlTemplate, cachedVersion ) ),
+				color.RedString ( fmt.Sprintf ( TagUrlTemplate, cachedVersion ) ),
 			)
 		}
 		return
@@ -68,7 +71,7 @@ func checkVersion () {
 			fmt.Printf (
 				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
 				newest.TagName,
-				color.GreenString ( fmt.Sprintf ( TagUrlTemplate, newest.TagName ) ),
+				color.RedString ( fmt.Sprintf ( TagUrlTemplate, newest.TagName ) ),
 			)
 		}
 	}
