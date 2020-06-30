@@ -9,7 +9,7 @@ import "github.com/spf13/viper"
 import "github.com/fatih/color"
 import "github.com/parnurzeal/gorequest"
 
-const Version = "1.0.2"
+const Version = "1.0.3"
 const ReleasesUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
 const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
 
