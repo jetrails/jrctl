@@ -10,7 +10,7 @@ import "github.com/fatih/color"
 import "github.com/parnurzeal/gorequest"
 import "github.com/hashicorp/go-version"
 
-const Version = "1.0.3"
+const Version = "1.0.4"
 const ReleasesUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
 const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
 
