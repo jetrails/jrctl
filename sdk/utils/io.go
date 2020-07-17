@@ -26,19 +26,15 @@ func ReadFile ( path string ) string {
 }
 
 func PromptContent ( prompt string ) string {
-	var breaks = 0
 	var input = ""
 	reader := bufio.NewReader ( os.Stdin )
-	fmt.Printf ("Hint: Entering 3 empty lines in a row will halt input.\n")
-	fmt.Printf ( "%s:\n\n", prompt )
-	for breaks < 2 {
-		line, _ := reader.ReadString ('\n')
-		input += line
-		if line == "\n" {
-			breaks++
-		} else {
-			breaks = 0
+	fmt.Printf ( "%s (Ctrl-D to end input):\n\n", prompt )
+	for true {
+		byte, _ := reader.ReadByte ()
+		if byte == 0 {
+			break
 		}
+		input += string ( byte )
 	}
 	return strings.TrimSpace ( input )
 }
