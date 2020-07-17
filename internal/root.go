@@ -8,6 +8,7 @@ import "github.com/spf13/cobra"
 import "github.com/spf13/viper"
 import "github.com/fatih/color"
 import "github.com/parnurzeal/gorequest"
+import "github.com/hashicorp/go-version"
 
 const Version = "1.0.3"
 const ReleasesUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
@@ -48,8 +49,10 @@ func init () {
 func checkVersion () {
 	var cacheWindow int64 = 60 * 60
 	cachedVersion, hit := utils.GetCache ( "version:" + Version, cacheWindow )
+	versionObj, _ := version.NewVersion ( Version )
 	if hit {
-		if Version != cachedVersion {
+		cachedVersionObj, _ := version.NewVersion ( cachedVersion )
+		if versionObj.LessThan ( cachedVersionObj ) {
 			fmt.Printf (
 				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
 				cachedVersion,
@@ -67,7 +70,8 @@ func checkVersion () {
 		json.Unmarshal ( [] byte ( body ), &releases )
 		newest := releases [ 0 ]
 		utils.SetCache ( "version:" + Version, newest.TagName, cacheWindow )
-		if Version != newest.TagName {
+		targetVersionObj, _ := version.NewVersion ( newest.TagName )
+		if versionObj.LessThan ( targetVersionObj ) {
 			fmt.Printf (
 				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
 				newest.TagName,

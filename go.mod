@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/atotto/clipboard v0.1.2
 	github.com/fatih/color v1.9.0
+	github.com/hashicorp/go-version v1.2.1
 	github.com/parnurzeal/gorequest v0.2.16
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
