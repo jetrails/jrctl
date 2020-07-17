@@ -92,9 +92,10 @@ func initConfig () {
 	viper.AutomaticEnv ()
 	if error := viper.ReadInConfig (); error == nil {
 		if ( viper.GetBool ("debug") ) {
-			fmt.Println ( "Debug:", viper.GetString ("debug") )
-			fmt.Println ( "Endpoint:", viper.GetString ("endpoint") )
-			fmt.Println ( "Config File:", viper.ConfigFileUsed () )
+			fmt.Println ( color.CyanString ( "Debug:" ), viper.GetString ("debug") )
+			fmt.Println ( color.CyanString ( "Endpoint Postfix:" ), viper.GetString ("endpoint") )
+			fmt.Println ( color.CyanString ( "Config File:" ), viper.ConfigFileUsed () )
+			fmt.Println ()
 		}
 	}
 }

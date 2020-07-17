@@ -16,8 +16,8 @@ var secretCreateCmd = &cobra.Command {
 		filePath, _ := cmd.Flags ().GetString ("file")
 		copyToClipBoard, _ := cmd.Flags ().GetBool ("clipboard")
 		ttl, _ := cmd.Flags ().GetInt ("ttl")
-		password, _ := cmd.Flags ().GetString ("password")
 		autoGenerate, _ := cmd.Flags ().GetBool ("auto-generate")
+		password, _ := cmd.Flags ().GetString ("password")
 		if filePath != "" {
 			content = utils.ReadFile ( filePath )
 		}
@@ -50,8 +50,7 @@ func init () {
 	secretCmd.AddCommand ( secretCreateCmd )
 	secretCreateCmd.Flags ().IntP ( "ttl", "t", 1 * 24 * 60 * 60, "specify custom ttl in seconds" )
 	secretCreateCmd.Flags ().BoolP ( "auto-generate", "a", false, "automatically generate password" )
-	secretCreateCmd.Flags ().StringP ( "password", "p", "", "password for secret, blank for no password, required" )
+	secretCreateCmd.Flags ().StringP ( "password", "p", "", "protect secret with a password" )
 	secretCreateCmd.Flags ().StringP ( "file", "f", "", "use file contents as secret data" )
 	secretCreateCmd.Flags ().BoolP ( "clipboard", "c", false, "copy secret url to clipboard" )
-	secretCreateCmd.MarkFlagRequired ("password")
 }
