@@ -1,11 +1,13 @@
 package utils
 
-import "strings"
-import "os"
-import "fmt"
-import "bufio"
-import "io/ioutil"
-import "golang.org/x/crypto/ssh/terminal"
+import (
+	"strings"
+	"os"
+	"fmt"
+	"bufio"
+	"io/ioutil"
+	"golang.org/x/crypto/ssh/terminal"
+)
 
 func PromptPassword ( prompt string, value string ) string {
 	if value == "" {
@@ -17,12 +19,12 @@ func PromptPassword ( prompt string, value string ) string {
 	return value
 }
 
-func ReadFile ( path string ) string {
+func ReadFile ( path string ) ( string, error ) {
 	content, error := ioutil.ReadFile ( path )
 	if error != nil {
-		HandleErrorResponse ( InternalError ( error ) )
+		return "", error
 	}
-	return string ( content )
+	return string ( content ), nil
 }
 
 func PromptContent ( prompt string ) string {

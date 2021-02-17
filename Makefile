@@ -4,7 +4,7 @@ LINUX=$(EXECUTABLE)_linux_amd64
 DARWIN=$(EXECUTABLE)_darwin_amd64
 VERSION=$(shell git describe --tags --always --long --dirty)
 
-.PHONY: all clean
+.PHONY: help clean docs
 
 build: linux darwin ## Build for all platforms
 	@echo version: $(VERSION)
@@ -24,3 +24,6 @@ clean: ## Delete built binaries
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
+docs: ## Generate documentation
+	go run tools/generate-docs.go

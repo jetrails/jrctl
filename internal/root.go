@@ -1,16 +1,18 @@
 package internal
 
-import "fmt"
-import "os"
-import "encoding/json"
-import "github.com/jetrails/jrctl/sdk/utils"
-import "github.com/spf13/cobra"
-import "github.com/spf13/viper"
-import "github.com/fatih/color"
-import "github.com/parnurzeal/gorequest"
-import "github.com/hashicorp/go-version"
+import (
+	"fmt"
+	"os"
+	"encoding/json"
+	"github.com/jetrails/jrctl/sdk"
+	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/fatih/color"
+	"github.com/parnurzeal/gorequest"
+	"github.com/hashicorp/go-version"
+)
 
-const Version = "1.0.4"
 const ReleasesUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
 const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
 
@@ -31,7 +33,11 @@ var rootCmd = &cobra.Command {
 	Long:   "Command line tool to help interact with the " + jetrails + " API\n" +
 			"Hosted on Github, " + color.GreenString ("https://github.com/jetrails/jrctl") + ".\n" +
 			"For issues/requests, please open an issue in our Github repository.",
-	Version: Version,
+	Version: sdk.Version,
+}
+
+func GetRootCommand () * cobra.Command {
+	return rootCmd
 }
 
 func Execute () {
@@ -48,8 +54,8 @@ func init () {
 
 func checkVersion () {
 	var cacheWindow int64 = 60 * 60
-	cachedVersion, hit := utils.GetCache ( "version:" + Version, cacheWindow )
-	versionObj, _ := version.NewVersion ( Version )
+	cachedVersion, hit := utils.GetCache ( "version:" + sdk.Version, cacheWindow )
+	versionObj, _ := version.NewVersion ( sdk.Version )
 	if hit {
 		cachedVersionObj, _ := version.NewVersion ( cachedVersion )
 		if versionObj.LessThan ( cachedVersionObj ) {
@@ -69,7 +75,7 @@ func checkVersion () {
 		releases := make ( [] Release, 0 )
 		json.Unmarshal ( [] byte ( body ), &releases )
 		newest := releases [ 0 ]
-		utils.SetCache ( "version:" + Version, newest.TagName, cacheWindow )
+		utils.SetCache ( "version:" + sdk.Version, newest.TagName, cacheWindow )
 		targetVersionObj, _ := version.NewVersion ( newest.TagName )
 		if versionObj.LessThan ( targetVersionObj ) {
 			fmt.Printf (
@@ -88,17 +94,23 @@ func initConfig () {
 		viper.AddConfigPath ("$HOME")
 		viper.SetConfigName (".jrctl")
 		viper.SetConfigType ("yaml")
-		viper.SetEnvPrefix ("jr")
+		viper.SetEnvPrefix ("JR")
 		viper.SetDefault ( "debug", false )
-		viper.SetDefault ( "endpoint_postfix", "" )
+		viper.SetDefault ( "public_api_endpoint", "api-public.jetrails.cloud" )
+		viper.SetDefault ( "secret_endpoint", "secret.jetrails.cloud" )
+		viper.SetDefault ( "daemon_endpoint", "localhost:27482" )
+		viper.SetDefault ( "daemon_token", "" )
 		viper.SafeWriteConfig ()
 	}
 	viper.AutomaticEnv ()
 	if error := viper.ReadInConfig (); error == nil {
 		if ( viper.GetBool ("debug") ) {
-			fmt.Println ( color.CyanString ( "Debug:" ), viper.GetString ("debug") )
-			fmt.Println ( color.CyanString ( "Endpoint Postfix:" ), viper.GetString ("endpoint") )
-			fmt.Println ( color.CyanString ( "Config File:" ), viper.ConfigFileUsed () )
+			fmt.Println ( color.CyanString ( "config:" ), viper.ConfigFileUsed () )
+			fmt.Println ( color.CyanString ( "debug:" ), viper.GetString ("debug") )
+			fmt.Println ( color.CyanString ( "public_api_endpoint:" ), viper.GetString ("public_api_endpoint") )
+			fmt.Println ( color.CyanString ( "secret_endpoint:" ), viper.GetString ("secret_endpoint") )
+			fmt.Println ( color.CyanString ( "daemon_endpoint:" ), viper.GetString ("daemon_endpoint") )
+			fmt.Println ( color.CyanString ( "daemon_token:" ), viper.GetString ("daemon_token") )
 			fmt.Println ()
 		}
 	}

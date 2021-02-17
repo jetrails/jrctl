@@ -1,38 +1,65 @@
 package internal
 
-import "fmt"
-import "github.com/spf13/cobra"
-import "github.com/spf13/viper"
-import "github.com/jetrails/jrctl/sdk/command/secret"
-import "github.com/jetrails/jrctl/sdk/utils"
-import "github.com/atotto/clipboard"
+import (
+	"os"
+	"fmt"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/secret"
+	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/atotto/clipboard"
+)
 
 var secretCreateCmd = &cobra.Command {
 	Use:   "create",
 	Short: "Create a new one-time secret",
-	Run: func ( cmd *cobra.Command, args [] string ) {
-		var postfix = viper.GetString ("endpoint_postfix")
-		var content = ""
-		filePath, _ := cmd.Flags ().GetString ("file")
-		copyToClipBoard, _ := cmd.Flags ().GetBool ("clipboard")
+	Example: utils.Examples ([] string {
+		"jrctl secret create",
+		"jrctl secret create -c -a",
+		"jrctl secret create -c -t 60",
+		"jrctl secret create -c -p secretpass",
+		"jrctl secret create -c -f ~/.ssh/id_rsa.pub",
+	}),
+	Run: func ( cmd * cobra.Command, args [] string ) {
+		var content string = ""
+		filepath, _ := cmd.Flags ().GetString ("file")
+		copy, _ := cmd.Flags ().GetBool ("clipboard")
 		ttl, _ := cmd.Flags ().GetInt ("ttl")
-		autoGenerate, _ := cmd.Flags ().GetBool ("auto-generate")
+		generate, _ := cmd.Flags ().GetBool ("auto-generate")
 		password, _ := cmd.Flags ().GetString ("password")
-		if filePath != "" {
-			content = utils.ReadFile ( filePath )
+		if filepath != "" {
+			fileContents, error := utils.ReadFile ( filepath )
+			if error != nil {
+				utils.PrintErrors ( 1, "Client Side" )
+				utils.PrintMessages ( [] string { error.Error () } )
+				os.Exit ( 1 )
+			}
+			content = fileContents
 		}
 		if content == "" {
 			content = utils.PromptContent ("Secret")
 		}
-		var request = secret.SecretCreateRequest {
+		context := secret.PublicApiContext {
+			Endpoint: viper.GetString ("public_api_endpoint"),
+			Debug: viper.GetBool ("debug"),
+		}
+		request := secret.SecretCreateRequest {
 			Data: content,
 			Password: password,
 			TTL: ttl,
-			AutoGenerate: autoGenerate,
+			AutoGenerate: generate,
 		}
-		response, error := secret.SecretCreate ( request )
-		utils.HandleErrorResponse ( error )
-		var url = fmt.Sprintf ( "https://secret%s.jetrails.cloud/secret/%s", postfix, response.Identifier )
+		response, error := secret.SecretCreate ( context, request )
+		if error.Code != 200 && error.Code != 0 {
+			utils.PrintErrors ( error.Code, error.Type )
+			utils.PrintMessages ( [] string { error.Message } )
+			os.Exit ( 1 )
+		}
+		url := fmt.Sprintf (
+			"https://%s/secret/%s",
+			viper.GetString ("secret_endpoint"),
+			response.Identifier,
+		)
 		fmt.Println ()
 		fmt.Printf ( "Identifier:  %s\n", response.Identifier )
 		if response.Password != "" {
@@ -40,7 +67,7 @@ var secretCreateCmd = &cobra.Command {
 		}
 		fmt.Printf ( "TTL:         %d seconds\n", response.TTL )
 		fmt.Printf ( "\n%s\n\n", url )
-		if copyToClipBoard {
+		if copy {
 			clipboard.WriteAll ( url )
 		}
 	},

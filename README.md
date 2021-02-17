@@ -26,9 +26,10 @@ $ sudo mv jrctl /usr/local/bin/jrctl
 
 ## Currently Exposed Services
 
-|  Command | Description                               |
-|:--------:|-------------------------------------------|
-| `secret` | Interact with our one-time secret service |
+|   Command   | Description                               |
+|:-----------:|-------------------------------------------|
+| `secret`    | Interact with our one-time secret service |
+| `whitelist` | Whitelist IP addresses & ports            |
 
 ## Building & Running
 

@@ -1,10 +1,12 @@
 package utils
 
-import "os"
-import "fmt"
-import "path"
-import "time"
-import "io/ioutil"
+import (
+	"os"
+	"fmt"
+	"path"
+	"time"
+	"io/ioutil"
+)
 
 func getCacheFileName ( key string, window int64 ) string {
 	now := time.Now ().Unix ()
