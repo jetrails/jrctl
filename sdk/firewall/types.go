@@ -1,4 +1,4 @@
-package whitelist
+package firewall
 
 type Entry struct {
 	Address string   `json:"address"`

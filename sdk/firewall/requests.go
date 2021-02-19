@@ -1,6 +1,6 @@
-package whitelist
+package firewall
 
-type AddRequest struct {
+type AllowRequest struct {
 	Address string  `json:"address"`
 	Ports [] int    `json:"ports"`
 	Blame string    `json:"blame"`

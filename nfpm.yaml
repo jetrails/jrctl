@@ -1,0 +1,20 @@
+# Documentation:
+# https://nfpm.goreleaser.com/configuration/
+
+name: jrctl
+arch: amd64
+platform: linux
+version: v1.0.4
+section: default
+priority: extra
+maintainer: Rafael Grigorian <development@jetrails.com>
+description: Command line tool to help interact with our API
+vendor: JetRails
+homepage: https://github.com/jetrails/jrctl
+license: The JetRails License
+contents:
+-   src: man/*
+    dst: /usr/share/man/man1
+    type: doc
+-   src: bin/jrctl_linux_amd64
+    dst: /usr/bin/jrctl

@@ -5,22 +5,22 @@ import (
 	"github.com/spf13/viper"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk/whitelist"
+	"github.com/jetrails/jrctl/sdk/firewall"
 )
 
-var whitelistListCmd = &cobra.Command {
+var firewallListCmd = &cobra.Command {
 	Use:   "list",
-	Short: "List whitelist whitelist entries",
+	Short: "List firewall firewall entries",
 	Example: utils.Examples ([] string {
-		"jrctl whitelist list",
+		"jrctl firewall list",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		context := whitelist.DaemonContext {
+		context := firewall.DaemonContext {
 			Endpoint: viper.GetString ("daemon_endpoint"),
 			Auth: viper.GetString ("daemon_token"),
 			Debug: viper.GetBool ("debug"),
 		}
-		response := whitelist.List ( context )
+		response := firewall.List ( context )
 		utils.PrintErrors ( response.Code, response.Status )
 		utils.PrintMessages ( response.Messages )
 		if len ( response.Payload ) > 0 {
@@ -38,9 +38,9 @@ var whitelistListCmd = &cobra.Command {
 }
 
 func init () {
-	whitelistCmd.AddCommand ( whitelistListCmd )
-	whitelistListCmd.Flags ().StringP ( "endpoint", "e", "localhost:27482", "specify endpoint hostname" )
-	whitelistListCmd.Flags ().StringP ( "token", "t", "", "specify auth token" )
-	viper.BindPFlag ( "daemon_endpoint", whitelistListCmd.Flags ().Lookup ("endpoint") )
-	viper.BindPFlag ( "daemon_token", whitelistListCmd.Flags ().Lookup ("token") )
+	firewallCmd.AddCommand ( firewallListCmd )
+	firewallListCmd.Flags ().StringP ( "endpoint", "e", "localhost:27482", "specify endpoint hostname" )
+	firewallListCmd.Flags ().StringP ( "token", "t", "", "specify auth token" )
+	viper.BindPFlag ( "daemon_endpoint", firewallListCmd.Flags ().Lookup ("endpoint") )
+	viper.BindPFlag ( "daemon_token", firewallListCmd.Flags ().Lookup ("token") )
 }

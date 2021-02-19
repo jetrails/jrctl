@@ -1,4 +1,4 @@
-package whitelist
+package firewall
 
 import (
 	"fmt"
@@ -34,7 +34,7 @@ func List ( context DaemonContext ) ListResponse {
 	return response
 }
 
-func Add ( context DaemonContext, data AddRequest ) AddResponse {
+func Add ( context DaemonContext, data AllowRequest ) AllowResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
@@ -46,14 +46,14 @@ func Add ( context DaemonContext, data AddRequest ) AddResponse {
 		Send ( data ).
 		End ()
 	if len ( errors ) > 0 {
-		return AddResponse {
+		return AllowResponse {
 			Status: "Client Side",
 			Code: 1,
 			Messages: utils.CollectErrors ( errors ),
 			Payload: data,
 		}
 	}
-	var response AddResponse
+	var response AllowResponse
 	json.Unmarshal ( [] byte ( body ), &response )
 	return response
 }

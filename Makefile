@@ -26,4 +26,11 @@ help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 docs: ## Generate documentation
+	mkdir -p docs man
+	rm -rf man/* docs/*.md
 	go run tools/generate-docs.go
+
+package: linux
+	mkdir -p ./dist
+	nfpm pkg --packager deb --target ./dist
+	nfpm pkg --packager rpm --target ./dist
