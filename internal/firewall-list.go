@@ -27,7 +27,7 @@ var firewallListCmd = &cobra.Command {
 			fmt.Println ()
 			for i, entry := range response.Payload {
 				fmt.Printf (
-					"%-3s %s:%d\n",
+					"%-3s %s -> %v\n",
 					fmt.Sprintf ( "%d.", i + 1 ),
 					entry.Address,
 					entry.Port,

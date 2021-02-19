@@ -2,7 +2,7 @@ package firewall
 
 type Entry struct {
 	Address string   `json:"address"`
-	Port int         `json:"port"`
+	Port [] int      `json:"port"`
 }
 
 type DaemonContext struct {
