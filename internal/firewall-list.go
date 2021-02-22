@@ -14,6 +14,10 @@ var firewallListCmd = &cobra.Command {
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
 	}),
+	PreRun: func ( cmd * cobra.Command, args [] string ) {
+		viper.BindPFlag ( "daemon_endpoint", cmd.Flags ().Lookup ("endpoint") )
+		viper.BindPFlag ( "daemon_token", cmd.Flags ().Lookup ("token") )
+	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		context := firewall.DaemonContext {
 			Endpoint: viper.GetString ("daemon_endpoint"),
@@ -41,6 +45,4 @@ func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
 	firewallListCmd.Flags ().StringP ( "endpoint", "e", "localhost:27482", "specify endpoint hostname" )
 	firewallListCmd.Flags ().StringP ( "token", "t", "", "specify auth token" )
-	viper.BindPFlag ( "daemon_endpoint", firewallListCmd.Flags ().Lookup ("endpoint") )
-	viper.BindPFlag ( "daemon_token", firewallListCmd.Flags ().Lookup ("token") )
 }

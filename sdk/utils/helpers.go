@@ -13,6 +13,25 @@ func Examples ( examples [] string ) string {
 	return strings.Join ( examples, "\n" )
 }
 
+func Paragraph ( lines [] string ) string {
+	width := 80
+	result := ""
+	line := ""
+	delim := ""
+	for _, word := range strings.Split ( strings.Join ( lines, " " ), " " ) {
+		temp := line + delim + word
+		if ( len ( temp ) <= width ) {
+			line = temp
+		} else {
+			result = result + "\n" + line
+			line = word
+		}
+		delim = " "
+	}
+	return result + "\n" + line
+}
+
+
 func GetUser () string {
 	user, error := user.Current ()
 	if error != nil {

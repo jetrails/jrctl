@@ -29,11 +29,12 @@ type ReleaseResponse struct {
 
 var rootCmd = &cobra.Command {
 	Use:    "jrctl",
+	Version: sdk.Version,
 	Short:  "Command line tool to help interact with the " + jetrails + " API",
 	Long:   "Command line tool to help interact with the " + jetrails + " API\n" +
 			"Hosted on Github, " + color.GreenString ("https://github.com/jetrails/jrctl") + ".\n" +
 			"For issues/requests, please open an issue in our Github repository.",
-	Version: sdk.Version,
+	DisableAutoGenTag: true,
 }
 
 func GetRootCommand () * cobra.Command {

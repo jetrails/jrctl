@@ -15,6 +15,10 @@ var firewallAllowCmd = &cobra.Command {
 		"jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me",
 		"jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me -c 'Office'",
 	}),
+	PreRun: func ( cmd * cobra.Command, args [] string ) {
+		viper.BindPFlag ( "daemon_endpoint", cmd.Flags ().Lookup ("endpoint") )
+		viper.BindPFlag ( "daemon_token", cmd.Flags ().Lookup ("token") )
+	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		address, _ := cmd.Flags ().GetString ("address")
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
@@ -47,6 +51,4 @@ func init () {
 	firewallAllowCmd.Flags ().StringP ( "blame", "b", utils.GetUser (), "specify blame entry" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")
-	viper.BindPFlag ( "daemon_endpoint", firewallAllowCmd.Flags ().Lookup ("endpoint") )
-	viper.BindPFlag ( "daemon_token", firewallAllowCmd.Flags ().Lookup ("token") )
 }
