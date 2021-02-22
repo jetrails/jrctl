@@ -2,10 +2,6 @@
 
 Add entry to firewall
 
-### Synopsis
-
-Add entry to firewall
-
 ```
 jrctl firewall allow [flags]
 ```

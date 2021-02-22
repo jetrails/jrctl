@@ -11,7 +11,7 @@ import (
 func main () {
 	now := time.Now ()
 	header := &doc.GenManHeader {
-		Title: "JetRails Daemon",
+		Title: "JetRails CLI",
 		Section: "1",
 		Source: fmt.Sprintf ( "Copyright %4d ADF, Inc. All Rights Reserved ", now.Year () ),
 		Date: &now,

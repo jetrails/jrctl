@@ -28,7 +28,7 @@ help: ## Display available commands
 docs: ## Generate documentation
 	mkdir -p docs man
 	rm -rf man/* docs/*.md
-	go run tools/generate-docs.go
+	JR_COLOR=false go run tools/generate-docs.go
 
 package: linux
 	mkdir -p ./dist

@@ -1,11 +1,11 @@
 ## jrctl
 
-Command line tool to help interact with the [32m>[0mjetrails[32m_[0m API
+Command line tool to help interact with the >jetrails_ API
 
 ### Synopsis
 
-Command line tool to help interact with the [32m>[0mjetrails[32m_[0m API
-Hosted on Github, [32mhttps://github.com/jetrails/jrctl[0m.
+Command line tool to help interact with the >jetrails_ API
+Hosted on Github, https://github.com/jetrails/jrctl.
 For issues/requests, please open an issue in our Github repository.
 
 ### Options

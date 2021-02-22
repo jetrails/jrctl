@@ -2,10 +2,6 @@
 
 Create a new one-time secret
 
-### Synopsis
-
-Create a new one-time secret
-
 ```
 jrctl secret create [flags]
 ```

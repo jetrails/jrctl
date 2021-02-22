@@ -2,10 +2,6 @@
 
 List firewall firewall entries
 
-### Synopsis
-
-List firewall firewall entries
-
 ```
 jrctl firewall list [flags]
 ```

@@ -2,10 +2,6 @@
 
 Delete secret without viewing contents
 
-### Synopsis
-
-Delete secret without viewing contents
-
 ```
 jrctl secret delete <identifier> [flags]
 ```

@@ -2,10 +2,6 @@
 
 Display contents of secret
 
-### Synopsis
-
-Display contents of secret
-
 ```
 jrctl secret read <identifier> [flags]
 ```

@@ -5,7 +5,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk"
+	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -16,7 +16,7 @@ func List ( context DaemonContext ) ListResponse {
 	_, body, errors := request.
 		Get ( fmt.Sprintf ("https://%s/whitelist", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).
-		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", sdk.Version ) ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Set ( "Authorization", context.Auth ).
 		Type ("text").
 		Send (`{}`).
@@ -41,7 +41,7 @@ func Add ( context DaemonContext, data AllowRequest ) AllowResponse {
 	_, body, errors := request.
 		Put ( fmt.Sprintf ("https://%s/whitelist", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).
-		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", sdk.Version ) ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Set ( "Authorization", context.Auth ).
 		Send ( data ).
 		End ()
