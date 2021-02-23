@@ -2,16 +2,24 @@
 
 Display contents of secret
 
+### Synopsis
+
+Display contents of secret. Passing the secret identifier will allow us to
+retrieve the contents of the secret and print it to STDOUT. Optionally, you can
+copy the contents to your clipboard by passing the --clipboard flag!
+
+The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.
+
 ```
-jrctl secret read <identifier> [flags]
+jrctl secret read IDENTIFIER [flags]
 ```
 
 ### Examples
 
 ```
-  jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
-  jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c
-  jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass
+jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
+jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c
+jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass
 ```
 
 ### Options

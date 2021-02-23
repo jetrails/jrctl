@@ -10,6 +10,15 @@ import (
 var firewallAllowCmd = &cobra.Command {
 	Use:   "allow",
 	Short: "Add entry to firewall",
+	Long: utils.Combine ( [] string {
+		utils.Paragraph ( [] string {
+			"Add entry to firewall.",
+			"Ask the daemon to create an allow entry in the system's firewall.",
+		}),
+		utils.Paragraph ( [] string {
+			"The following environmental variables can be passed in place of the 'endpoint' and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.",
+		}),
+	}),
 	Example: utils.Examples ([] string {
 		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
 		"jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me",

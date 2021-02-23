@@ -1,6 +1,13 @@
 ## jrctl firewall list
 
-List firewall firewall entries
+List firewall entries
+
+### Synopsis
+
+List firewall entries. Ask the daemon for a list of firewall entries.
+
+The following environmental variables can be passed in place of the 'endpoint'
+and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.
 
 ```
 jrctl firewall list [flags]
@@ -9,7 +16,7 @@ jrctl firewall list [flags]
 ### Examples
 
 ```
-  jrctl firewall list
+jrctl firewall list
 ```
 
 ### Options

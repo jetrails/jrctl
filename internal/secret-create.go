@@ -13,6 +13,16 @@ import (
 var secretCreateCmd = &cobra.Command {
 	Use:   "create",
 	Short: "Create a new one-time secret",
+	Long: utils.Combine ( [] string {
+		utils.Paragraph ( [] string {
+			"Create a new one-time secret.",
+			"A secret's content can be populated by passing a filepath, or it can be manually specified through STDIN.",
+			"Optionally, the secret's url can be copied to your clipboard by passing the --clipboard flag!",
+		}),
+		utils.Paragraph ( [] string {
+			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT, JR_SECRET_ENDPOINT.",
+		}),
+	}),
 	Example: utils.Examples ([] string {
 		"jrctl secret create",
 		"jrctl secret create -c -a",

@@ -10,8 +10,17 @@ import (
 )
 
 var deleteCmd = &cobra.Command {
-	Use:   "delete <identifier>",
+	Use:   "delete IDENTIFIER",
 	Short: "Delete secret without viewing contents",
+	Long: utils.Combine ( [] string {
+		utils.Paragraph ( [] string {
+			"Delete secret without viewing contents.",
+			"Passing the secret identifier will make a request to destroy the secret without displaying the secret's contents.",
+		}),
+		utils.Paragraph ( [] string {
+			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",
+		}),
+	}),
 	Example: utils.Examples ([] string {
 		"jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
 	}),

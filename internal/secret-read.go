@@ -11,8 +11,18 @@ import (
 )
 
 var readCmd = &cobra.Command {
-	Use: "read <identifier>",
+	Use: "read IDENTIFIER",
 	Short: "Display contents of secret",
+	Long: utils.Combine ( [] string {
+		utils.Paragraph ( [] string {
+			"Display contents of secret.",
+			"Passing the secret identifier will allow us to retrieve the contents of the secret and print it to STDOUT.",
+			"Optionally, you can copy the contents to your clipboard by passing the --clipboard flag!",
+		}),
+		utils.Paragraph ( [] string {
+			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",
+		}),
+	}),
 	Example: utils.Examples ([] string {
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c",

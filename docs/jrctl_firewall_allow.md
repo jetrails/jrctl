@@ -2,6 +2,14 @@
 
 Add entry to firewall
 
+### Synopsis
+
+Add entry to firewall. Ask the daemon to create an allow entry in the system's
+firewall.
+
+The following environmental variables can be passed in place of the 'endpoint'
+and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.
+
 ```
 jrctl firewall allow [flags]
 ```
@@ -9,9 +17,9 @@ jrctl firewall allow [flags]
 ### Examples
 
 ```
-  jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
-  jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me
-  jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me -c 'Office'
+jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
+jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me
+jrctl firewall allow -a 1.1.1.1 -p 80,443 -b me -c 'Office'
 ```
 
 ### Options

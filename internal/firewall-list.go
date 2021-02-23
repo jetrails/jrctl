@@ -10,7 +10,16 @@ import (
 
 var firewallListCmd = &cobra.Command {
 	Use:   "list",
-	Short: "List firewall firewall entries",
+	Short: "List firewall entries",
+	Long: utils.Combine ( [] string {
+		utils.Paragraph ( [] string {
+			"List firewall entries.",
+			"Ask the daemon for a list of firewall entries.",
+		}),
+		utils.Paragraph ( [] string {
+			"The following environmental variables can be passed in place of the 'endpoint' and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.",
+		}),
+	}),
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
 	}),

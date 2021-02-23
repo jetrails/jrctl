@@ -3,7 +3,7 @@
 
 .SH NAME
 .PP
-jrctl\-firewall\-list \- List firewall firewall entries
+jrctl\-firewall\-list \- List firewall entries
 
 
 .SH SYNOPSIS
@@ -13,7 +13,11 @@ jrctl\-firewall\-list \- List firewall firewall entries
 
 .SH DESCRIPTION
 .PP
-List firewall firewall entries
+List firewall entries. Ask the daemon for a list of firewall entries.
+
+.PP
+The following environmental variables can be passed in place of the 'endpoint'
+and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
 
 
 .SH OPTIONS
@@ -35,7 +39,7 @@ List firewall firewall entries
 .RS
 
 .nf
-  jrctl firewall list
+jrctl firewall list
 
 .fi
 .RE

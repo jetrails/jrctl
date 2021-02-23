@@ -5,6 +5,7 @@ import (
 	"os"
 	"github.com/jetrails/jrctl/sdk/color"
 	"github.com/jetrails/jrctl/sdk/version"
+	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -12,12 +13,14 @@ import (
 var config string
 
 var rootCmd = &cobra.Command {
-	Use:    "jrctl",
+	Use: "jrctl",
 	Version: version.VersionString,
-	Short:  "Command line tool to help interact with the " + color.GetLogo () + " API",
-	Long:   "Command line tool to help interact with the " + color.GetLogo () + " API\n" +
-			"Hosted on Github, " + color.GreenString ("https://github.com/jetrails/jrctl") + ".\n" +
-			"For issues/requests, please open an issue in our Github repository.",
+	Short: "Command line tool to help interact with the " + color.GetLogo () + " API.",
+	Long: utils.Paragraph ( [] string {
+		"Command line tool to help interact with the " + color.GetLogo () + " API.",
+		"Hosted on Github, " + color.GreenString ("https://github.com/jetrails/jrctl") + ".",
+		"For issues/requests, please open an issue in our Github repository.",
+	}),
 	DisableAutoGenTag: true,
 }
 

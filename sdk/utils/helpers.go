@@ -3,16 +3,25 @@ package utils
 import (
 	"regexp"
 	"strings"
+	"os"
 	"os/user"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 )
 
 func Examples ( examples [] string ) string {
+	space := "  "
+	if os.Getenv ("JR_DOCS") == "true" {
+		space = ""
+	}
 	for i, e := range examples {
-		examples [ i ] = "  " + e
+		examples [ i ] = space + e
 	}
 	return strings.Join ( examples, "\n" )
+}
+
+func Combine ( lines [] string ) string {
+	return strings.Join ( lines, "\n\n" )
 }
 
 func Paragraph ( lines [] string ) string {
@@ -20,19 +29,21 @@ func Paragraph ( lines [] string ) string {
 	result := ""
 	line := ""
 	delim := ""
-	for _, word := range strings.Split ( strings.Join ( lines, " " ), " " ) {
+	lineDelim := ""
+	combined := strings.Join ( lines, " " )
+	for _, word := range strings.Split ( combined, " " ) {
 		temp := line + delim + word
 		if ( len ( temp ) <= width ) {
 			line = temp
 		} else {
-			result = result + "\n" + line
+			result = result + lineDelim + line
 			line = word
+			lineDelim = "\n"
 		}
 		delim = " "
 	}
-	return result + "\n" + line
+	return result + lineDelim + line
 }
-
 
 func GetUser () string {
 	user, error := user.Current ()
