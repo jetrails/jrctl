@@ -4,6 +4,8 @@ import (
 	"regexp"
 	"strings"
 	"os/user"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
 )
 
 func Examples ( examples [] string ) string {
@@ -42,4 +44,14 @@ func GetUser () string {
 
 func SafeString ( input string ) string {
 	return regexp.MustCompile ("[^a-zA-Z0-9]+").ReplaceAllString ( input, "_" )
+}
+
+func LoadDaemonAuth () string {
+	var c DaemonConfig
+	if yamlfile, error := ioutil.ReadFile ("/etc/jetrailsd/config.yaml"); error == nil {
+		if error = yaml.Unmarshal ( yamlfile, &c ); error == nil {
+			return c.Auth
+		}
+	}
+	return ""
 }

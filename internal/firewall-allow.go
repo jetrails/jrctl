@@ -18,6 +18,9 @@ var firewallAllowCmd = &cobra.Command {
 	PreRun: func ( cmd * cobra.Command, args [] string ) {
 		viper.BindPFlag ( "daemon_endpoint", cmd.Flags ().Lookup ("endpoint") )
 		viper.BindPFlag ( "daemon_token", cmd.Flags ().Lookup ("token") )
+		if viper.GetString ("daemon_token") == "" {
+			viper.Set ( "daemon_token", utils.LoadDaemonAuth () )
+		}
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		address, _ := cmd.Flags ().GetString ("address")
