@@ -2,6 +2,8 @@ package version
 
 import (
 	"fmt"
+	"strings"
+	"errors"
 	"encoding/json"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/color"
@@ -15,10 +17,19 @@ const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
 
 type ReleaseEntry struct {
 	TagName string `json:"tag_name"`
+	PreRelease bool `json:"prerelease"`
+	Draft bool `json:"draft"`
 }
 
-type ReleaseResponse struct {
-	Collection [] ReleaseEntry
+func FindStable ( releases [] ReleaseEntry ) ( ReleaseEntry, error ) {
+	for _, release := range releases {
+		isAlpha := strings.HasSuffix ( release.TagName, "-alpha" )
+		isBeta := strings.HasSuffix ( release.TagName, "-beta" )
+		if !release.PreRelease && !release.Draft && !isAlpha && !isBeta {
+			return release, nil
+		}
+	}
+	return ReleaseEntry {}, errors.New ("No stable version found")
 }
 
 func CheckVersion ( debug bool ) {
@@ -38,19 +49,24 @@ func CheckVersion ( debug bool ) {
 	}
 	var request = gorequest.New ()
 	request.SetDebug ( debug )
-	response, body, _ := request.Get ( ReleasesUrl ).End ()
+	response, body, _ := request.
+		Get ( ReleasesUrl ).
+		Query ("page=1&per_page=100" ).
+		End ()
 	if response.StatusCode == 200 {
-		releases := make ( [] ReleaseEntry, 0 )
-		json.Unmarshal ( [] byte ( body ), &releases )
-		newest := releases [ 0 ]
-		utils.SetCache ( "version:" + VersionString, newest.TagName, cacheWindow )
-		targetVersionObj, _ := vercmp.NewVersion ( newest.TagName )
-		if versionObj.LessThan ( targetVersionObj ) {
-			fmt.Printf (
-				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
-				newest.TagName,
-				color.RedString ( fmt.Sprintf ( TagUrlTemplate, newest.TagName ) ),
-			)
+		var releases [] ReleaseEntry
+		if error := json.Unmarshal ( [] byte ( body ), &releases ); error == nil {
+			if newest, error := FindStable ( releases ); error == nil {
+				utils.SetCache ( "version:" + VersionString, newest.TagName, cacheWindow )
+				targetVersionObj, _ := vercmp.NewVersion ( newest.TagName )
+				if versionObj.LessThan ( targetVersionObj ) {
+					fmt.Printf (
+						"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
+						newest.TagName,
+						color.RedString ( fmt.Sprintf ( TagUrlTemplate, newest.TagName ) ),
+					)
+				}
+			}
 		}
 	}
 }
