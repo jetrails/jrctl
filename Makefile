@@ -1,8 +1,7 @@
 EXECUTABLE=jrctl
-OUTPUT=bin
+VERSION=$(shell git describe --tags `git rev-list --tags --max-count=1`)
 LINUX=$(EXECUTABLE)_linux_amd64
 DARWIN=$(EXECUTABLE)_darwin_amd64
-VERSION=$(shell git describe --tags --always --long --dirty)
 
 .PHONY: help clean docs
 
@@ -14,13 +13,13 @@ linux: $(LINUX)
 darwin: $(DARWIN)
 
 $(LINUX):
-	env GOOS=linux GOARCH=amd64 go build -i -v -o "$(OUTPUT)/$(LINUX)" -ldflags="-s -w -X main.version=$(VERSION)"  ./cmd/jrctl/main.go
+	env GOOS=linux GOARCH=amd64 go build -i -v -o "bin/$(LINUX)" -ldflags="-s -w -X main.version=$(VERSION)"  ./cmd/jrctl/main.go
 
 $(DARWIN):
-	env GOOS=darwin GOARCH=amd64 go build -i -v -o "$(OUTPUT)/$(DARWIN)" -ldflags="-s -w -X main.version=$(VERSION)"  ./cmd/jrctl/main.go
+	env GOOS=darwin GOARCH=amd64 go build -i -v -o "bin/$(DARWIN)" -ldflags="-s -w -X main.version=$(VERSION)"  ./cmd/jrctl/main.go
 
 clean: ## Delete built binaries
-	rm -f "$(OUTPUT)/$(LINUX)" "$(OUTPUT)/$(DARWIN)"
+	rm -f "bin/$(LINUX)" "bin/$(DARWIN)"
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
@@ -30,7 +29,9 @@ docs: ## Generate documentation
 	rm -rf man/* docs/*.md
 	JR_DOCS=true JR_COLOR=false go run tools/generate-docs.go
 
-package: linux
+package: build
 	mkdir -p ./dist
+	rm -f ./dist/*
 	nfpm pkg --packager deb --target ./dist
 	nfpm pkg --packager rpm --target ./dist
+	tar -czvf ./dist/$(EXECUTABLE)-$(VERSION)-darwin.tar.gz man bin/$(DARWIN)
