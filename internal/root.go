@@ -44,27 +44,27 @@ func initConfig () {
 	if config != "" {
 		viper.SetConfigFile ( config )
 	} else {
-		viper.AddConfigPath ("$HOME")
-		viper.SetConfigName (".jrctl")
+		viper.AddConfigPath ("$HOME/.jrctl")
+		viper.AddConfigPath ("/etc/jrctl")
+		viper.SetConfigName ("config")
 		viper.SetConfigType ("yaml")
 		viper.SetEnvPrefix ("JR")
 		viper.SetDefault ( "public_api_endpoint", "api-public.jetrails.cloud" )
 		viper.SetDefault ( "secret_endpoint", "secret.jetrails.cloud" )
 		viper.SetDefault ( "daemon_endpoint", "localhost:27482" )
 		viper.SetDefault ( "daemon_token", "" )
-		viper.SafeWriteConfig ()
+		viper.SafeWriteConfigAs ("/etc/jrctl/config.yaml")
 	}
 	viper.AutomaticEnv ()
-	if error := viper.ReadInConfig (); error == nil {
-		if ( viper.GetBool ("debug") ) {
-			fmt.Println ( color.CyanString ( "config:" ), viper.ConfigFileUsed () )
-			fmt.Println ( color.CyanString ( "debug:" ), viper.GetString ("debug") )
-			fmt.Println ( color.CyanString ( "color:" ), viper.GetString ("color") )
-			fmt.Println ( color.CyanString ( "public_api_endpoint:" ), viper.GetString ("public_api_endpoint") )
-			fmt.Println ( color.CyanString ( "secret_endpoint:" ), viper.GetString ("secret_endpoint") )
-			fmt.Println ( color.CyanString ( "daemon_endpoint:" ), viper.GetString ("daemon_endpoint") )
-			fmt.Println ( color.CyanString ( "daemon_token:" ), viper.GetString ("daemon_token") )
-			fmt.Println ()
-		}
+	viper.ReadInConfig ()
+	if ( viper.GetBool ("debug") ) {
+		fmt.Println ( color.CyanString ( "config:" ), viper.ConfigFileUsed () )
+		fmt.Println ( color.CyanString ( "debug:" ), viper.GetString ("debug") )
+		fmt.Println ( color.CyanString ( "color:" ), viper.GetString ("color") )
+		fmt.Println ( color.CyanString ( "public_api_endpoint:" ), viper.GetString ("public_api_endpoint") )
+		fmt.Println ( color.CyanString ( "secret_endpoint:" ), viper.GetString ("secret_endpoint") )
+		fmt.Println ( color.CyanString ( "daemon_endpoint:" ), viper.GetString ("daemon_endpoint") )
+		fmt.Println ( color.CyanString ( "daemon_token:" ), viper.GetString ("daemon_token") )
+		fmt.Println ()
 	}
 }

@@ -4,7 +4,7 @@
 name: jrctl
 arch: amd64
 platform: linux
-version: v1.0.4
+version: 1.0.4
 section: default
 priority: extra
 maintainer: Rafael Grigorian <development@jetrails.com>
@@ -18,3 +18,5 @@ contents:
     type: doc
 -   src: bin/jrctl_linux_amd64
     dst: /usr/bin/jrctl
+empty_folders:
+-   /etc/jrctl
