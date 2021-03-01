@@ -3,17 +3,19 @@
 
 .SH NAME
 .PP
-jrctl\-firewall\-list \- List firewall entries
+jrctl\-service\-restart \- Restart apache, nginx, mysql, or varnish service
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl firewall list [flags]\fP
+\fBjrctl service restart SERVICE [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-List firewall entries. Ask the daemon for a list of firewall entries.
+Restart apache, nginx, mysql, or varnish service. Ask the daemon to restart a
+given service. In order to successfully restart it, the daemon first validates
+the respected service's configuration.
 
 .PP
 The following environmental variables can be passed in place of the 'endpoint'
@@ -27,7 +29,7 @@ and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
 
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for list
+	help for restart
 
 .PP
 \fB\-t\fP, \fB\-\-token\fP=""
@@ -39,7 +41,10 @@ and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
 .RS
 
 .nf
-jrctl firewall list
+jrctl service restart apache
+jrctl service restart nginx
+jrctl service restart mysql
+jrctl service restart varnish
 
 .fi
 .RE
@@ -47,4 +52,4 @@ jrctl firewall list
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-firewall(1)\fP
+\fBjrctl\-service(1)\fP
