@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
+	"github.com/jetrails/jrctl/sdk/daemon"
 )
 
 var firewallAllowCmd = &cobra.Command {
@@ -36,9 +37,9 @@ var firewallAllowCmd = &cobra.Command {
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
 		blame, _ := cmd.Flags ().GetString ("blame")
 		comment, _ := cmd.Flags ().GetString ("comment")
-		context := firewall.DaemonContext {
+		context := daemon.Context {
 			Endpoint: viper.GetString ("daemon_endpoint"),
-			Auth: viper.GetString ("daemon_token"),
+			Token: viper.GetString ("daemon_token"),
 			Debug: viper.GetBool ("debug"),
 		}
 		data := firewall.AllowRequest {

@@ -6,6 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
+	"github.com/jetrails/jrctl/sdk/daemon"
 )
 
 var firewallListCmd = &cobra.Command {
@@ -31,9 +32,9 @@ var firewallListCmd = &cobra.Command {
 		}
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		context := firewall.DaemonContext {
+		context := daemon.Context {
 			Endpoint: viper.GetString ("daemon_endpoint"),
-			Auth: viper.GetString ("daemon_token"),
+			Token: viper.GetString ("daemon_token"),
 			Debug: viper.GetBool ("debug"),
 		}
 		response := firewall.List ( context )

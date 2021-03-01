@@ -5,6 +5,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/service"
+	"github.com/jetrails/jrctl/sdk/daemon"
 )
 
 var serviceRestartCmd = &cobra.Command {
@@ -36,9 +37,9 @@ var serviceRestartCmd = &cobra.Command {
 		}
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		context := service.DaemonContext {
+		context := daemon.Context {
 			Endpoint: viper.GetString ("daemon_endpoint"),
-			Auth: viper.GetString ("daemon_token"),
+			Token: viper.GetString ("daemon_token"),
 			Debug: viper.GetBool ("debug"),
 		}
 		data := service.RestartRequest {
