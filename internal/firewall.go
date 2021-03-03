@@ -16,4 +16,5 @@ var firewallCmd = &cobra.Command {
 
 func init () {
 	rootCmd.AddCommand ( firewallCmd )
+	firewallCmd.Flags ().SortFlags = false
 }

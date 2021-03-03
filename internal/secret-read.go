@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var readCmd = &cobra.Command {
+var secretReadCmd = &cobra.Command {
 	Use: "read IDENTIFIER",
 	Short: "Display contents of secret",
 	Long: utils.Combine ( [] string {
@@ -51,8 +51,9 @@ var readCmd = &cobra.Command {
 		if error.Code != 200 && error.Code != 0 {
 			utils.PrintErrors ( error.Code, error.Type )
 			utils.PrintMessages ( [] string { error.Message } )
+		} else {
+			fmt.Printf ( "\n%s\n\n", response.Data )
 		}
-		fmt.Printf ( "\n%s\n\n", response.Data )
 		if copy {
 			clipboard.WriteAll ( strings.TrimSpace ( response.Data ) )
 		}
@@ -60,7 +61,8 @@ var readCmd = &cobra.Command {
 }
 
 func init () {
-	secretCmd.AddCommand ( readCmd )
-	readCmd.Flags ().StringP ( "password", "p", "", "password to access secret" )
-	readCmd.Flags ().BoolP ( "clipboard", "c", false, "copy contents to clipboard" )
+	secretCmd.AddCommand ( secretReadCmd )
+	secretReadCmd.Flags ().SortFlags = false
+	secretReadCmd.Flags ().StringP ( "password", "p", "", "password to access secret" )
+	secretReadCmd.Flags ().BoolP ( "clipboard", "c", false, "copy contents to clipboard" )
 }

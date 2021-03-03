@@ -2,7 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
+	"strings"
+	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
@@ -16,46 +17,58 @@ var firewallListCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"List firewall entries.",
 			"Ask the daemon for a list of firewall entries.",
-		}),
-		utils.Paragraph ( [] string {
-			"The following environmental variables can be passed in place of the 'endpoint' and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.",
+			"Specifing the service will only return results with that service.",
+			"Not specifing any service will show everything available.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
+		"jrctl firewall list -s admin",
+		"jrctl firewall list -s mysql",
 	}),
-	PreRun: func ( cmd * cobra.Command, args [] string ) {
-		viper.BindPFlag ( "daemon_endpoint", cmd.Flags ().Lookup ("endpoint") )
-		viper.BindPFlag ( "daemon_token", cmd.Flags ().Lookup ("token") )
-		if viper.GetString ("daemon_token") == "" {
-			viper.Set ( "daemon_token", utils.LoadDaemonAuth () )
+	RunE: func ( cmd * cobra.Command, args [] string ) error {
+		service, _ := cmd.Flags ().GetString ("service")
+		if error := daemon.IsValidServiceError ( service ); service != "" && error != nil {
+			return error
 		}
+		cmd.Run ( cmd, args )
+		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		context := daemon.Context {
-			Endpoint: viper.GetString ("daemon_endpoint"),
-			Token: viper.GetString ("daemon_token"),
-			Debug: viper.GetBool ("debug"),
+		service, _ := cmd.Flags ().GetString ("service")
+		responseRows := [] [] string { [] string { "Daemon", "Status", "Response" } }
+		entryRows := [] [] string { [] string { "Daemon", "IPV4/CIDR", "Port(s)" } }
+		filter := [] string { service }
+		if service == "" {
+			filter = [] string {}
 		}
-		response := firewall.List ( context )
-		utils.PrintErrors ( response.Code, response.Status )
-		utils.PrintMessages ( response.Messages )
-		if len ( response.Payload ) > 0 {
-			fmt.Println ()
-			for i, entry := range response.Payload {
-				fmt.Printf (
-					"%-3s %s -> %v\n",
-					fmt.Sprintf ( "%d.", i + 1 ),
-					entry.Address,
-					entry.Port,
-				)
+		runner := func ( index, total int, context daemon.Context ) {
+			response := firewall.List ( context )
+			responseRow := [] string {
+				context.Endpoint,
+				strconv.Itoa ( response.Code ),
+				response.Messages [ 0 ],
 			}
+			responseRows = append ( responseRows, responseRow )
+			for _, entry := range response.Payload {
+				entryRow := [] string {
+					context.Endpoint,
+					entry.Address,
+					strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Port)), ", "), "[]"),
+				}
+				entryRows = append ( entryRows, entryRow )
+			}
+		}
+		daemon.FilterForEach ( filter, runner )
+		utils.TablePrint ( "No configured daemons found.", responseRows, 1 )
+		if len ( responseRows ) > 1 {
+			utils.TablePrint ( "No firewall entries found.", entryRows, 1 )
 		}
 	},
 }
 
 func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
-	firewallListCmd.Flags ().StringP ( "endpoint", "e", "localhost:27482", "specify endpoint hostname" )
-	firewallListCmd.Flags ().StringP ( "token", "t", "", "specify auth token" )
+	firewallListCmd.Flags ().SortFlags = false
+	firewallListCmd.Flags ().StringP ( "service", "s", "", "filter by service" )
 }

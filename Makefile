@@ -29,7 +29,7 @@ docs: ## Generate documentation
 	rm -rf man/* docs/*.md
 	JR_DOCS=true JR_COLOR=false go run tools/generate-docs.go
 
-package: build ## Package binary for many distributions
+package: build docs ## Package binary for many distributions
 	mkdir -p ./dist
 	rm -f ./dist/*
 	nfpm pkg --packager deb --target ./dist

@@ -9,7 +9,7 @@ import (
 	"github.com/jetrails/jrctl/sdk/secret"
 )
 
-var deleteCmd = &cobra.Command {
+var secretDeleteCmd = &cobra.Command {
 	Use:   "delete IDENTIFIER",
 	Short: "Delete secret without viewing contents",
 	Long: utils.Combine ( [] string {
@@ -51,5 +51,6 @@ var deleteCmd = &cobra.Command {
 }
 
 func init () {
-	secretCmd.AddCommand ( deleteCmd )
+	secretCmd.AddCommand ( secretDeleteCmd )
+	secretDeleteCmd.Flags ().SortFlags = false
 }

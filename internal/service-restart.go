@@ -1,7 +1,10 @@
 package internal
 
 import (
-	"github.com/spf13/viper"
+	"fmt"
+	"errors"
+	"strings"
+	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/service"
@@ -9,50 +12,55 @@ import (
 )
 
 var serviceRestartCmd = &cobra.Command {
-	Use: "restart SERVICE",
-	Args: cobra.ExactValidArgs ( 1 ),
+	Use: "restart SERVICE...",
+	Args: cobra.MinimumNArgs ( 1 ),
 	ValidArgs: [] string { "apache", "nginx", "mysql", "varnish" },
 	Short: "Restart apache, nginx, mysql, or varnish service",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
 			"Restart apache, nginx, mysql, or varnish service.",
-			"Ask the daemon to restart a given service.",
+			"Ask the daemon(s) to restart a given service.",
 			"In order to successfully restart it, the daemon first validates the respected service's configuration.",
-		}),
-		utils.Paragraph ( [] string {
-			"The following environmental variables can be passed in place of the 'endpoint' and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.",
+			"Services can be repeated and execution will happen in the order that is given.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl service restart apache",
 		"jrctl service restart nginx",
-		"jrctl service restart mysql",
-		"jrctl service restart varnish",
+		"jrctl service restart nginx varnish",
+		"jrctl service restart nginx varnish nginx",
 	}),
-	PreRun: func ( cmd * cobra.Command, args [] string ) {
-		viper.BindPFlag ( "daemon_endpoint", cmd.Flags ().Lookup ("endpoint") )
-		viper.BindPFlag ( "daemon_token", cmd.Flags ().Lookup ("token") )
-		if viper.GetString ("daemon_token") == "" {
-			viper.Set ( "daemon_token", utils.LoadDaemonAuth () )
+	RunE: func ( cmd * cobra.Command, args [] string ) error {
+		if error := cobra.OnlyValidArgs ( cmd, args ); error != nil {
+			return errors.New ( fmt.Sprintf (
+				"%s\nvalid arguments include: %v",
+				error.Error (),
+				strings.Join ( cmd.ValidArgs, ", " ),
+			))
 		}
+		cmd.Run ( cmd, args )
+		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		context := daemon.Context {
-			Endpoint: viper.GetString ("daemon_endpoint"),
-			Token: viper.GetString ("daemon_token"),
-			Debug: viper.GetBool ("debug"),
+		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
+		for _, arg := range args {
+			filter := [] string { arg }
+			runner := func ( index, total int, context daemon.Context ) {
+				data := service.RestartRequest { Service: arg }
+				response := service.Restart ( context, data )
+				row := [] string {
+					context.Endpoint,
+					strconv.Itoa ( response.Code ),
+					response.Messages [ 0 ],
+				}
+				rows = append ( rows, row )
+			}
+			daemon.FilterForEach ( filter, runner )
 		}
-		data := service.RestartRequest {
-			Service: args [ 0 ],
-		}
-		response := service.Restart ( context, data )
-		utils.PrintErrors ( response.Code, response.Status )
-		utils.PrintMessages ( response.Messages )
+		utils.TablePrint ( "No configured daemons found.", rows, 1 )
 	},
 }
 
 func init () {
 	serviceCmd.AddCommand ( serviceRestartCmd )
-	serviceRestartCmd.Flags ().StringP ( "endpoint", "e", "localhost:27482", "specify endpoint hostname" )
-	serviceRestartCmd.Flags ().StringP ( "token", "t", "", "specify auth token" )
+	serviceRestartCmd.Flags ().SortFlags = false
 }

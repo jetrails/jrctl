@@ -28,12 +28,12 @@ jrctl secret create -c -f ~/.ssh/id_rsa.pub
 ### Options
 
 ```
-  -a, --auto-generate     automatically generate password
-  -c, --clipboard         copy secret url to clipboard
-  -f, --file string       use file contents as secret data
-  -h, --help              help for create
-  -p, --password string   protect secret with a password
   -t, --ttl int           specify custom ttl in seconds (default 86400)
+  -a, --auto-generate     automatically generate password
+  -p, --password string   protect secret with a password
+  -f, --file string       use file contents as secret data
+  -c, --clipboard         copy secret url to clipboard
+  -h, --help              help for create
 ```
 
 ### SEE ALSO

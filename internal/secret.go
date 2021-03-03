@@ -17,4 +17,5 @@ var secretCmd = &cobra.Command {
 
 func init () {
 	rootCmd.AddCommand ( secretCmd )
+	secretCmd.Flags ().SortFlags = false
 }

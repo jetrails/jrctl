@@ -8,32 +8,21 @@ jrctl\-service\-restart \- Restart apache, nginx, mysql, or varnish service
 
 .SH SYNOPSIS
 .PP
-\fBjrctl service restart SERVICE [flags]\fP
+\fBjrctl service restart SERVICE... [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-Restart apache, nginx, mysql, or varnish service. Ask the daemon to restart a
+Restart apache, nginx, mysql, or varnish service. Ask the daemon(s) to restart a
 given service. In order to successfully restart it, the daemon first validates
-the respected service's configuration.
-
-.PP
-The following environmental variables can be passed in place of the 'endpoint'
-and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
+the respected service's configuration. Services can be repeated and execution
+will happen in the order that is given.
 
 
 .SH OPTIONS
 .PP
-\fB\-e\fP, \fB\-\-endpoint\fP="localhost:27482"
-	specify endpoint hostname
-
-.PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
 	help for restart
-
-.PP
-\fB\-t\fP, \fB\-\-token\fP=""
-	specify auth token
 
 
 .SH EXAMPLE
@@ -41,10 +30,9 @@ and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
 .RS
 
 .nf
-jrctl service restart apache
 jrctl service restart nginx
-jrctl service restart mysql
-jrctl service restart varnish
+jrctl service restart nginx varnish
+jrctl service restart nginx varnish nginx
 
 .fi
 .RE

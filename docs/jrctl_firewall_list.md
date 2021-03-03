@@ -4,10 +4,9 @@ List firewall entries
 
 ### Synopsis
 
-List firewall entries. Ask the daemon for a list of firewall entries.
-
-The following environmental variables can be passed in place of the 'endpoint'
-and 'token' flags: JR_DAEMON_ENDPOINT, JR_DAEMON_TOKEN.
+List firewall entries. Ask the daemon for a list of firewall entries. Specifing
+the service will only return results with that service. Not specifing any
+service will show everything available.
 
 ```
 jrctl firewall list [flags]
@@ -17,14 +16,15 @@ jrctl firewall list [flags]
 
 ```
 jrctl firewall list
+jrctl firewall list -s admin
+jrctl firewall list -s mysql
 ```
 
 ### Options
 
 ```
-  -e, --endpoint string   specify endpoint hostname (default "localhost:27482")
-  -h, --help              help for list
-  -t, --token string      specify auth token
+  -s, --service string   filter by service
+  -h, --help             help for list
 ```
 
 ### SEE ALSO

@@ -85,6 +85,7 @@ var secretCreateCmd = &cobra.Command {
 
 func init () {
 	secretCmd.AddCommand ( secretCreateCmd )
+	secretCreateCmd.Flags ().SortFlags = false
 	secretCreateCmd.Flags ().IntP ( "ttl", "t", 1 * 24 * 60 * 60, "specify custom ttl in seconds" )
 	secretCreateCmd.Flags ().BoolP ( "auto-generate", "a", false, "automatically generate password" )
 	secretCreateCmd.Flags ().StringP ( "password", "p", "", "protect secret with a password" )

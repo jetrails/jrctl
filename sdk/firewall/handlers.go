@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"crypto/tls"
 	"encoding/json"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/jetrails/jrctl/sdk/daemon"
 	"github.com/parnurzeal/gorequest"
@@ -26,7 +25,7 @@ func List ( context daemon.Context ) ListResponse {
 		return ListResponse {
 			Status: "Client Side",
 			Code: 1,
-			Messages: utils.CollectErrors ( errors ),
+			Messages: [] string { "Failed to connect to daemon." },
 			Payload: nil,
 		}
 	}
@@ -50,7 +49,7 @@ func Add ( context daemon.Context, data AllowRequest ) AllowResponse {
 		return AllowResponse {
 			Status: "Client Side",
 			Code: 1,
-			Messages: utils.CollectErrors ( errors ),
+			Messages: [] string { "Failed to connect to daemon." },
 			Payload: data,
 		}
 	}

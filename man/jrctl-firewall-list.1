@@ -13,25 +13,19 @@ jrctl\-firewall\-list \- List firewall entries
 
 .SH DESCRIPTION
 .PP
-List firewall entries. Ask the daemon for a list of firewall entries.
-
-.PP
-The following environmental variables can be passed in place of the 'endpoint'
-and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
+List firewall entries. Ask the daemon for a list of firewall entries. Specifing
+the service will only return results with that service. Not specifing any
+service will show everything available.
 
 
 .SH OPTIONS
 .PP
-\fB\-e\fP, \fB\-\-endpoint\fP="localhost:27482"
-	specify endpoint hostname
+\fB\-s\fP, \fB\-\-service\fP=""
+	filter by service
 
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
 	help for list
-
-.PP
-\fB\-t\fP, \fB\-\-token\fP=""
-	specify auth token
 
 
 .SH EXAMPLE
@@ -40,6 +34,8 @@ and 'token' flags: JR\_DAEMON\_ENDPOINT, JR\_DAEMON\_TOKEN.
 
 .nf
 jrctl firewall list
+jrctl firewall list \-s admin
+jrctl firewall list \-s mysql
 
 .fi
 .RE
