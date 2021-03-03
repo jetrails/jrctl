@@ -28,31 +28,31 @@ func LoadDaemonAuth () string {
 	return ""
 }
 
-func CollectServices () [] string {
-	var services [] string
+func CollectTags () [] string {
+	var tags [] string
 	var contexts [] Context
 	viper.UnmarshalKey ( "daemons", &contexts )
 	for _, context := range contexts {
-		for _, service := range context.Services {
-			if !includes ( service, services ) {
-				services = append ( services, service )
+		for _, tag := range context.Tags {
+			if !includes ( tag, tags ) {
+				tags = append ( tags, tag )
 			}
 		}
 	}
-	return services
+	return tags
 }
 
-func IsValidService ( service string ) bool {
-	services := CollectServices ()
-	return includes ( service, services )
+func IsValidTag ( tag string ) bool {
+	tags := CollectTags ()
+	return includes ( tag, tags )
 }
 
-func IsValidServiceError ( service string ) error {
-	if IsValidService ( service ) {
+func IsValidTagError ( tag string ) error {
+	if IsValidTag ( tag ) {
 		return nil
 	}
-	list := strings.Join ( CollectServices (), ", " )
-	return errors.New ( fmt.Sprintf ( "%q must be one of: %v", "service", list ) )
+	list := strings.Join ( CollectTags (), ", " )
+	return errors.New ( fmt.Sprintf ( "%q must be one of: %v", "tag", list ) )
 }
 
 func Filter ( contexts [] Context, filters [] string ) [] Context {
@@ -60,7 +60,7 @@ func Filter ( contexts [] Context, filters [] string ) [] Context {
 	for _, context := range contexts {
 		found := 0
 		for _, filter := range filters {
-			if includes ( filter, context.Services ) {
+			if includes ( filter, context.Tags ) {
 				found++
 			}
 		}
@@ -80,7 +80,7 @@ func LoadDaemons () [] Context {
 			Debug: debug,
 			Endpoint: "localhost:27482",
 			Token: LoadDaemonAuth (),
-			Services: [] string { "apache", "nginx", "mysql", "varnish" },
+			Tags: [] string { "all", "local", "apache", "nginx", "mysql", "varnish" },
 		}
 		contexts = append ( contexts, context )
 	}

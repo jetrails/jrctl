@@ -16,30 +16,30 @@ var firewallListCmd = &cobra.Command {
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
 			"List firewall entries.",
-			"Ask the daemon for a list of firewall entries.",
-			"Specifing the service will only return results with that service.",
-			"Not specifing any service will show everything available.",
+			"Ask daemon(s) for a list of firewall entries.",
+			"Specifing a tag selector will only query daemons with that tag.",
+			"Not specifing any tag will show query all configured daemons.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
-		"jrctl firewall list -s admin",
-		"jrctl firewall list -s mysql",
+		"jrctl firewall list -t admin",
+		"jrctl firewall list -t mysql",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		service, _ := cmd.Flags ().GetString ("service")
-		if error := daemon.IsValidServiceError ( service ); service != "" && error != nil {
+		tag, _ := cmd.Flags ().GetString ("tag")
+		if error := daemon.IsValidTagError ( tag ); tag != "" && error != nil {
 			return error
 		}
 		cmd.Run ( cmd, args )
 		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		service, _ := cmd.Flags ().GetString ("service")
+		tag, _ := cmd.Flags ().GetString ("tag")
 		responseRows := [] [] string { [] string { "Daemon", "Status", "Response" } }
 		entryRows := [] [] string { [] string { "Daemon", "IPV4/CIDR", "Port(s)" } }
-		filter := [] string { service }
-		if service == "" {
+		filter := [] string { tag }
+		if tag == "" {
 			filter = [] string {}
 		}
 		runner := func ( index, total int, context daemon.Context ) {
@@ -70,5 +70,5 @@ var firewallListCmd = &cobra.Command {
 func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
 	firewallListCmd.Flags ().SortFlags = false
-	firewallListCmd.Flags ().StringP ( "service", "s", "", "filter by service" )
+	firewallListCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
 }

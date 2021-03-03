@@ -13,15 +13,15 @@ jrctl\-firewall\-list \- List firewall entries
 
 .SH DESCRIPTION
 .PP
-List firewall entries. Ask the daemon for a list of firewall entries. Specifing
-the service will only return results with that service. Not specifing any
-service will show everything available.
+List firewall entries. Ask daemon(s) for a list of firewall entries. Specifing a
+tag selector will only query daemons with that tag. Not specifing any tag will
+show query all configured daemons.
 
 
 .SH OPTIONS
 .PP
-\fB\-s\fP, \fB\-\-service\fP=""
-	filter by service
+\fB\-t\fP, \fB\-\-tag\fP=""
+	specify daemon tag selector
 
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
@@ -34,8 +34,8 @@ service will show everything available.
 
 .nf
 jrctl firewall list
-jrctl firewall list \-s admin
-jrctl firewall list \-s mysql
+jrctl firewall list \-t admin
+jrctl firewall list \-t mysql
 
 .fi
 .RE

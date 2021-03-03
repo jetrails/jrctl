@@ -19,10 +19,10 @@ var daemonListCmd = &cobra.Command {
 		"jrctl daemon list",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		rows := [] [] string { [] string { "Daemon", "Service(s)" } }
+		rows := [] [] string { [] string { "Daemon", "Tag(s)" } }
 		filter := [] string {}
 		runner := func ( index, total int, context daemon.Context ) {
-			row := [] string { context.Endpoint, strings.Join ( context.Services, ", " ) }
+			row := [] string { context.Endpoint, strings.Join ( context.Tags, ", " ) }
 			rows = append ( rows, row )
 		}
 		daemon.FilterForEach ( filter, runner )

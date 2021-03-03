@@ -4,9 +4,9 @@ List firewall entries
 
 ### Synopsis
 
-List firewall entries. Ask the daemon for a list of firewall entries. Specifing
-the service will only return results with that service. Not specifing any
-service will show everything available.
+List firewall entries. Ask daemon(s) for a list of firewall entries. Specifing a
+tag selector will only query daemons with that tag. Not specifing any tag will
+show query all configured daemons.
 
 ```
 jrctl firewall list [flags]
@@ -16,15 +16,15 @@ jrctl firewall list [flags]
 
 ```
 jrctl firewall list
-jrctl firewall list -s admin
-jrctl firewall list -s mysql
+jrctl firewall list -t admin
+jrctl firewall list -t mysql
 ```
 
 ### Options
 
 ```
-  -s, --service string   filter by service
-  -h, --help             help for list
+  -t, --tag string   specify daemon tag selector
+  -h, --help         help for list
 ```
 
 ### SEE ALSO

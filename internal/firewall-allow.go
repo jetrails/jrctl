@@ -18,13 +18,13 @@ var firewallAllowCmd = &cobra.Command {
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl firewall allow -s nginx -a 1.1.1.1 -p 80 -p 443",
-		"jrctl firewall allow -s admin -a 1.1.1.1 -p 22 -b me",
-		"jrctl firewall allow -s mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
+		"jrctl firewall allow -t nginx -a 1.1.1.1 -p 80 -p 443",
+		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me",
+		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		service, _ := cmd.Flags ().GetString ("service")
-		if error := daemon.IsValidServiceError ( service ); error != nil {
+		tag, _ := cmd.Flags ().GetString ("tag")
+		if error := daemon.IsValidTagError ( tag ); error != nil {
 			return error
 		}
 		cmd.Run ( cmd, args )
@@ -35,7 +35,7 @@ var firewallAllowCmd = &cobra.Command {
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
 		blame, _ := cmd.Flags ().GetString ("blame")
 		comment, _ := cmd.Flags ().GetString ("comment")
-		service, _ := cmd.Flags ().GetString ("service")
+		tag, _ := cmd.Flags ().GetString ("tag")
 		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
 		runner := func ( index, total int, context daemon.Context ) {
 			data := firewall.AllowRequest {
@@ -52,7 +52,7 @@ var firewallAllowCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( [] string { service }, runner )
+		daemon.FilterForEach ( [] string { tag }, runner )
 		utils.TablePrint ( "No configured daemons found.", rows, 1 )
 	},
 }
@@ -60,12 +60,12 @@ var firewallAllowCmd = &cobra.Command {
 func init () {
 	firewallCmd.AddCommand ( firewallAllowCmd )
 	firewallAllowCmd.Flags ().SortFlags = false
-	firewallAllowCmd.Flags ().StringP ( "service", "s", "", "Specify deamon service selector" )
+	firewallAllowCmd.Flags ().StringP ( "tag", "t", "", "Specify deamon tag selector" )
 	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "IP address to firewall" )
 	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port(s) to firewall" )
 	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add optional comment" )
 	firewallAllowCmd.Flags ().StringP ( "blame", "b", utils.GetUser (), "specify blame entry" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")
-	firewallAllowCmd.MarkFlagRequired ("service")
+	firewallAllowCmd.MarkFlagRequired ("tag")
 }

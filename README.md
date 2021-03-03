@@ -24,13 +24,6 @@ $ chmod +x jrctl
 $ sudo mv jrctl /usr/local/bin/jrctl
 ```
 
-## Currently Exposed Services
-
-|   Command   | Description                               |
-|:-----------:|-------------------------------------------|
-| `secret`    | Interact with our one-time secret service |
-| `whitelist` | Whitelist IP addresses & ports            |
-
 ## Building & Running
 
 This project uses a simple [Makefile](./Makefile) to build the final binary.

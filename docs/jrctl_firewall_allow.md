@@ -14,15 +14,15 @@ jrctl firewall allow [flags]
 ### Examples
 
 ```
-jrctl firewall allow -s nginx -a 1.1.1.1 -p 80 -p 443
-jrctl firewall allow -s admin -a 1.1.1.1 -p 22 -b me
-jrctl firewall allow -s mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'
+jrctl firewall allow -t nginx -a 1.1.1.1 -p 80 -p 443
+jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me
+jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'
 ```
 
 ### Options
 
 ```
-  -s, --service string   Specify deamon service selector
+  -t, --tag string       Specify deamon tag selector
   -a, --address string   IP address to firewall
   -p, --port ints        port(s) to firewall
   -c, --comment string   add optional comment (default "none")
