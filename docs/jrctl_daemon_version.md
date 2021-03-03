@@ -19,7 +19,8 @@ jrctl daemon version
 ### Options
 
 ```
-  -h, --help   help for version
+  -t, --tag string   specify daemon tag selector
+  -h, --help         help for version
 ```
 
 ### SEE ALSO

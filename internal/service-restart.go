@@ -41,7 +41,7 @@ var serviceRestartCmd = &cobra.Command {
 		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
+		rows := [] [] string { [] string { "Daemon", "Status", "Service", "Response" } }
 		for _, arg := range args {
 			filter := [] string { arg }
 			runner := func ( index, total int, context daemon.Context ) {
@@ -50,13 +50,14 @@ var serviceRestartCmd = &cobra.Command {
 				row := [] string {
 					context.Endpoint,
 					strconv.Itoa ( response.Code ),
+					arg,
 					response.Messages [ 0 ],
 				}
 				rows = append ( rows, row )
 			}
 			daemon.FilterForEach ( filter, runner )
 		}
-		utils.TablePrint ( "No configured daemons found.", rows, 1 )
+		utils.TablePrint ("No configured daemons running passed services.", rows, 1 )
 	},
 }
 

@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
@@ -19,8 +20,14 @@ var daemonVersionCmd = &cobra.Command {
 		"jrctl daemon version",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		rows := [] [] string { [] string { "Daemon", "Status", "Version" } }
+		tag, _ := cmd.Flags ().GetString ("tag")
 		filter := [] string {}
+		emptyMsg := "No configured daemons found."
+		if tag != "" {
+			filter = [] string { tag }
+			emptyMsg = fmt.Sprintf ( "No configured daemons found with tag %q.", tag )
+		}
+		rows := [] [] string { [] string { "Daemon", "Status", "Version" } }
 		runner := func ( index, total int, context daemon.Context ) {
 			response := daemon.Version ( context )
 			var row [] string
@@ -40,11 +47,12 @@ var daemonVersionCmd = &cobra.Command {
 			rows = append ( rows, row )
 		}
 		daemon.FilterForEach ( filter, runner )
-		utils.TablePrint ( "No configured daemons found.", rows, 1 )
+		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }
 
 func init () {
 	daemonCmd.AddCommand ( daemonVersionCmd )
 	daemonVersionCmd.Flags ().SortFlags = false
+	daemonVersionCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
 }

@@ -26,21 +26,15 @@ var firewallListCmd = &cobra.Command {
 		"jrctl firewall list -t admin",
 		"jrctl firewall list -t mysql",
 	}),
-	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		tag, _ := cmd.Flags ().GetString ("tag")
-		if error := daemon.IsValidTagError ( tag ); tag != "" && error != nil {
-			return error
-		}
-		cmd.Run ( cmd, args )
-		return nil
-	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		tag, _ := cmd.Flags ().GetString ("tag")
 		responseRows := [] [] string { [] string { "Daemon", "Status", "Response" } }
 		entryRows := [] [] string { [] string { "Daemon", "IPV4/CIDR", "Port(s)" } }
-		filter := [] string { tag }
-		if tag == "" {
-			filter = [] string {}
+		filter := [] string {}
+		emptyMsg := "No configured daemons found."
+		if tag != "" {
+			filter = [] string { tag }
+			emptyMsg = fmt.Sprintf ( "No configured daemons found with tag %q.", tag )
 		}
 		runner := func ( index, total int, context daemon.Context ) {
 			response := firewall.List ( context )
@@ -60,9 +54,12 @@ var firewallListCmd = &cobra.Command {
 			}
 		}
 		daemon.FilterForEach ( filter, runner )
-		utils.TablePrint ( "No configured daemons found.", responseRows, 1 )
+		fmt.Println ()
+		utils.TablePrint ( emptyMsg, responseRows, 0 )
+		fmt.Println ()
 		if len ( responseRows ) > 1 {
-			utils.TablePrint ( "No firewall entries found.", entryRows, 1 )
+			utils.TablePrint ( "No firewall entries found.", entryRows, 0 )
+			fmt.Println ()
 		}
 	},
 }

@@ -7,7 +7,7 @@ import (
 
 func TableString ( message string, rows [] [] string, padding int ) string {
 	if len ( rows ) < 2 {
-		return strings.Repeat ( "\n", padding ) + message + strings.Repeat ( "\n", padding )
+		return strings.Repeat ( "\n", padding ) + message + strings.Repeat ( "\n", padding + 1 )
 	}
 	output := strings.Repeat ( "\n", padding )
 	max := [] int {}

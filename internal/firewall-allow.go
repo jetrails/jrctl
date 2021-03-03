@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
@@ -22,14 +23,6 @@ var firewallAllowCmd = &cobra.Command {
 		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me",
 		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
 	}),
-	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		tag, _ := cmd.Flags ().GetString ("tag")
-		if error := daemon.IsValidTagError ( tag ); error != nil {
-			return error
-		}
-		cmd.Run ( cmd, args )
-		return nil
-	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		address, _ := cmd.Flags ().GetString ("address")
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
@@ -53,7 +46,7 @@ var firewallAllowCmd = &cobra.Command {
 			rows = append ( rows, row )
 		}
 		daemon.FilterForEach ( [] string { tag }, runner )
-		utils.TablePrint ( "No configured daemons found.", rows, 1 )
+		utils.TablePrint ( fmt.Sprintf ( "No configured daemons found with tag %q.", tag ), rows, 1 )
 	},
 }
 

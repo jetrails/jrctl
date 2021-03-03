@@ -14,12 +14,14 @@ jrctl daemon list [flags]
 
 ```
 jrctl daemon list
+jrctl daemon list -t web
 ```
 
 ### Options
 
 ```
-  -h, --help   help for list
+  -t, --tag string   specify daemon tag selector
+  -h, --help         help for list
 ```
 
 ### SEE ALSO
