@@ -3,7 +3,6 @@ package internal
 import (
 	"fmt"
 	"strings"
-	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
@@ -40,7 +39,7 @@ var firewallListCmd = &cobra.Command {
 			response := firewall.List ( context )
 			responseRow := [] string {
 				context.Endpoint,
-				strconv.Itoa ( response.Code ),
+				response.Status,
 				response.Messages [ 0 ],
 			}
 			responseRows = append ( responseRows, responseRow )

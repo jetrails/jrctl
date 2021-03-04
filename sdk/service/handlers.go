@@ -22,7 +22,7 @@ func Restart ( context daemon.Context, data RestartRequest ) RestartResponse {
 		End ()
 	if len ( errors ) > 0 {
 		return RestartResponse {
-			Status: "Client Side",
+			Status: "Client Error",
 			Code: 1,
 			Messages: [] string { "Failed to connect to daemon." },
 			Payload: data,

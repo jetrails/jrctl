@@ -14,17 +14,18 @@ jrctl\-firewall\-allow \- Add entry to firewall
 .SH DESCRIPTION
 .PP
 Add entry to firewall. Ask the daemon(s) to create an allow entry to their host
-system's firewall.
+system's firewall. The tag flag is useful for cluster deployments and allows
+executing command on daemons that are tagged a certain way.
 
 
 .SH OPTIONS
 .PP
-\fB\-t\fP, \fB\-\-tag\fP=""
-	Specify deamon tag selector
+\fB\-t\fP, \fB\-\-tag\fP="localhost"
+	specify deamon tag selector, useful for cluster deployments
 
 .PP
 \fB\-a\fP, \fB\-\-address\fP=""
-	IP address to firewall
+	ip address to firewall
 
 .PP
 \fB\-p\fP, \fB\-\-port\fP=[]
@@ -48,7 +49,7 @@ system's firewall.
 .RS
 
 .nf
-jrctl firewall allow \-t nginx \-a 1.1.1.1 \-p 80 \-p 443
+jrctl firewall allow \-a 1.1.1.1 \-p 80 \-p 443
 jrctl firewall allow \-t admin \-a 1.1.1.1 \-p 22 \-b me
 jrctl firewall allow \-t mysql \-a 1.1.1.1 \-p 3306 \-b me \-c 'Office'
 

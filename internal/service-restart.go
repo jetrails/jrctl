@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"errors"
 	"strings"
-	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/service"
@@ -49,7 +48,7 @@ var serviceRestartCmd = &cobra.Command {
 				response := service.Restart ( context, data )
 				row := [] string {
 					context.Endpoint,
-					strconv.Itoa ( response.Code ),
+					response.Status,
 					arg,
 					response.Messages [ 0 ],
 				}

@@ -2,7 +2,6 @@ package internal
 
 import (
 	"fmt"
-	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/daemon"
@@ -34,13 +33,13 @@ var daemonVersionCmd = &cobra.Command {
 			if response.Code != 200 {
 				row = [] string {
 					context.Endpoint,
-					strconv.Itoa ( response.Code ),
+					response.Status,
 					response.Messages [ 0 ],
 				}
 			} else {
 				row = [] string {
 					context.Endpoint,
-					strconv.Itoa ( response.Code ),
+					response.Status,
 					response.Payload,
 				}
 			}

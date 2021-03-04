@@ -56,11 +56,12 @@ func initConfig () {
 	viper.AutomaticEnv ()
 	viper.ReadInConfig ()
 	if ( viper.GetBool ("debug") ) {
+		fmt.Println ("---")
 		fmt.Println ( color.CyanString ( "config:" ), viper.ConfigFileUsed () )
 		fmt.Println ( color.CyanString ( "debug:" ), viper.GetString ("debug") )
 		fmt.Println ( color.CyanString ( "color:" ), viper.GetString ("color") )
 		fmt.Println ( color.CyanString ( "public_api_endpoint:" ), viper.GetString ("public_api_endpoint") )
 		fmt.Println ( color.CyanString ( "secret_endpoint:" ), viper.GetString ("secret_endpoint") )
-		fmt.Println ()
+		fmt.Println ("---")
 	}
 }

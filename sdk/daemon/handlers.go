@@ -22,7 +22,7 @@ func Version ( context Context ) VersionResponse {
 		End ()
 	if len ( errors ) > 0 {
 		return VersionResponse {
-			Status: "Client Side",
+			Status: "Client Error",
 			Code: 1,
 			Messages: [] string { "Failed to connect to daemon." },
 			Payload: "",

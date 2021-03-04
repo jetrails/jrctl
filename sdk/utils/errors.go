@@ -15,7 +15,7 @@ func CollectErrors ( errors [] error ) [] string {
 func PrintErrors ( code int, status string ) {
 	if code != 200 {
 		if status == "" {
-			status = "Client Side"
+			status = "Client Error"
 		}
 		fmt.Printf ( "Error %d: %s\n", code, status )
 	}

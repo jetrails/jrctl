@@ -23,7 +23,7 @@ func List ( context daemon.Context ) ListResponse {
 		End ()
 	if len ( errors ) > 0 {
 		return ListResponse {
-			Status: "Client Side",
+			Status: "Client Error",
 			Code: 1,
 			Messages: [] string { "Failed to connect to daemon." },
 			Payload: nil,
@@ -47,7 +47,7 @@ func Add ( context daemon.Context, data AllowRequest ) AllowResponse {
 		End ()
 	if len ( errors ) > 0 {
 		return AllowResponse {
-			Status: "Client Side",
+			Status: "Client Error",
 			Code: 1,
 			Messages: [] string { "Failed to connect to daemon." },
 			Payload: data,

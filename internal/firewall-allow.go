@@ -2,7 +2,6 @@ package internal
 
 import (
 	"fmt"
-	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
@@ -16,10 +15,11 @@ var firewallAllowCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"Add entry to firewall.",
 			"Ask the daemon(s) to create an allow entry to their host system's firewall.",
+			"The tag flag is useful for cluster deployments and allows executing command on daemons that are tagged a certain way.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl firewall allow -t nginx -a 1.1.1.1 -p 80 -p 443",
+		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
 		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me",
 		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
 	}),
@@ -40,7 +40,7 @@ var firewallAllowCmd = &cobra.Command {
 			response := firewall.Add ( context, data )
 			row := [] string {
 				context.Endpoint,
-				strconv.Itoa ( response.Code ),
+				response.Status,
 				response.Messages [ 0 ],
 			}
 			rows = append ( rows, row )
@@ -53,12 +53,11 @@ var firewallAllowCmd = &cobra.Command {
 func init () {
 	firewallCmd.AddCommand ( firewallAllowCmd )
 	firewallAllowCmd.Flags ().SortFlags = false
-	firewallAllowCmd.Flags ().StringP ( "tag", "t", "", "Specify deamon tag selector" )
-	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "IP address to firewall" )
+	firewallAllowCmd.Flags ().StringP ( "tag", "t", "localhost", "specify deamon tag selector, useful for cluster deployments" )
+	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address to firewall" )
 	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port(s) to firewall" )
 	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add optional comment" )
 	firewallAllowCmd.Flags ().StringP ( "blame", "b", utils.GetUser (), "specify blame entry" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")
-	firewallAllowCmd.MarkFlagRequired ("tag")
 }

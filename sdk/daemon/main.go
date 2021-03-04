@@ -80,12 +80,12 @@ func LoadDaemons () [] Context {
 			Debug: debug,
 			Endpoint: "localhost:27482",
 			Token: LoadDaemonAuth (),
-			Tags: [] string { "all", "local", "apache", "nginx", "mysql", "varnish" },
+			Tags: [] string { "localhost" },
 		}
 		contexts = append ( contexts, context )
 	}
-	for _, context := range contexts {
-		context.Debug = debug
+	for i, _ := range contexts {
+		contexts [ i ].Debug = debug
 	}
 	return contexts
 }

@@ -40,7 +40,7 @@ var secretCreateCmd = &cobra.Command {
 		if filepath != "" {
 			fileContents, error := utils.ReadFile ( filepath )
 			if error != nil {
-				utils.PrintErrors ( 1, "Client Side" )
+				utils.PrintErrors ( 1, "Client Error" )
 				utils.PrintMessages ( [] string { error.Error () } )
 				os.Exit ( 1 )
 			}
