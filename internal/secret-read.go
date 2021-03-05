@@ -37,6 +37,8 @@ var secretReadCmd = &cobra.Command {
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		identifier := args [ 0 ]
+		identifier = strings.TrimPrefix ( identifier, fmt.Sprintf ( "https://%s/secret/", viper.GetString ("secret_endpoint") ) )
+		identifier = strings.Trim ( identifier, "/" )
 		copy, _ := cmd.Flags ().GetBool ("clipboard")
 		password, _ := cmd.Flags ().GetString ("password")
 		context := secret.PublicApiContext {
@@ -49,8 +51,8 @@ var secretReadCmd = &cobra.Command {
 		}
 		response, error := secret.SecretRead ( context, request )
 		if error.Code != 200 && error.Code != 0 {
-			utils.PrintErrors ( error.Code, error.Type )
-			utils.PrintMessages ( [] string { error.Message } )
+			fmt.Printf ( "\n%s\n\n", error.Message )
+			return
 		} else {
 			fmt.Printf ( "\n%s\n\n", response.Data )
 		}

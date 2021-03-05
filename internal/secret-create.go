@@ -1,8 +1,8 @@
 package internal
 
 import (
-	"os"
 	"fmt"
+	"strconv"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/jetrails/jrctl/sdk/secret"
@@ -40,9 +40,8 @@ var secretCreateCmd = &cobra.Command {
 		if filepath != "" {
 			fileContents, error := utils.ReadFile ( filepath )
 			if error != nil {
-				utils.PrintErrors ( 1, "Client Error" )
-				utils.PrintMessages ( [] string { error.Error () } )
-				os.Exit ( 1 )
+				fmt.Printf ( "\nCould not read contents of file %q.\n\n", filepath )
+				return
 			}
 			content = fileContents
 		}
@@ -61,25 +60,26 @@ var secretCreateCmd = &cobra.Command {
 		}
 		response, error := secret.SecretCreate ( context, request )
 		if error.Code != 200 && error.Code != 0 {
-			utils.PrintErrors ( error.Code, error.Type )
-			utils.PrintMessages ( [] string { error.Message } )
-			os.Exit ( 1 )
+			fmt.Printf ( "\n%s\n\n", error.Message )
+			return
 		}
 		url := fmt.Sprintf (
 			"https://%s/secret/%s",
 			viper.GetString ("secret_endpoint"),
 			response.Identifier,
 		)
-		fmt.Println ()
-		fmt.Printf ( "Identifier:  %s\n", response.Identifier )
+		displayPassword := "None"
 		if response.Password != "" {
-			fmt.Printf ( "Password:    %s\n", response.Password )
+			displayPassword = response.Password
 		}
-		fmt.Printf ( "TTL:         %d seconds\n", response.TTL )
-		fmt.Printf ( "\n%s\n\n", url )
 		if copy {
 			clipboard.WriteAll ( url )
 		}
+		rows := [] [] string {
+			[] string { "TTL", "Password", "Secret URL" },
+			[] string { strconv.Itoa ( ttl ) + "s", displayPassword, url },
+		}
+		utils.TablePrint ( "Could not create secret.", rows, 1 )
 	},
 }
 
