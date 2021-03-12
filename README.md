@@ -28,11 +28,13 @@ $ sudo mv jrctl /usr/local/bin/jrctl
 
 This project uses a simple [Makefile](./Makefile) to build the final binary.
 
-|    Command   | Description                             |
-|:------------:|-----------------------------------------|
-| `make build` | Build binary and output to `bin` folder |
-| `make clean` | Delete built binaries                   |
-| `make help`  | Display available commands              |
+|     Command    | Description                               |
+|:--------------:|-------------------------------------------|
+|  `make build`  | Build binaries and output to `bin` folder |
+|  `make clean`  | Delete built binaries                     |
+|  `make docs`   | Generate documentation                    |
+| `make package` | Package binary for many distributions     |
+|  `make help`   | Display available commands                |
 
 ## Configuration File
 
