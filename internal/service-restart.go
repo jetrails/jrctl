@@ -1,8 +1,9 @@
 package internal
 
 import (
-	"fmt"
 	"errors"
+	"regexp"
+	"fmt"
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
@@ -13,11 +14,11 @@ import (
 var serviceRestartCmd = &cobra.Command {
 	Use: "restart SERVICE...",
 	Args: cobra.MinimumNArgs ( 1 ),
-	ValidArgs: [] string { "apache", "nginx", "mysql", "varnish" },
 	Short: "Restart apache, nginx, mysql, or varnish service",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Restart apache, nginx, mysql, or varnish service.",
+			"Restart apache, nginx, mysql, varnish, or php-fpm-* service.",
+			"Valid entries for php-fpm services would be prefixed with 'php-fpm-' and followed by a version number.",
 			"Ask the daemon(s) to restart a given service.",
 			"In order to successfully restart it, the daemon first validates the respected service's configuration.",
 			"Services can be repeated and execution will happen in the order that is given.",
@@ -26,15 +27,19 @@ var serviceRestartCmd = &cobra.Command {
 	Example: utils.Examples ([] string {
 		"jrctl service restart nginx",
 		"jrctl service restart nginx varnish",
-		"jrctl service restart nginx varnish nginx",
+		"jrctl service restart nginx varnish php-fpm-7.2",
+		"jrctl service restart nginx varnish php-fpm-7.2 nginx",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		if error := cobra.OnlyValidArgs ( cmd, args ); error != nil {
-			return errors.New ( fmt.Sprintf (
-				"%s\nvalid arguments include: %v",
-				error.Error (),
-				strings.Join ( cmd.ValidArgs, ", " ),
-			))
+		pattern := regexp.MustCompile (`^(?:apache|nginx|mysql|varnish|php-fpm-\d+(?:\.\d+)*)$`)
+		for _, arg := range args {
+			if !pattern.MatchString ( arg ) {
+				valid := [] string { "apache", "nginx", "mysql", "varnish", "php-fpm-*" }
+				return errors.New ( fmt.Sprintf (
+					"invalid service %q\nvalid services include: %v\nwhere \"*\" is replaced with a valid version string",
+					arg, valid,
+				))
+			}
 		}
 		cmd.Run ( cmd, args )
 		return nil
@@ -44,7 +49,11 @@ var serviceRestartCmd = &cobra.Command {
 		for _, arg := range args {
 			filter := [] string { arg }
 			runner := func ( index, total int, context daemon.Context ) {
-				data := service.RestartRequest { Service: arg }
+				data := service.RestartRequest { Service: arg, Version: "" }
+				if strings.HasPrefix ( arg, "php-fpm-" ) {
+					data.Service = "php-fpm"
+					data.Version = strings.Join ( strings.Split ( arg, "-" ) [2:], "-" )
+				}
 				response := service.Restart ( context, data )
 				row := [] string {
 					context.Endpoint,
