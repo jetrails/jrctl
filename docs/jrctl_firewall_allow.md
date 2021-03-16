@@ -12,14 +12,6 @@ executing command on daemons that are tagged a certain way.
 jrctl firewall allow [flags]
 ```
 
-### Examples
-
-```
-jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
-jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me
-jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'
-```
-
 ### Options
 
 ```
@@ -27,8 +19,21 @@ jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'
   -a, --address string   ip address to firewall
   -p, --port ints        port(s) to firewall
   -c, --comment string   add optional comment (default "none")
-  -b, --blame string     specify blame entry (default "raffi")
   -h, --help             help for allow
+```
+
+### Examples For A Standalone Server 
+
+```
+jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
+jrctl firewall allow -a 1.1.1.1 -p 80 -p 443 -c "Dev Agency"
+```
+
+### Examples For Multi Server Clusters
+
+```
+jrctl firewall allow -t admin -a 1.1.1.1 -p 22
+jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -c 'Office VPN'
 ```
 
 ### SEE ALSO
