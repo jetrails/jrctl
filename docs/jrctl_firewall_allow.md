@@ -15,17 +15,17 @@ jrctl firewall allow [flags]
 ### Options
 
 ```
-  -t, --tag string       specify deamon tag selector, useful for cluster deployments (default "localhost")
-  -a, --address string   ip address to firewall
-  -p, --port ints        port(s) to firewall
-  -c, --comment string   add optional comment (default "none")
-  -h, --help             help for allow
+  -a, --address string   IP address
+  -c, --comment string   Add a comment to the firewall entry (optional)
+  -h, --help             This help screen
+  -p, --port int         Port to firewall, can be specified multiple times
+  -t, --tag string       Specify cluster tier: mysql, www, admin
 ```
 
 ### Examples For A Standalone Server 
 
 ```
-jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
+jrctl firewall allow -a 1.1.1.1 -p 22
 jrctl firewall allow -a 1.1.1.1 -p 80 -p 443 -c "Dev Agency"
 ```
 
