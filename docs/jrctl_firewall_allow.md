@@ -1,12 +1,19 @@
 ## jrctl firewall allow
 
-Add entry to firewall
+### Name
 
-### Synopsis
+```
+jrctl firewall allow -- permanently allows a source IP address to a specific local port
+```
+  
 
-Add entry to firewall. Ask the daemon(s) to create an allow entry to their host
-system's firewall. The tag flag is useful for cluster deployments and allows
-executing command on daemons that are tagged a certain way.
+### Description
+
+Allows a specified IP address to bypass the local system firewall by creating an "allow" entry into the permanent firewall config.
+
+Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.
+
+Able to control a single (localhost) system as well as clusters.  
 
 ```
 jrctl firewall allow [flags]
@@ -19,7 +26,7 @@ jrctl firewall allow [flags]
   -c, --comment string   Add a comment to the firewall entry (optional)
   -h, --help             This help screen
   -p, --port int         Port to firewall, can be specified multiple times
-  -t, --tag string       Specify cluster tier: mysql, www, admin
+  -t, --tag string       Specify cluster tier: mysql, www, admin.  Tags are preconfigured by local sysadmin during provisioning.
 ```
 
 ### Examples For A Standalone Server 
