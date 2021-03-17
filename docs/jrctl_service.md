@@ -17,5 +17,6 @@ jrctl service restart -h
 ### SEE ALSO
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
+* [jrctl service list](jrctl_service_list.md)	 - List available services
 * [jrctl service restart](jrctl_service_restart.md)	 - Restart apache, nginx, mysql, or varnish service
 

@@ -23,7 +23,7 @@ var firewallListCmd = &cobra.Command {
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
 		"jrctl firewall list -t admin",
-		"jrctl firewall list -t mysql",
+		"jrctl firewall list -t db",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")

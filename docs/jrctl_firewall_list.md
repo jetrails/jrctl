@@ -17,7 +17,7 @@ jrctl firewall list [flags]
 ```
 jrctl firewall list
 jrctl firewall list -t admin
-jrctl firewall list -t mysql
+jrctl firewall list -t db
 ```
 
 ### Options

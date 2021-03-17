@@ -42,6 +42,19 @@ func CollectTypes () [] string {
 	return types
 }
 
+func FilterWithService ( selector, service string ) [] Context {
+	var filtered [] Context
+	for _, context := range LoadDaemons () {
+		if includes ( selector, context.Types ) {
+			response := ListServices ( context )
+			if response.Code == 200 && includes ( service, response.Payload ) {
+				filtered = append ( filtered, context )
+			}
+		}
+	}
+	return filtered
+}
+
 func IsValidType ( t string ) bool {
 	types := CollectTypes ()
 	return includes ( t, types )
@@ -101,6 +114,15 @@ func ForEach ( Runner func ( int, int, Context ) ) int {
 
 func FilterForEach ( filters [] string, Runner func ( int, int, Context ) ) int {
 	contexts := Filter ( LoadDaemons (), filters )
+	total := len ( contexts )
+	for index, context := range contexts {
+		Runner ( index, total, context )
+	}
+	return total
+}
+
+func FilterWithServiceForEach ( selector, service string, Runner func ( int, int, Context ) ) int {
+	contexts := FilterWithService ( selector, service )
 	total := len ( contexts )
 	for index, context := range contexts {
 		Runner ( index, total, context )

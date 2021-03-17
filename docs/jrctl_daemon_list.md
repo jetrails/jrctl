@@ -14,7 +14,7 @@ jrctl daemon list [flags]
 
 ```
 jrctl daemon list
-jrctl daemon list -t web
+jrctl daemon list -t www
 ```
 
 ### Options

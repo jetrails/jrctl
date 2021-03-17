@@ -3,17 +3,17 @@
 
 .SH NAME
 .PP
-jrctl\-daemon\-list \- List configured daemons
+jrctl\-service\-list \- List available services
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl daemon list [flags]\fP
+\fBjrctl service list [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-List configured daemons.
+List available services.
 
 
 .SH OPTIONS
@@ -23,7 +23,7 @@ List configured daemons.
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=""
-	specify daemon type selector
+	specify service type selector
 
 
 .SH EXAMPLE
@@ -31,8 +31,8 @@ List configured daemons.
 .RS
 
 .nf
-jrctl daemon list
-jrctl daemon list \-t www
+jrctl service list
+jrctl service list \-t www
 
 .fi
 .RE
@@ -40,4 +40,4 @@ jrctl daemon list \-t www
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-daemon(1)\fP
+\fBjrctl\-service(1)\fP

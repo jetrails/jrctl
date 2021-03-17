@@ -17,8 +17,8 @@ var serviceRestartCmd = &cobra.Command {
 	Short: "Restart apache, nginx, mysql, or varnish service",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Restart apache, nginx, mysql, varnish, or php-fpm-* service.",
-			"Valid entries for php-fpm services would be prefixed with 'php-fpm-' and followed by a version number.",
+			"Restart apache, nginx, mysql, varnish, or php-fpm* service.",
+			"Valid entries for php-fpm services would be prefixed with 'php-fpm' and followed by a version number.",
 			"Ask the daemon(s) to restart a given service.",
 			"In order to successfully restart it, the daemon first validates the respected service's configuration.",
 			"Services can be repeated and execution will happen in the order that is given.",
@@ -27,14 +27,14 @@ var serviceRestartCmd = &cobra.Command {
 	Example: utils.Examples ([] string {
 		"jrctl service restart nginx",
 		"jrctl service restart nginx varnish",
-		"jrctl service restart nginx varnish php-fpm-7.2",
+		"jrctl service restart nginx varnish php-fpm",
 		"jrctl service restart nginx varnish php-fpm-7.2 nginx",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		pattern := regexp.MustCompile (`^(?:apache|nginx|mysql|varnish|php-fpm-\d+(?:\.\d+)*)$`)
+		pattern := regexp.MustCompile (`^(?:apache|nginx|mysql|varnish|php-fpm|php-fpm-\d+(?:\.\d+)*)$`)
 		for _, arg := range args {
 			if !pattern.MatchString ( arg ) {
-				valid := [] string { "apache", "nginx", "mysql", "varnish", "php-fpm-*" }
+				valid := [] string { "apache", "nginx", "mysql", "varnish", "php-fpm*" }
 				return errors.New ( fmt.Sprintf (
 					"invalid service %q\nvalid services include: %v\nwhere \"*\" is replaced with a valid version string",
 					arg, valid,
@@ -48,10 +48,9 @@ var serviceRestartCmd = &cobra.Command {
 		rows := [] [] string { [] string { "Daemon", "Status", "Service", "Response" } }
 		selector, _ := cmd.Flags ().GetString ("type")
 		for _, arg := range args {
-			filter := [] string { selector, arg }
 			runner := func ( index, total int, context daemon.Context ) {
 				data := service.RestartRequest { Service: arg, Version: "" }
-				if strings.HasPrefix ( arg, "php-fpm-" ) {
+				if strings.HasPrefix ( arg, "php-fpm" ) {
 					data.Service = "php-fpm"
 					data.Version = strings.Join ( strings.Split ( arg, "-" ) [2:], "-" )
 				}
@@ -64,7 +63,7 @@ var serviceRestartCmd = &cobra.Command {
 				}
 				rows = append ( rows, row )
 			}
-			daemon.FilterForEach ( filter, runner )
+			daemon.FilterWithServiceForEach ( selector, arg, runner )
 		}
 		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", selector ), rows, 1 )
 	},
