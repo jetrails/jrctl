@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
@@ -41,7 +42,7 @@ var firewallAllowCmd = &cobra.Command {
 			}
 			response := firewall.Add ( context, data )
 			row := [] string {
-				context.Endpoint,
+				strings.TrimSuffix ( context.Endpoint, ":27482" ),
 				response.Status,
 				response.Messages [ 0 ],
 			}

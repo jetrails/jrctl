@@ -38,14 +38,14 @@ var firewallListCmd = &cobra.Command {
 		runner := func ( index, total int, context daemon.Context ) {
 			response := firewall.List ( context )
 			responseRow := [] string {
-				context.Endpoint,
+				strings.TrimSuffix ( context.Endpoint, ":27482" ),
 				response.Status,
 				response.Messages [ 0 ],
 			}
 			responseRows = append ( responseRows, responseRow )
 			for _, entry := range response.Payload {
 				entryRow := [] string {
-					context.Endpoint,
+					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					entry.Address,
 					strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Port)), ", "), "[]"),
 				}
