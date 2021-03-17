@@ -30,7 +30,10 @@ var daemonListCmd = &cobra.Command {
 		}
 		rows := [] [] string { [] string { "Daemon", "Tag(s)" } }
 		runner := func ( index, total int, context daemon.Context ) {
-			row := [] string { context.Endpoint, strings.Join ( context.Tags, ", " ) }
+			row := [] string {
+				strings.TrimSuffix ( context.Endpoint, ":27482" ),
+				strings.Join ( context.Tags, ", " ),
+			}
 			rows = append ( rows, row )
 		}
 		daemon.FilterForEach ( filter, runner )

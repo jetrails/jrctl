@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/daemon"
@@ -32,13 +33,13 @@ var daemonVersionCmd = &cobra.Command {
 			var row [] string
 			if response.Code != 200 {
 				row = [] string {
-					context.Endpoint,
+					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					response.Status,
 					response.Messages [ 0 ],
 				}
 			} else {
 				row = [] string {
-					context.Endpoint,
+					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					response.Status,
 					response.Payload,
 				}
