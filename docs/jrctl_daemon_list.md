@@ -20,8 +20,8 @@ jrctl daemon list -t web
 ### Options
 
 ```
-  -t, --tag string   specify daemon tag selector
   -h, --help         help for list
+  -t, --tag string   specify daemon tag selector
 ```
 
 ### SEE ALSO

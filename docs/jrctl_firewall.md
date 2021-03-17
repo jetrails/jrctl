@@ -18,6 +18,6 @@ jrctl firewall allow -h
 ### SEE ALSO
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
-* [jrctl firewall allow](jrctl_firewall_allow.md)	 - Add entry to firewall
+* [jrctl firewall allow](jrctl_firewall_allow.md)	 - Permanently allows a source IP address to a specific port
 * [jrctl firewall list](jrctl_firewall_list.md)	 - List firewall entries
 

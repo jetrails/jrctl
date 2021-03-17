@@ -16,5 +16,5 @@ var daemonCmd = &cobra.Command {
 
 func init () {
 	rootCmd.AddCommand ( daemonCmd )
-	daemonCmd.Flags ().SortFlags = false
+	daemonCmd.Flags ().SortFlags = true
 }

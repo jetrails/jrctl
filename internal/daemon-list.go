@@ -40,6 +40,6 @@ var daemonListCmd = &cobra.Command {
 
 func init () {
 	daemonCmd.AddCommand ( daemonListCmd )
-	daemonListCmd.Flags ().SortFlags = false
+	daemonListCmd.Flags ().SortFlags = true
 	daemonListCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
 }

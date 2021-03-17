@@ -64,7 +64,7 @@ var secretReadCmd = &cobra.Command {
 
 func init () {
 	secretCmd.AddCommand ( secretReadCmd )
-	secretReadCmd.Flags ().SortFlags = false
+	secretReadCmd.Flags ().SortFlags = true
 	secretReadCmd.Flags ().StringP ( "password", "p", "", "password to access secret" )
 	secretReadCmd.Flags ().BoolP ( "clipboard", "c", false, "copy contents to clipboard" )
 }

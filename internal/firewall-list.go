@@ -65,6 +65,6 @@ var firewallListCmd = &cobra.Command {
 
 func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
-	firewallListCmd.Flags ().SortFlags = false
+	firewallListCmd.Flags ().SortFlags = true
 	firewallListCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
 }

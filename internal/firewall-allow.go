@@ -10,16 +10,19 @@ import (
 
 var firewallAllowCmd = &cobra.Command {
 	Use:   "allow",
-	Short: "Add entry to firewall",
+	Short: "Permanently allows a source IP address to a specific port",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Add entry to firewall.",
-			"Ask the daemon(s) to create an allow entry to their host system's firewall.",
-			"The tag flag is useful for cluster deployments and allows executing command on daemons that are tagged a certain way.",
+			"Allows a specified IP address to bypass the local system firewall by creating an 'allow' entry into the permanent firewall config.",
+			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
+			"Able to control a single (localhost) system as well as clusters.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
+		"// This is an example",
 		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
+		"",
+		"// This is an example",
 		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me",
 		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
 	}),
@@ -52,11 +55,11 @@ var firewallAllowCmd = &cobra.Command {
 
 func init () {
 	firewallCmd.AddCommand ( firewallAllowCmd )
-	firewallAllowCmd.Flags ().SortFlags = false
+	firewallAllowCmd.Flags ().SortFlags = true
 	firewallAllowCmd.Flags ().StringP ( "tag", "t", "localhost", "specify deamon tag selector, useful for cluster deployments" )
-	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address to firewall" )
-	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port(s) to firewall" )
-	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add optional comment" )
+	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address" )
+	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port to allow, can be specified multiple times" )
+	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add a comment to the firewall entry (optional)" )
 	firewallAllowCmd.Flags ().StringP ( "blame", "b", utils.GetUser (), "specify blame entry" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")

@@ -23,8 +23,8 @@ jrctl firewall list -t mysql
 ### Options
 
 ```
-  -t, --tag string   specify daemon tag selector
   -h, --help         help for list
+  -t, --tag string   specify daemon tag selector
 ```
 
 ### SEE ALSO

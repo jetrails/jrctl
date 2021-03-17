@@ -15,5 +15,5 @@ var serviceCmd = &cobra.Command {
 
 func init () {
 	rootCmd.AddCommand ( serviceCmd )
-	serviceCmd.Flags ().SortFlags = false
+	serviceCmd.Flags ().SortFlags = true
 }

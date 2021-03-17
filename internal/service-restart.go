@@ -71,5 +71,5 @@ var serviceRestartCmd = &cobra.Command {
 
 func init () {
 	serviceCmd.AddCommand ( serviceRestartCmd )
-	serviceRestartCmd.Flags ().SortFlags = false
+	serviceRestartCmd.Flags ().SortFlags = true
 }

@@ -53,5 +53,5 @@ var secretDeleteCmd = &cobra.Command {
 
 func init () {
 	secretCmd.AddCommand ( secretDeleteCmd )
-	secretDeleteCmd.Flags ().SortFlags = false
+	secretDeleteCmd.Flags ().SortFlags = true
 }

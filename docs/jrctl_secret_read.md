@@ -25,9 +25,9 @@ jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass
 ### Options
 
 ```
-  -p, --password string   password to access secret
   -c, --clipboard         copy contents to clipboard
   -h, --help              help for read
+  -p, --password string   password to access secret
 ```
 
 ### SEE ALSO
