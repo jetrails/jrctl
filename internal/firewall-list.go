@@ -16,8 +16,8 @@ var firewallListCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"List firewall entries.",
 			"Ask daemon(s) for a list of firewall entries.",
-			"Specifing a tag selector will only query daemons with that tag.",
-			"Not specifing any tag will show query all configured daemons.",
+			"Specifing a type selector will only query daemons with that type.",
+			"Not specifing any type will show query all configured daemons.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -26,14 +26,14 @@ var firewallListCmd = &cobra.Command {
 		"jrctl firewall list -t mysql",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		tag, _ := cmd.Flags ().GetString ("tag")
+		selector, _ := cmd.Flags ().GetString ("type")
 		responseRows := [] [] string { [] string { "Daemon", "Status", "Response" } }
 		entryRows := [] [] string { [] string { "Daemon", "IPV4/CIDR", "Port(s)" } }
 		filter := [] string {}
 		emptyMsg := "No configured daemons found."
-		if tag != "" {
-			filter = [] string { tag }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with tag %q.", tag )
+		if selector != "" {
+			filter = [] string { selector }
+			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
 		}
 		runner := func ( index, total int, context daemon.Context ) {
 			response := firewall.List ( context )
@@ -66,5 +66,5 @@ var firewallListCmd = &cobra.Command {
 func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
 	firewallListCmd.Flags ().SortFlags = true
-	firewallListCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
+	firewallListCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
 }

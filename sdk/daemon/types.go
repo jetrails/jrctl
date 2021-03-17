@@ -4,7 +4,7 @@ type Context struct {
 	Debug bool       `json:"debug"`
 	Endpoint string  `json:"endpoint"`
 	Token string     `json:"token"`
-	Tags [] string   `json:"tags"`
+	Types [] string  `json:"types"`
 }
 
 type DaemonConfig struct {

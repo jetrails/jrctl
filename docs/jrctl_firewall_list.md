@@ -5,8 +5,8 @@ List firewall entries
 ### Synopsis
 
 List firewall entries. Ask daemon(s) for a list of firewall entries. Specifing a
-tag selector will only query daemons with that tag. Not specifing any tag will
-show query all configured daemons.
+type selector will only query daemons with that type. Not specifing any type
+will show query all configured daemons.
 
 ```
 jrctl firewall list [flags]
@@ -23,8 +23,8 @@ jrctl firewall list -t mysql
 ### Options
 
 ```
-  -h, --help         help for list
-  -t, --tag string   specify daemon tag selector
+  -h, --help          help for list
+  -t, --type string   specify daemon type selector
 ```
 
 ### SEE ALSO

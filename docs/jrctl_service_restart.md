@@ -26,7 +26,8 @@ jrctl service restart nginx varnish php-fpm-7.2 nginx
 ### Options
 
 ```
-  -h, --help   help for restart
+  -h, --help          help for restart
+  -t, --type string   specify deamon type selector, useful for cluster deployments (default "localhost")
 ```
 
 ### SEE ALSO

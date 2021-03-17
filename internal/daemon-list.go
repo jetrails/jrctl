@@ -21,18 +21,21 @@ var daemonListCmd = &cobra.Command {
 		"jrctl daemon list -t web",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		tag, _ := cmd.Flags ().GetString ("tag")
+		selector, _ := cmd.Flags ().GetString ("type")
 		filter := [] string {}
 		emptyMsg := "No configured daemons found."
-		if tag != "" {
-			filter = [] string { tag }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with tag %q.", tag )
+		if selector != "" {
+			filter = [] string { selector }
+			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Daemon", "Tag(s)" } }
+		rows := [] [] string { [] string { "Daemon", "Server Type(s)" } }
 		runner := func ( index, total int, context daemon.Context ) {
 			row := [] string {
 				strings.TrimSuffix ( context.Endpoint, ":27482" ),
-				strings.Join ( context.Tags, ", " ),
+				strings.Join ( context.Types, ", " ),
+			}
+			if row [ 1 ] == "" {
+				row [ 1 ] = "-"
 			}
 			rows = append ( rows, row )
 		}
@@ -44,5 +47,5 @@ var daemonListCmd = &cobra.Command {
 func init () {
 	daemonCmd.AddCommand ( daemonListCmd )
 	daemonListCmd.Flags ().SortFlags = true
-	daemonListCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
+	daemonListCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
 }

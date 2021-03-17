@@ -20,12 +20,12 @@ var daemonVersionCmd = &cobra.Command {
 		"jrctl daemon version",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		tag, _ := cmd.Flags ().GetString ("tag")
+		selector, _ := cmd.Flags ().GetString ("type")
 		filter := [] string {}
 		emptyMsg := "No configured daemons found."
-		if tag != "" {
-			filter = [] string { tag }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with tag %q.", tag )
+		if selector != "" {
+			filter = [] string { selector }
+			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
 		}
 		rows := [] [] string { [] string { "Daemon", "Status", "Version" } }
 		runner := func ( index, total int, context daemon.Context ) {
@@ -54,5 +54,5 @@ var daemonVersionCmd = &cobra.Command {
 func init () {
 	daemonCmd.AddCommand ( daemonVersionCmd )
 	daemonVersionCmd.Flags ().SortFlags = true
-	daemonVersionCmd.Flags ().StringP ( "tag", "t", "", "specify daemon tag selector" )
+	daemonVersionCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
 }

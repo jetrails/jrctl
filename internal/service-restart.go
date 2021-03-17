@@ -46,9 +46,9 @@ var serviceRestartCmd = &cobra.Command {
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		rows := [] [] string { [] string { "Daemon", "Status", "Service", "Response" } }
-		tag, _ := cmd.Flags ().GetString ("tag")
+		selector, _ := cmd.Flags ().GetString ("type")
 		for _, arg := range args {
-			filter := [] string { tag, arg }
+			filter := [] string { selector, arg }
 			runner := func ( index, total int, context daemon.Context ) {
 				data := service.RestartRequest { Service: arg, Version: "" }
 				if strings.HasPrefix ( arg, "php-fpm-" ) {
@@ -66,12 +66,12 @@ var serviceRestartCmd = &cobra.Command {
 			}
 			daemon.FilterForEach ( filter, runner )
 		}
-		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", tag ), rows, 1 )
+		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", selector ), rows, 1 )
 	},
 }
 
 func init () {
 	serviceCmd.AddCommand ( serviceRestartCmd )
 	serviceRestartCmd.Flags ().SortFlags = true
-	serviceRestartCmd.Flags ().StringP ( "tag", "t", "localhost", "specify deamon tag selector, useful for cluster deployments" )
+	serviceRestartCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
 }

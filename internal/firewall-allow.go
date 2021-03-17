@@ -31,7 +31,7 @@ var firewallAllowCmd = &cobra.Command {
 		address, _ := cmd.Flags ().GetString ("address")
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
 		comment, _ := cmd.Flags ().GetString ("comment")
-		tag, _ := cmd.Flags ().GetString ("tag")
+		selector, _ := cmd.Flags ().GetString ("type")
 		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
 		runner := func ( index, total int, context daemon.Context ) {
 			data := firewall.AllowRequest {
@@ -48,15 +48,15 @@ var firewallAllowCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( [] string { tag }, runner )
-		utils.TablePrint ( fmt.Sprintf ( "No configured daemons found with tag %q.", tag ), rows, 1 )
+		daemon.FilterForEach ( [] string { selector }, runner )
+		utils.TablePrint ( fmt.Sprintf ( "No configured daemons found with type %q.", selector ), rows, 1 )
 	},
 }
 
 func init () {
 	firewallCmd.AddCommand ( firewallAllowCmd )
 	firewallAllowCmd.Flags ().SortFlags = true
-	firewallAllowCmd.Flags ().StringP ( "tag", "t", "localhost", "specify deamon tag selector, useful for cluster deployments" )
+	firewallAllowCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
 	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address" )
 	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port to allow, can be specified multiple times" )
 	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add a comment to the firewall entry (optional)" )

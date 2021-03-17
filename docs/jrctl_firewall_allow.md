@@ -31,7 +31,7 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
   -c, --comment string   add a comment to the firewall entry (optional) (default "none")
   -h, --help             help for allow
   -p, --port ints        port to allow, can be specified multiple times
-  -t, --tag string       specify deamon tag selector, useful for cluster deployments (default "localhost")
+  -t, --type string      specify deamon type selector, useful for cluster deployments (default "localhost")
 ```
 
 ### SEE ALSO
