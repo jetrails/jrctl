@@ -23,13 +23,12 @@ var firewallAllowCmd = &cobra.Command {
 		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
 		"",
 		"// This is an example",
-		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me",
-		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'",
+		"jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306",
+		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		address, _ := cmd.Flags ().GetString ("address")
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
-		blame, _ := cmd.Flags ().GetString ("blame")
 		comment, _ := cmd.Flags ().GetString ("comment")
 		tag, _ := cmd.Flags ().GetString ("tag")
 		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
@@ -37,7 +36,7 @@ var firewallAllowCmd = &cobra.Command {
 			data := firewall.AllowRequest {
 				Address: address,
 				Ports: ports,
-				Blame: utils.SafeString ( blame ),
+				Blame: utils.SafeString ( utils.GetUser () ),
 				Comment: utils.SafeString ( comment ),
 			}
 			response := firewall.Add ( context, data )
@@ -60,7 +59,6 @@ func init () {
 	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address" )
 	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port to allow, can be specified multiple times" )
 	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add a comment to the firewall entry (optional)" )
-	firewallAllowCmd.Flags ().StringP ( "blame", "b", utils.GetUser (), "specify blame entry" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")
 }

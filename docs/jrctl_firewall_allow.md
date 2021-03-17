@@ -20,15 +20,14 @@ jrctl firewall allow [flags]
 jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
 
 // This is an example
-jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -b me
-jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306 -b me -c 'Office'
+jrctl firewall allow -t mysql -a 1.1.1.1 -p 3306
+jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
 ```
 
 ### Options
 
 ```
   -a, --address string   ip address
-  -b, --blame string     specify blame entry (default "raffi")
   -c, --comment string   add a comment to the firewall entry (optional) (default "none")
   -h, --help             help for allow
   -p, --port ints        port to allow, can be specified multiple times
