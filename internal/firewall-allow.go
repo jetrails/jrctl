@@ -20,10 +20,10 @@ var firewallAllowCmd = &cobra.Command {
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"// This is an example",
+		"# Stand-Alone Server",
 		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
 		"",
-		"// This is an example",
+		"# Multi-Server Cluster",
 		"jrctl firewall allow -t db -a 1.1.1.1 -p 3306",
 		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'",
 	}),
