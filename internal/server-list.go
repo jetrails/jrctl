@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
@@ -33,6 +34,7 @@ var serverListCmd = &cobra.Command {
 		}
 		rows := [] [] string { [] string { "Server", "Type(s)", "Service(s)" } }
 		runner := func ( index, total int, context server.Context ) {
+			sort.Strings ( context.Types )
 			response := server.ListServices ( context )
 			var row [] string
 			if response.Code != 200 {

@@ -6,7 +6,6 @@ import (
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk/service"
 	"github.com/jetrails/jrctl/sdk/server"
 )
 
@@ -48,12 +47,12 @@ var serverRestartCmd = &cobra.Command {
 		selector, _ := cmd.Flags ().GetString ("type")
 		for _, arg := range args {
 			runner := func ( index, total int, context server.Context ) {
-				data := service.RestartRequest { Service: arg, Version: "" }
+				data := server.RestartRequest { Service: arg, Version: "" }
 				if strings.HasPrefix ( arg, "php-fpm" ) {
 					data.Service = "php-fpm"
 					data.Version = strings.Join ( strings.Split ( arg, "-" ) [2:], "-" )
 				}
-				response := service.Restart ( context, data )
+				response := server.Restart ( context, data )
 				row := [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					arg,

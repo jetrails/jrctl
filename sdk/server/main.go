@@ -2,6 +2,7 @@ package server
 
 import (
 	"fmt"
+	"sort"
 	"errors"
 	"strings"
 	"gopkg.in/yaml.v2"
@@ -31,6 +32,7 @@ func CollectTypes () [] string {
 			}
 		}
 	}
+	sort.Strings ( types )
 	return types
 }
 
@@ -46,6 +48,7 @@ func CollectServices () [] string {
 			}
 		}
 	}
+	sort.Strings ( services )
 	return services
 }
 

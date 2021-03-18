@@ -1,4 +1,4 @@
-package service
+package server
 
 type RestartRequest struct {
 	Service string  `json:"service"`
