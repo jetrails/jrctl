@@ -11,19 +11,18 @@ import (
 
 var firewallListCmd = &cobra.Command {
 	Use:   "list",
-	Short: "List firewall entries",
+	Short: "List firewall entries across configured servers",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"List firewall entries.",
-			"Ask server(s) for a list of firewall entries.",
-			"Specifing a type selector will only query servers with that type.",
-			"Not specifing any type will show query all configured servers.",
+			"List firewall entries across configured servers.",
+			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
 		"jrctl firewall list",
 		"jrctl firewall list -t admin",
 		"jrctl firewall list -t db",
+		"jrctl firewall list -t www",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
@@ -33,7 +32,7 @@ var firewallListCmd = &cobra.Command {
 		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured %q server(s) found.", selector )
 		}
 		runner := func ( index, total int, context server.Context ) {
 			response := firewall.List ( context )
@@ -53,7 +52,7 @@ var firewallListCmd = &cobra.Command {
 		}
 		server.FilterForEach ( filter, runner )
 		if selector != "" && len ( responseRows ) > 1 {
-			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+			fmt.Printf ( "\nDisplaying results for %q server(s):\n", selector )
 		}
 		fmt.Println ()
 		utils.TablePrint ( emptyMsg, responseRows, 0 )

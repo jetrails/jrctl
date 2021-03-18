@@ -16,7 +16,8 @@ jrctl\-firewall\-allow \- Permanently allows a source IP address to a specific p
 Allows a specified IP address to bypass the local system firewall by creating an
 'allow' entry into the permanent firewall config. Grants unprivileged users
 ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) system as well as clusters.
+audit log. Able to control a single (localhost) server as well as cluster of
+servers.
 
 
 .SH OPTIONS
@@ -25,7 +26,7 @@ audit log. Able to control a single (localhost) system as well as clusters.
 	ip address
 
 .PP
-\fB\-c\fP, \fB\-\-comment\fP="none"
+\fB\-c\fP, \fB\-\-comment\fP=""
 	add a comment to the firewall entry (optional)
 
 .PP
@@ -38,7 +39,7 @@ audit log. Able to control a single (localhost) system as well as clusters.
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP="localhost"
-	specify deamon type selector, useful for cluster deployments
+	specify server type, useful for cluster
 
 
 .SH EXAMPLE

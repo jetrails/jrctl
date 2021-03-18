@@ -7,7 +7,8 @@ Permanently allows a source IP address to a specific port
 Allows a specified IP address to bypass the local system firewall by creating an
 'allow' entry into the permanent firewall config. Grants unprivileged users
 ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) system as well as clusters.
+audit log. Able to control a single (localhost) server as well as cluster of
+servers.
 
 ```
 jrctl firewall allow [flags]
@@ -28,10 +29,10 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
 
 ```
   -a, --address string   ip address
-  -c, --comment string   add a comment to the firewall entry (optional) (default "none")
+  -c, --comment string   add a comment to the firewall entry (optional)
   -h, --help             help for allow
   -p, --port ints        port to allow, can be specified multiple times
-  -t, --type string      specify deamon type selector, useful for cluster deployments (default "localhost")
+  -t, --type string      specify server type, useful for cluster (default "localhost")
 ```
 
 ### SEE ALSO

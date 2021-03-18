@@ -7,11 +7,11 @@ import (
 
 var secretCmd = &cobra.Command {
 	Use:   "secret",
-	Short: "Interact with our one-time secret service",
+	Short: "Interact with one-time secret service",
 	Example: utils.Examples ([] string {
-		"jrctl secret read -h",
-		"jrctl secret delete -h",
 		"jrctl secret create -h",
+		"jrctl secret delete -h",
+		"jrctl secret read -h",
 	}),
 }
 

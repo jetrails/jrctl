@@ -7,6 +7,15 @@ import (
 	"os/user"
 )
 
+func Includes ( a string, list [] string ) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}
+
 func Examples ( examples [] string ) string {
 	space := "  "
 	if os.Getenv ("JR_DOCS") == "true" {

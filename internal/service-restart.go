@@ -2,7 +2,6 @@ package internal
 
 import (
 	"errors"
-	"regexp"
 	"fmt"
 	"strings"
 	"github.com/spf13/cobra"
@@ -14,14 +13,15 @@ import (
 var serverRestartCmd = &cobra.Command {
 	Use: "restart SERVICE...",
 	Args: cobra.MinimumNArgs ( 1 ),
-	Short: "Restart apache, nginx, mysql, or varnish service",
+	Short: "Restart specified service(s) running on configured server(s)",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Restart apache, nginx, mysql, varnish, or php-fpm* service.",
-			"Valid entries for php-fpm services would be prefixed with 'php-fpm' and followed by a version number.",
-			"Ask the server(s) to restart a given service.",
-			"In order to successfully restart it, the server first validates the respected service's configuration.",
+			"Restart specified service(s) running on configured server(s).",
+			"In order to successfully restart a service, the server first validates the respected service's config file.",
+			"Once deemed valid, the service is restarted.",
+			"For a list of available running services, run 'jrctl server list'.",
 			"Services can be repeated and execution will happen in the order that is given.",
+			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -31,13 +31,12 @@ var serverRestartCmd = &cobra.Command {
 		"jrctl service restart nginx varnish php-fpm-7.2 nginx",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
-		pattern := regexp.MustCompile (`^(?:apache|nginx|mysql|varnish|php-fpm|php-fpm-\d+(?:\.\d+)*)$`)
+		validServices := server.CollectServices ()
 		for _, arg := range args {
-			if !pattern.MatchString ( arg ) {
-				valid := [] string { "apache", "nginx", "mysql", "varnish", "php-fpm*" }
+			if !utils.Includes ( arg, validServices ) {
 				return errors.New ( fmt.Sprintf (
-					"invalid service %q\nvalid services include: %v\nwhere \"*\" is replaced with a valid version string",
-					arg, valid,
+					"%q is not found, available services include: %v",
+					arg, "\"" + strings.Join ( validServices, "\", \"" ) + "\"",
 				))
 			}
 		}
@@ -45,7 +44,7 @@ var serverRestartCmd = &cobra.Command {
 		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		rows := [] [] string { [] string { "Server", "Status", "Service", "Response" } }
+		rows := [] [] string { [] string { "Server", "Service", "Response" } }
 		selector, _ := cmd.Flags ().GetString ("type")
 		for _, arg := range args {
 			runner := func ( index, total int, context server.Context ) {
@@ -57,7 +56,6 @@ var serverRestartCmd = &cobra.Command {
 				response := service.Restart ( context, data )
 				row := [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
-					response.Status,
 					arg,
 					response.Messages [ 0 ],
 				}
@@ -66,14 +64,14 @@ var serverRestartCmd = &cobra.Command {
 			server.FilterWithServiceForEach ( selector, arg, runner )
 		}
 		if len ( rows ) > 1 {
-			fmt.Printf ( "\nExecuted only on server(s) with type %q:\n", selector )
+			fmt.Printf ( "\nExecuted only on %q server(s):\n", selector )
 		}
-		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", selector ), rows, 1 )
+		utils.TablePrint ( fmt.Sprintf ( "Specified service(s) not running on %q server(s).", selector ), rows, 1 )
 	},
 }
 
 func init () {
 	serverCmd.AddCommand ( serverRestartCmd )
 	serverRestartCmd.Flags ().SortFlags = true
-	serverRestartCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
+	serverRestartCmd.Flags ().StringP ( "type", "t", "localhost", "specify server type, useful for cluster" )
 }

@@ -16,7 +16,7 @@ var firewallAllowCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"Allows a specified IP address to bypass the local system firewall by creating an 'allow' entry into the permanent firewall config.",
 			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
-			"Able to control a single (localhost) system as well as clusters.",
+			"Able to control a single (localhost) server as well as cluster of servers.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -32,7 +32,10 @@ var firewallAllowCmd = &cobra.Command {
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
 		comment, _ := cmd.Flags ().GetString ("comment")
 		selector, _ := cmd.Flags ().GetString ("type")
-		rows := [] [] string { [] string { "Server", "Status", "Response" } }
+		if comment == "" {
+			comment = "None"
+		}
+		rows := [] [] string { [] string { "Server", "Response" } }
 		runner := func ( index, total int, context server.Context ) {
 			data := firewall.AllowRequest {
 				Address: address,
@@ -43,26 +46,25 @@ var firewallAllowCmd = &cobra.Command {
 			response := firewall.Add ( context, data )
 			row := [] string {
 				strings.TrimSuffix ( context.Endpoint, ":27482" ),
-				response.Status,
 				response.Messages [ 0 ],
 			}
 			rows = append ( rows, row )
 		}
 		server.FilterForEach ( [] string { selector }, runner )
 		if len ( rows ) > 1 {
-			fmt.Printf ( "\nExecuted only on server(s) with type %q:\n", selector )
+			fmt.Printf ( "\nExecuted only on %q server(s):\n", selector )
 		}
-		utils.TablePrint ( fmt.Sprintf ( "No configured servers found with type %q.", selector ), rows, 1 )
+		utils.TablePrint ( fmt.Sprintf ( "No configured %q server(s) found.", selector ), rows, 1 )
 	},
 }
 
 func init () {
 	firewallCmd.AddCommand ( firewallAllowCmd )
 	firewallAllowCmd.Flags ().SortFlags = true
-	firewallAllowCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
+	firewallAllowCmd.Flags ().StringP ( "type", "t", "localhost", "specify server type, useful for cluster" )
 	firewallAllowCmd.Flags ().StringP ( "address", "a", "", "ip address" )
 	firewallAllowCmd.Flags ().IntSliceP ( "port", "p", [] int {}, "port to allow, can be specified multiple times" )
-	firewallAllowCmd.Flags ().StringP ( "comment", "c", "none", "add a comment to the firewall entry (optional)" )
+	firewallAllowCmd.Flags ().StringP ( "comment", "c", "", "add a comment to the firewall entry (optional)" )
 	firewallAllowCmd.MarkFlagRequired ("address")
 	firewallAllowCmd.MarkFlagRequired ("port")
 }

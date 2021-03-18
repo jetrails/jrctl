@@ -1,14 +1,15 @@
 ## jrctl server restart
 
-Restart apache, nginx, mysql, or varnish service
+Restart specified service(s) running on configured server(s)
 
 ### Synopsis
 
-Restart apache, nginx, mysql, varnish, or php-fpm* service. Valid entries for
-php-fpm services would be prefixed with 'php-fpm' and followed by a version
-number. Ask the server(s) to restart a given service. In order to successfully
-restart it, the server first validates the respected service's configuration.
-Services can be repeated and execution will happen in the order that is given.
+Restart specified service(s) running on configured server(s). In order to
+successfully restart a service, the server first validates the respected
+service's config file. Once deemed valid, the service is restarted. For a list
+of available running services, run 'jrctl server list'. Services can be repeated
+and execution will happen in the order that is given. Specifing a server type
+will only display results for servers of that type.
 
 ```
 jrctl server restart SERVICE... [flags]
@@ -27,10 +28,10 @@ jrctl service restart nginx varnish php-fpm-7.2 nginx
 
 ```
   -h, --help          help for restart
-  -t, --type string   specify deamon type selector, useful for cluster deployments (default "localhost")
+  -t, --type string   specify server type, useful for cluster (default "localhost")
 ```
 
 ### SEE ALSO
 
-* [jrctl server](jrctl_server.md)	 - Interact with configured servers
+* [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
 

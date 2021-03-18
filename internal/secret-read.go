@@ -18,6 +18,7 @@ var secretReadCmd = &cobra.Command {
 			"Display contents of secret.",
 			"Passing the secret identifier will allow us to retrieve the contents of the secret and print it to STDOUT.",
 			"Optionally, you can copy the contents to your clipboard by passing the --clipboard flag!",
+			"If the secret's URL is passed, the identifier is extracted automatically.",
 		}),
 		utils.Paragraph ( [] string {
 			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",

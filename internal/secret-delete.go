@@ -16,6 +16,7 @@ var secretDeleteCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"Delete secret without viewing contents.",
 			"Passing the secret identifier will make a request to destroy the secret without displaying the secret's contents.",
+			"If the secret's URL is passed, the identifier is extracted automatically.",
 		}),
 		utils.Paragraph ( [] string {
 			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",

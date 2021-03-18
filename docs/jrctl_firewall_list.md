@@ -1,12 +1,11 @@
 ## jrctl firewall list
 
-List firewall entries
+List firewall entries across configured servers
 
 ### Synopsis
 
-List firewall entries. Ask server(s) for a list of firewall entries. Specifing a
-type selector will only query servers with that type. Not specifing any type
-will show query all configured servers.
+List firewall entries across configured servers. Specifing a server type will
+only display results for servers of that type.
 
 ```
 jrctl firewall list [flags]
@@ -18,6 +17,7 @@ jrctl firewall list [flags]
 jrctl firewall list
 jrctl firewall list -t admin
 jrctl firewall list -t db
+jrctl firewall list -t www
 ```
 
 ### Options

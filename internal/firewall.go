@@ -9,8 +9,8 @@ var firewallCmd = &cobra.Command {
 	Use:   "firewall",
 	Short: "Interact with firewall to whitelist IP addresses/ports",
 	Example: utils.Examples ([] string {
-		"jrctl firewall list -h",
 		"jrctl firewall allow -h",
+		"jrctl firewall list -h",
 	}),
 }
 

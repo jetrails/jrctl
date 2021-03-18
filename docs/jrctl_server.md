@@ -1,13 +1,13 @@
 ## jrctl server
 
-Interact with configured servers
+Interact with servers in configured deployment
 
 ### Examples
 
 ```
 jrctl server list -h
-jrctl server version -h
 jrctl server restart -h
+jrctl server version -h
 ```
 
 ### Options
@@ -19,7 +19,7 @@ jrctl server restart -h
 ### SEE ALSO
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
-* [jrctl server list](jrctl_server_list.md)	 - List configured servers
-* [jrctl server restart](jrctl_server_restart.md)	 - Restart apache, nginx, mysql, or varnish service
-* [jrctl server version](jrctl_server_version.md)	 - Display version of configured servers
+* [jrctl server list](jrctl_server_list.md)	 - List servers in configured deployment
+* [jrctl server restart](jrctl_server_restart.md)	 - Restart specified service(s) running on configured server(s)
+* [jrctl server version](jrctl_server_version.md)	 - Display daemon version running on configured servers
 

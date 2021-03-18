@@ -10,14 +10,17 @@ import (
 
 var serverListCmd = &cobra.Command {
 	Use:   "list",
-	Short: "List configured servers",
+	Short: "List servers in configured deployment",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"List configured servers.",
+			"List servers in configured deployment.",
+			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
 		"jrctl server list",
+		"jrctl server list -t admin",
+		"jrctl server list -t localhost",
 		"jrctl server list -t www",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
@@ -26,7 +29,7 @@ var serverListCmd = &cobra.Command {
 		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured %q server(s) found.", selector )
 		}
 		rows := [] [] string { [] string { "Server", "Type(s)", "Service(s)" } }
 		runner := func ( index, total int, context server.Context ) {
@@ -55,7 +58,7 @@ var serverListCmd = &cobra.Command {
 		}
 		server.FilterForEach ( filter, runner )
 		if selector != "" && len ( rows ) > 1 {
-			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+			fmt.Printf ( "\nDisplaying results for %q server(s):\n", selector )
 		}
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},

@@ -1,10 +1,11 @@
 ## jrctl server list
 
-List configured servers
+List servers in configured deployment
 
 ### Synopsis
 
-List configured servers.
+List servers in configured deployment. Specifing a server type will only display
+results for servers of that type.
 
 ```
 jrctl server list [flags]
@@ -14,6 +15,8 @@ jrctl server list [flags]
 
 ```
 jrctl server list
+jrctl server list -t admin
+jrctl server list -t localhost
 jrctl server list -t www
 ```
 
@@ -26,5 +29,5 @@ jrctl server list -t www
 
 ### SEE ALSO
 
-* [jrctl server](jrctl_server.md)	 - Interact with configured servers
+* [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
 

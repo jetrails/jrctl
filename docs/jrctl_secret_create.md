@@ -38,5 +38,5 @@ jrctl secret create -c -f ~/.ssh/id_rsa.pub
 
 ### SEE ALSO
 
-* [jrctl secret](jrctl_secret.md)	 - Interact with our one-time secret service
+* [jrctl secret](jrctl_secret.md)	 - Interact with one-time secret service
 

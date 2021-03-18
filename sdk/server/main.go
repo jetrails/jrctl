@@ -7,16 +7,8 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/utils"
 )
-
-func includes ( a string, list [] string ) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
 
 func LoadServerAuth () string {
 	var c ServerConfig
@@ -34,7 +26,7 @@ func CollectTypes () [] string {
 	viper.UnmarshalKey ( "servers", &contexts )
 	for _, context := range contexts {
 		for _, t := range context.Types {
-			if !includes ( t, types ) {
+			if !utils.Includes ( t, types ) {
 				types = append ( types, t )
 			}
 		}
@@ -42,12 +34,27 @@ func CollectTypes () [] string {
 	return types
 }
 
+func CollectServices () [] string {
+	var services [] string
+	for _, context := range LoadServers () {
+		response := ListServices ( context )
+		if response.Code == 200 {
+			for _, service := range response.Payload {
+				if !utils.Includes ( service, services ) {
+					services = append ( services, service )
+				}
+			}
+		}
+	}
+	return services
+}
+
 func FilterWithService ( selector, service string ) [] Context {
 	var filtered [] Context
 	for _, context := range LoadServers () {
-		if includes ( selector, context.Types ) {
+		if utils.Includes ( selector, context.Types ) {
 			response := ListServices ( context )
-			if response.Code == 200 && includes ( service, response.Payload ) {
+			if response.Code == 200 && utils.Includes ( service, response.Payload ) {
 				filtered = append ( filtered, context )
 			}
 		}
@@ -57,7 +64,7 @@ func FilterWithService ( selector, service string ) [] Context {
 
 func IsValidType ( t string ) bool {
 	types := CollectTypes ()
-	return includes ( t, types )
+	return utils.Includes ( t, types )
 }
 
 func IsValidTypeError ( t string ) error {
@@ -73,7 +80,7 @@ func Filter ( contexts [] Context, filters [] string ) [] Context {
 	for _, context := range contexts {
 		found := 0
 		for _, filter := range filters {
-			if includes ( filter, context.Types ) {
+			if utils.Includes ( filter, context.Types ) {
 				found++
 			}
 		}

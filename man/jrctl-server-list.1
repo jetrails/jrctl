@@ -3,7 +3,7 @@
 
 .SH NAME
 .PP
-jrctl\-server\-list \- List configured servers
+jrctl\-server\-list \- List servers in configured deployment
 
 
 .SH SYNOPSIS
@@ -13,7 +13,8 @@ jrctl\-server\-list \- List configured servers
 
 .SH DESCRIPTION
 .PP
-List configured servers.
+List servers in configured deployment. Specifing a server type will only display
+results for servers of that type.
 
 
 .SH OPTIONS
@@ -32,6 +33,8 @@ List configured servers.
 
 .nf
 jrctl server list
+jrctl server list \-t admin
+jrctl server list \-t localhost
 jrctl server list \-t www
 
 .fi

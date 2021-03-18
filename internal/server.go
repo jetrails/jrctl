@@ -7,11 +7,11 @@ import (
 
 var serverCmd = &cobra.Command {
 	Use:   "server",
-	Short: "Interact with configured servers",
+	Short: "Interact with servers in configured deployment",
 	Example: utils.Examples ([] string {
 		"jrctl server list -h",
-		"jrctl server version -h",
 		"jrctl server restart -h",
+		"jrctl server version -h",
 	}),
 }
 

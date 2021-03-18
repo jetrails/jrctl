@@ -1,10 +1,11 @@
 ## jrctl server version
 
-Display version of configured servers
+Display daemon version running on configured servers
 
 ### Synopsis
 
-Display version of configured servers.
+Display daemon version running on configured servers. Specifing a server type
+will only display results for servers of that type.
 
 ```
 jrctl server version [flags]
@@ -25,5 +26,5 @@ jrctl server version
 
 ### SEE ALSO
 
-* [jrctl server](jrctl_server.md)	 - Interact with configured servers
+* [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
 

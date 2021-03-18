@@ -10,10 +10,11 @@ import (
 
 var serverVersionCmd = &cobra.Command {
 	Use:   "version",
-	Short: "Display version of configured servers",
+	Short: "Display daemon version running on configured servers",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Display version of configured servers.",
+			"Display daemon version running on configured servers.",
+			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -25,7 +26,7 @@ var serverVersionCmd = &cobra.Command {
 		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured %q server(s) found.", selector )
 		}
 		rows := [] [] string { [] string { "Server", "Version" } }
 		runner := func ( index, total int, context server.Context ) {
@@ -46,7 +47,7 @@ var serverVersionCmd = &cobra.Command {
 		}
 		server.FilterForEach ( filter, runner )
 		if selector != "" && len ( rows ) > 1 {
-			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+			fmt.Printf ( "\nDisplaying results for %q server(s):\n", selector )
 		}
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},

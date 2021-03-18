@@ -5,8 +5,8 @@ Interact with firewall to whitelist IP addresses/ports
 ### Examples
 
 ```
-jrctl firewall list -h
 jrctl firewall allow -h
+jrctl firewall list -h
 ```
 
 ### Options
@@ -19,5 +19,5 @@ jrctl firewall allow -h
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
 * [jrctl firewall allow](jrctl_firewall_allow.md)	 - Permanently allows a source IP address to a specific port
-* [jrctl firewall list](jrctl_firewall_list.md)	 - List firewall entries
+* [jrctl firewall list](jrctl_firewall_list.md)	 - List firewall entries across configured servers
 

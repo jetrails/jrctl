@@ -1,13 +1,13 @@
 ## jrctl secret
 
-Interact with our one-time secret service
+Interact with one-time secret service
 
 ### Examples
 
 ```
-jrctl secret read -h
-jrctl secret delete -h
 jrctl secret create -h
+jrctl secret delete -h
+jrctl secret read -h
 ```
 
 ### Options
