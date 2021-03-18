@@ -98,7 +98,7 @@ func LoadServers () [] Context {
 	if len ( contexts ) == 0 {
 		context := Context {
 			Debug: debug,
-			Endpoint: "localhost:27482",
+			Endpoint: "127.0.0.1:27482",
 			Token: LoadServerAuth (),
 			Types: [] string { "localhost" },
 		}
