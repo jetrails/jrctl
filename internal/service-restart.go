@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/service"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
 var serviceRestartCmd = &cobra.Command {
@@ -19,8 +19,8 @@ var serviceRestartCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"Restart apache, nginx, mysql, varnish, or php-fpm* service.",
 			"Valid entries for php-fpm services would be prefixed with 'php-fpm' and followed by a version number.",
-			"Ask the daemon(s) to restart a given service.",
-			"In order to successfully restart it, the daemon first validates the respected service's configuration.",
+			"Ask the server(s) to restart a given service.",
+			"In order to successfully restart it, the server first validates the respected service's configuration.",
 			"Services can be repeated and execution will happen in the order that is given.",
 		}),
 	}),
@@ -45,10 +45,10 @@ var serviceRestartCmd = &cobra.Command {
 		return nil
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
-		rows := [] [] string { [] string { "Daemon", "Status", "Service", "Response" } }
+		rows := [] [] string { [] string { "Server", "Status", "Service", "Response" } }
 		selector, _ := cmd.Flags ().GetString ("type")
 		for _, arg := range args {
-			runner := func ( index, total int, context daemon.Context ) {
+			runner := func ( index, total int, context server.Context ) {
 				data := service.RestartRequest { Service: arg, Version: "" }
 				if strings.HasPrefix ( arg, "php-fpm" ) {
 					data.Service = "php-fpm"
@@ -63,7 +63,7 @@ var serviceRestartCmd = &cobra.Command {
 				}
 				rows = append ( rows, row )
 			}
-			daemon.FilterWithServiceForEach ( selector, arg, runner )
+			server.FilterWithServiceForEach ( selector, arg, runner )
 		}
 		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", selector ), rows, 1 )
 	},

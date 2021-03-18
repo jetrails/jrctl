@@ -6,8 +6,8 @@ Restart apache, nginx, mysql, or varnish service
 
 Restart apache, nginx, mysql, varnish, or php-fpm* service. Valid entries for
 php-fpm services would be prefixed with 'php-fpm' and followed by a version
-number. Ask the daemon(s) to restart a given service. In order to successfully
-restart it, the daemon first validates the respected service's configuration.
+number. Ask the server(s) to restart a given service. In order to successfully
+restart it, the server first validates the respected service's configuration.
 Services can be repeated and execution will happen in the order that is given.
 
 ```

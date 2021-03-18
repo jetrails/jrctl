@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
 var firewallAllowCmd = &cobra.Command {
@@ -32,8 +32,8 @@ var firewallAllowCmd = &cobra.Command {
 		ports, _ := cmd.Flags ().GetIntSlice ("port")
 		comment, _ := cmd.Flags ().GetString ("comment")
 		selector, _ := cmd.Flags ().GetString ("type")
-		rows := [] [] string { [] string { "Daemon", "Status", "Response" } }
-		runner := func ( index, total int, context daemon.Context ) {
+		rows := [] [] string { [] string { "Server", "Status", "Response" } }
+		runner := func ( index, total int, context server.Context ) {
 			data := firewall.AllowRequest {
 				Address: address,
 				Ports: ports,
@@ -48,8 +48,8 @@ var firewallAllowCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( [] string { selector }, runner )
-		utils.TablePrint ( fmt.Sprintf ( "No configured daemons found with type %q.", selector ), rows, 1 )
+		server.FilterForEach ( [] string { selector }, runner )
+		utils.TablePrint ( fmt.Sprintf ( "No configured servers found with type %q.", selector ), rows, 1 )
 	},
 }
 

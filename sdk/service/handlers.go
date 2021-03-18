@@ -5,11 +5,11 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"github.com/jetrails/jrctl/sdk/version"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/parnurzeal/gorequest"
 )
 
-func Restart ( context daemon.Context, data RestartRequest ) RestartResponse {
+func Restart ( context server.Context, data RestartRequest ) RestartResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
@@ -24,7 +24,7 @@ func Restart ( context daemon.Context, data RestartRequest ) RestartResponse {
 		return RestartResponse {
 			Status: "Client Error",
 			Code: 1,
-			Messages: [] string { "Failed to connect to daemon." },
+			Messages: [] string { "Failed to connect to server." },
 			Payload: data,
 		}
 	}

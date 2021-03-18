@@ -5,32 +5,32 @@ import (
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
-var daemonListCmd = &cobra.Command {
+var serverListCmd = &cobra.Command {
 	Use:   "list",
-	Short: "List configured daemons",
+	Short: "List configured servers",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"List configured daemons.",
+			"List configured servers.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl daemon list",
-		"jrctl daemon list -t www",
+		"jrctl server list",
+		"jrctl server list -t www",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
 		filter := [] string {}
-		emptyMsg := "No configured daemons found."
+		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Daemon", "Server Type(s)", "Status", "Service(s)" } }
-		runner := func ( index, total int, context daemon.Context ) {
-			response := daemon.ListServices ( context )
+		rows := [] [] string { [] string { "Server", "Type(s)", "Status", "Service(s)" } }
+		runner := func ( index, total int, context server.Context ) {
+			response := server.ListServices ( context )
 			var row [] string
 			if response.Code != 200 {
 				row = [] string {
@@ -55,13 +55,13 @@ var daemonListCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( filter, runner )
+		server.FilterForEach ( filter, runner )
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }
 
 func init () {
-	daemonCmd.AddCommand ( daemonListCmd )
-	daemonListCmd.Flags ().SortFlags = true
-	daemonListCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
+	serverCmd.AddCommand ( serverListCmd )
+	serverListCmd.Flags ().SortFlags = true
+	serverListCmd.Flags ().StringP ( "type", "t", "", "specify server type selector" )
 }

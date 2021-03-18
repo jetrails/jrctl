@@ -5,7 +5,7 @@ import (
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
 var serviceListCmd = &cobra.Command {
@@ -23,14 +23,14 @@ var serviceListCmd = &cobra.Command {
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
 		filter := [] string {}
-		emptyMsg := "No configured daemons found."
+		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Daemon", "Status", "Service(s)" } }
-		runner := func ( index, total int, context daemon.Context ) {
-			response := daemon.ListServices ( context )
+		rows := [] [] string { [] string { "Server", "Status", "Service(s)" } }
+		runner := func ( index, total int, context server.Context ) {
+			response := server.ListServices ( context )
 			var row [] string
 			if response.Code != 200 {
 				row = [] string {
@@ -50,7 +50,7 @@ var serviceListCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( filter, runner )
+		server.FilterForEach ( filter, runner )
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }

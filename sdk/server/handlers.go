@@ -1,4 +1,4 @@
-package daemon
+package server
 
 import (
 	"fmt"
@@ -24,7 +24,7 @@ func Version ( context Context ) VersionResponse {
 		return VersionResponse {
 			Status: "Client Error",
 			Code: 1,
-			Messages: [] string { "Failed to connect to daemon." },
+			Messages: [] string { "Failed to connect to server." },
 			Payload: "",
 		}
 	}
@@ -49,7 +49,7 @@ func ListServices ( context Context ) ListServicesResponse {
 		return ListServicesResponse {
 			Status: "Client Error",
 			Code: 1,
-			Messages: [] string { "Failed to connect to daemon." },
+			Messages: [] string { "Failed to connect to server." },
 			Payload: [] string {},
 		}
 	}

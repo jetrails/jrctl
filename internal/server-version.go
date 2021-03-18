@@ -5,31 +5,31 @@ import (
 	"strings"
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
-var daemonVersionCmd = &cobra.Command {
+var serverVersionCmd = &cobra.Command {
 	Use:   "version",
-	Short: "Display version of configured daemons",
+	Short: "Display version of configured servers",
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
-			"Display version of configured daemons.",
+			"Display version of configured servers.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl daemon version",
+		"jrctl server version",
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
 		filter := [] string {}
-		emptyMsg := "No configured daemons found."
+		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Daemon", "Status", "Version" } }
-		runner := func ( index, total int, context daemon.Context ) {
-			response := daemon.Version ( context )
+		rows := [] [] string { [] string { "Server", "Status", "Version" } }
+		runner := func ( index, total int, context server.Context ) {
+			response := server.Version ( context )
 			var row [] string
 			if response.Code != 200 {
 				row = [] string {
@@ -46,13 +46,13 @@ var daemonVersionCmd = &cobra.Command {
 			}
 			rows = append ( rows, row )
 		}
-		daemon.FilterForEach ( filter, runner )
+		server.FilterForEach ( filter, runner )
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }
 
 func init () {
-	daemonCmd.AddCommand ( daemonVersionCmd )
-	daemonVersionCmd.Flags ().SortFlags = true
-	daemonVersionCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
+	serverCmd.AddCommand ( serverVersionCmd )
+	serverVersionCmd.Flags ().SortFlags = true
+	serverVersionCmd.Flags ().StringP ( "type", "t", "", "specify server type selector" )
 }

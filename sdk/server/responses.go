@@ -1,4 +1,4 @@
-package daemon
+package server
 
 type VersionResponse struct {
 	Status string      `json:"status"`

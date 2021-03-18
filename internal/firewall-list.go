@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/firewall"
-	"github.com/jetrails/jrctl/sdk/daemon"
+	"github.com/jetrails/jrctl/sdk/server"
 )
 
 var firewallListCmd = &cobra.Command {
@@ -15,9 +15,9 @@ var firewallListCmd = &cobra.Command {
 	Long: utils.Combine ( [] string {
 		utils.Paragraph ( [] string {
 			"List firewall entries.",
-			"Ask daemon(s) for a list of firewall entries.",
-			"Specifing a type selector will only query daemons with that type.",
-			"Not specifing any type will show query all configured daemons.",
+			"Ask server(s) for a list of firewall entries.",
+			"Specifing a type selector will only query servers with that type.",
+			"Not specifing any type will show query all configured servers.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -27,15 +27,15 @@ var firewallListCmd = &cobra.Command {
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
-		responseRows := [] [] string { [] string { "Daemon", "Status", "Response" } }
-		entryRows := [] [] string { [] string { "Daemon", "IPV4/CIDR", "Port(s)" } }
+		responseRows := [] [] string { [] string { "Server", "Status", "Response" } }
+		entryRows := [] [] string { [] string { "Server", "IPV4/CIDR", "Port(s)" } }
 		filter := [] string {}
-		emptyMsg := "No configured daemons found."
+		emptyMsg := "No configured servers found."
 		if selector != "" {
 			filter = [] string { selector }
-			emptyMsg = fmt.Sprintf ( "No configured daemons found with type %q.", selector )
+			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		runner := func ( index, total int, context daemon.Context ) {
+		runner := func ( index, total int, context server.Context ) {
 			response := firewall.List ( context )
 			responseRow := [] string {
 				strings.TrimSuffix ( context.Endpoint, ":27482" ),
@@ -52,7 +52,7 @@ var firewallListCmd = &cobra.Command {
 				entryRows = append ( entryRows, entryRow )
 			}
 		}
-		daemon.FilterForEach ( filter, runner )
+		server.FilterForEach ( filter, runner )
 		fmt.Println ()
 		utils.TablePrint ( emptyMsg, responseRows, 0 )
 		fmt.Println ()
@@ -66,5 +66,5 @@ var firewallListCmd = &cobra.Command {
 func init () {
 	firewallCmd.AddCommand ( firewallListCmd )
 	firewallListCmd.Flags ().SortFlags = true
-	firewallListCmd.Flags ().StringP ( "type", "t", "", "specify daemon type selector" )
+	firewallListCmd.Flags ().StringP ( "type", "t", "", "specify server type selector" )
 }

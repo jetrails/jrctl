@@ -4,9 +4,9 @@ List firewall entries
 
 ### Synopsis
 
-List firewall entries. Ask daemon(s) for a list of firewall entries. Specifing a
-type selector will only query daemons with that type. Not specifing any type
-will show query all configured daemons.
+List firewall entries. Ask server(s) for a list of firewall entries. Specifing a
+type selector will only query servers with that type. Not specifing any type
+will show query all configured servers.
 
 ```
 jrctl firewall list [flags]
@@ -24,7 +24,7 @@ jrctl firewall list -t db
 
 ```
   -h, --help          help for list
-  -t, --type string   specify daemon type selector
+  -t, --type string   specify server type selector
 ```
 
 ### SEE ALSO

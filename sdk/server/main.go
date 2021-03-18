@@ -1,4 +1,4 @@
-package daemon
+package server
 
 import (
 	"fmt"
@@ -18,8 +18,8 @@ func includes ( a string, list [] string ) bool {
 	return false
 }
 
-func LoadDaemonAuth () string {
-	var c DaemonConfig
+func LoadServerAuth () string {
+	var c ServerConfig
 	if yamlfile, error := ioutil.ReadFile ("/etc/jetrailsd/config.yaml"); error == nil {
 		if error = yaml.Unmarshal ( yamlfile, &c ); error == nil {
 			return c.Auth
@@ -31,7 +31,7 @@ func LoadDaemonAuth () string {
 func CollectTypes () [] string {
 	var types [] string
 	var contexts [] Context
-	viper.UnmarshalKey ( "daemons", &contexts )
+	viper.UnmarshalKey ( "servers", &contexts )
 	for _, context := range contexts {
 		for _, t := range context.Types {
 			if !includes ( t, types ) {
@@ -44,7 +44,7 @@ func CollectTypes () [] string {
 
 func FilterWithService ( selector, service string ) [] Context {
 	var filtered [] Context
-	for _, context := range LoadDaemons () {
+	for _, context := range LoadServers () {
 		if includes ( selector, context.Types ) {
 			response := ListServices ( context )
 			if response.Code == 200 && includes ( service, response.Payload ) {
@@ -84,15 +84,15 @@ func Filter ( contexts [] Context, filters [] string ) [] Context {
 	return filtered
 }
 
-func LoadDaemons () [] Context {
+func LoadServers () [] Context {
 	var contexts [] Context
 	debug := viper.GetBool ("debug")
-	viper.UnmarshalKey ( "daemons", &contexts )
+	viper.UnmarshalKey ( "servers", &contexts )
 	if len ( contexts ) == 0 {
 		context := Context {
 			Debug: debug,
 			Endpoint: "localhost:27482",
-			Token: LoadDaemonAuth (),
+			Token: LoadServerAuth (),
 			Types: [] string { "localhost" },
 		}
 		contexts = append ( contexts, context )
@@ -104,7 +104,7 @@ func LoadDaemons () [] Context {
 }
 
 func ForEach ( Runner func ( int, int, Context ) ) int {
-	contexts := LoadDaemons ()
+	contexts := LoadServers ()
 	total := len ( contexts )
 	for index, context := range contexts {
 		Runner ( index, total, context )
@@ -113,7 +113,7 @@ func ForEach ( Runner func ( int, int, Context ) ) int {
 }
 
 func FilterForEach ( filters [] string, Runner func ( int, int, Context ) ) int {
-	contexts := Filter ( LoadDaemons (), filters )
+	contexts := Filter ( LoadServers (), filters )
 	total := len ( contexts )
 	for index, context := range contexts {
 		Runner ( index, total, context )

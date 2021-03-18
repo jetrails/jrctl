@@ -1,4 +1,4 @@
-package daemon
+package server
 
 type Context struct {
 	Debug bool       `json:"debug"`
@@ -7,6 +7,6 @@ type Context struct {
 	Types [] string  `json:"types"`
 }
 
-type DaemonConfig struct {
+type ServerConfig struct {
 	Auth string  `yaml:"auth"`
 }
