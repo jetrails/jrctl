@@ -11,6 +11,7 @@ var serverCmd = &cobra.Command {
 	Example: utils.Examples ([] string {
 		"jrctl server list -h",
 		"jrctl server version -h",
+		"jrctl server restart -h",
 	}),
 }
 

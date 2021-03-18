@@ -28,7 +28,7 @@ var serverListCmd = &cobra.Command {
 			filter = [] string { selector }
 			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Server", "Type(s)", "Status", "Service(s)" } }
+		rows := [] [] string { [] string { "Server", "Type(s)", "Service(s)" } }
 		runner := func ( index, total int, context server.Context ) {
 			response := server.ListServices ( context )
 			var row [] string
@@ -36,26 +36,27 @@ var serverListCmd = &cobra.Command {
 				row = [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					strings.Join ( context.Types, ", " ),
-					response.Status,
 					response.Messages [ 0 ],
 				}
 			} else {
 				row = [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
 					strings.Join ( context.Types, ", " ),
-					response.Status,
 					strings.Join ( response.Payload, ", " ),
 				}
 			}
 			if row [ 1 ] == "" {
 				row [ 1 ] = "-"
 			}
-			if row [ 3 ] == "" {
-				row [ 3 ] = "-"
+			if row [ 2 ] == "" {
+				row [ 2 ] = "-"
 			}
 			rows = append ( rows, row )
 		}
 		server.FilterForEach ( filter, runner )
+		if selector != "" && len ( rows ) > 1 {
+			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+		}
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }

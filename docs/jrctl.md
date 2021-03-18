@@ -19,5 +19,4 @@ our Github repository.
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
 * [jrctl secret](jrctl_secret.md)	 - Interact with our one-time secret service
 * [jrctl server](jrctl_server.md)	 - Interact with configured servers
-* [jrctl service](jrctl_service.md)	 - Interact with system services
 

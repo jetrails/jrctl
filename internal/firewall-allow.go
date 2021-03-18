@@ -49,6 +49,9 @@ var firewallAllowCmd = &cobra.Command {
 			rows = append ( rows, row )
 		}
 		server.FilterForEach ( [] string { selector }, runner )
+		if len ( rows ) > 1 {
+			fmt.Printf ( "\nExecuted only on server(s) with type %q:\n", selector )
+		}
 		utils.TablePrint ( fmt.Sprintf ( "No configured servers found with type %q.", selector ), rows, 1 )
 	},
 }

@@ -27,7 +27,7 @@ var firewallListCmd = &cobra.Command {
 	}),
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		selector, _ := cmd.Flags ().GetString ("type")
-		responseRows := [] [] string { [] string { "Server", "Status", "Response" } }
+		responseRows := [] [] string { [] string { "Server", "Response" } }
 		entryRows := [] [] string { [] string { "Server", "IPV4/CIDR", "Port(s)" } }
 		filter := [] string {}
 		emptyMsg := "No configured servers found."
@@ -39,7 +39,6 @@ var firewallListCmd = &cobra.Command {
 			response := firewall.List ( context )
 			responseRow := [] string {
 				strings.TrimSuffix ( context.Endpoint, ":27482" ),
-				response.Status,
 				response.Messages [ 0 ],
 			}
 			responseRows = append ( responseRows, responseRow )
@@ -53,6 +52,9 @@ var firewallListCmd = &cobra.Command {
 			}
 		}
 		server.FilterForEach ( filter, runner )
+		if selector != "" && len ( responseRows ) > 1 {
+			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+		}
 		fmt.Println ()
 		utils.TablePrint ( emptyMsg, responseRows, 0 )
 		fmt.Println ()

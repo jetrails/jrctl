@@ -27,26 +27,27 @@ var serverVersionCmd = &cobra.Command {
 			filter = [] string { selector }
 			emptyMsg = fmt.Sprintf ( "No configured servers found with type %q.", selector )
 		}
-		rows := [] [] string { [] string { "Server", "Status", "Version" } }
+		rows := [] [] string { [] string { "Server", "Version" } }
 		runner := func ( index, total int, context server.Context ) {
 			response := server.Version ( context )
 			var row [] string
 			if response.Code != 200 {
 				row = [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
-					response.Status,
 					response.Messages [ 0 ],
 				}
 			} else {
 				row = [] string {
 					strings.TrimSuffix ( context.Endpoint, ":27482" ),
-					response.Status,
 					response.Payload,
 				}
 			}
 			rows = append ( rows, row )
 		}
 		server.FilterForEach ( filter, runner )
+		if selector != "" && len ( rows ) > 1 {
+			fmt.Printf ( "\nDisplaying results with server type %q:\n", selector )
+		}
 		utils.TablePrint ( emptyMsg, rows, 1 )
 	},
 }

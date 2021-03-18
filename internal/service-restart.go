@@ -11,7 +11,7 @@ import (
 	"github.com/jetrails/jrctl/sdk/server"
 )
 
-var serviceRestartCmd = &cobra.Command {
+var serverRestartCmd = &cobra.Command {
 	Use: "restart SERVICE...",
 	Args: cobra.MinimumNArgs ( 1 ),
 	Short: "Restart apache, nginx, mysql, or varnish service",
@@ -65,12 +65,15 @@ var serviceRestartCmd = &cobra.Command {
 			}
 			server.FilterWithServiceForEach ( selector, arg, runner )
 		}
+		if len ( rows ) > 1 {
+			fmt.Printf ( "\nExecuted only on server(s) with type %q:\n", selector )
+		}
 		utils.TablePrint ( fmt.Sprintf ( "Specified services not running on server type %q.", selector ), rows, 1 )
 	},
 }
 
 func init () {
-	serviceCmd.AddCommand ( serviceRestartCmd )
-	serviceRestartCmd.Flags ().SortFlags = true
-	serviceRestartCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
+	serverCmd.AddCommand ( serverRestartCmd )
+	serverRestartCmd.Flags ().SortFlags = true
+	serverRestartCmd.Flags ().StringP ( "type", "t", "localhost", "specify deamon type selector, useful for cluster deployments" )
 }

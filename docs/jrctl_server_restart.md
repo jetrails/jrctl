@@ -1,4 +1,4 @@
-## jrctl service restart
+## jrctl server restart
 
 Restart apache, nginx, mysql, or varnish service
 
@@ -11,7 +11,7 @@ restart it, the server first validates the respected service's configuration.
 Services can be repeated and execution will happen in the order that is given.
 
 ```
-jrctl service restart SERVICE... [flags]
+jrctl server restart SERVICE... [flags]
 ```
 
 ### Examples
@@ -32,5 +32,5 @@ jrctl service restart nginx varnish php-fpm-7.2 nginx
 
 ### SEE ALSO
 
-* [jrctl service](jrctl_service.md)	 - Interact with system services
+* [jrctl server](jrctl_server.md)	 - Interact with configured servers
 
