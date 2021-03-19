@@ -16,12 +16,18 @@ $ brew tap jetrails/tap
 $ brew install jrctl
 ```
 
-## Installation (Linux)
+## Installation (RedHat)
 
 ```shell
-$ curl -Ls https://github.com/jetrails/jrctl/releases/download/1.1.0/jrctl_linux_amd64 -o jrctl
-$ chmod +x jrctl
-$ sudo mv jrctl /usr/local/bin/jrctl
+$ rpm -i https://github.com/jetrails/jrctl/releases/download/1.1.0/jrctl-1.1.0.x86_64.rpm
+```
+
+## Installation (Debian)
+
+```shell
+$ curl -sL -o /var/cache/apt/archives/jrctl_1.1.0_amd64.deb https://github.com/jetrails/jrctl/releases/download/1.1.0/jrctl_1.1.0_amd64.deb
+$ dpkg -i /var/cache/apt/archives/jrctl_1.1.0_amd64.deb
+$ rm /var/cache/apt/archives/jrctl_1.1.0_amd64.deb
 ```
 
 ## Building & Running
