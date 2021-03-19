@@ -11,7 +11,7 @@ import (
 	vercmp "github.com/hashicorp/go-version"
 )
 
-const VersionString string = "1.0.4"
+const VersionString string = "1.1.0"
 const ReleasesUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
 const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
 
