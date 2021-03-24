@@ -1,0 +1,47 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-transfer\-receive \- Download file from secure server
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl transfer receive [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Download file from secure server. If no output path is specified, then the file
+is stored in the current directory and will be named after the file identifier.
+
+.PP
+The following environmental variables can be used: JR\_PUBLIC\_API\_ENDPOINT.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for receive
+
+.PP
+\fB\-o\fP, \fB\-\-output\fP=""
+	specify output file path
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o private.png
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-transfer(1)\fP

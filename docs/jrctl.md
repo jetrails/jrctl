@@ -19,4 +19,5 @@ our Github repository.
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
 * [jrctl secret](jrctl_secret.md)	 - Interact with one-time secret service
 * [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
+* [jrctl transfer](jrctl_transfer.md)	 - Securely transfer files from one machine to another
 

@@ -1,0 +1,45 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-transfer\-send \- Upload file to secure server
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl transfer send [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Upload file to secure server. File is encrypted and stored for an hour.
+
+.PP
+The following environmental variables can be used: JR\_PUBLIC\_API\_ENDPOINT.
+
+
+.SH OPTIONS
+.PP
+\fB\-c\fP, \fB\-\-clipboard\fP[=false]
+	copy file identifier to clipboard
+
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for send
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl transfer send private.png
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-transfer(1)\fP
