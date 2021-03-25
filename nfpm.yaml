@@ -15,8 +15,11 @@ license: The JetRails License
 contents:
 -   src: man/*
     dst: /usr/share/man/man1
-    type: doc
 -   src: bin/jrctl_linux_amd64
     dst: /usr/bin/jrctl
-empty_folders:
--   /etc/jrctl
+scripts:
+    postinstall: scripts/post-install.sh
+    preremove: scripts/pre-remove.sh
+depends:
+-   bash-completion
+-   man
