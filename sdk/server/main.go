@@ -100,6 +100,7 @@ func LoadServers () [] Context {
 	}
 	for i, _ := range contexts {
 		contexts [ i ].Debug = debug
+		contexts [ i ].Insecure = insecure
 	}
 	return contexts
 }
