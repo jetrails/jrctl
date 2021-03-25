@@ -24,10 +24,10 @@ var serverRestartCmd = &cobra.Command {
 		}),
 	}),
 	Example: utils.Examples ([] string {
-		"jrctl service restart nginx",
-		"jrctl service restart nginx varnish",
-		"jrctl service restart nginx varnish php-fpm",
-		"jrctl service restart nginx varnish php-fpm-7.2 nginx",
+		"jrctl server restart nginx",
+		"jrctl server restart nginx varnish",
+		"jrctl server restart nginx varnish php-fpm",
+		"jrctl server restart nginx varnish php-fpm-7.2 nginx",
 	}),
 	RunE: func ( cmd * cobra.Command, args [] string ) error {
 		validServices := server.CollectServices ()
