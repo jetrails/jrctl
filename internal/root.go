@@ -3,9 +3,13 @@ package internal
 import (
 	"fmt"
 	"os"
+	"os/user"
+	"path"
 	"github.com/jetrails/jrctl/sdk/color"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/env"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -37,7 +41,7 @@ func Execute () {
 
 func init () {
 	cobra.OnInitialize ( initConfig )
-	version.CheckVersion ( viper.GetBool ("debug") )
+	version.CheckVersion ( env.GetBool ( "debug", false ) )
 }
 
 func initConfig () {
@@ -45,23 +49,29 @@ func initConfig () {
 		viper.SetConfigFile ( config )
 	} else {
 		viper.AddConfigPath ("$HOME/.jrctl")
-		viper.AddConfigPath ("/etc/jrctl")
 		viper.SetConfigName ("config")
 		viper.SetConfigType ("yaml")
-		viper.SetEnvPrefix ("JR")
-		viper.SetDefault ( "public_api_endpoint", "api-public.jetrails.cloud" )
-		viper.SetDefault ( "secret_endpoint", "secret.jetrails.cloud" )
-		viper.SafeWriteConfigAs ("/etc/jrctl/config.yaml")
+		viper.SetDefault ( "servers", [] server.Entry {
+			server.Entry {
+				Endpoint: "127.0.0.1:27482",
+				Token: "REPLACE_WITH_AUTH_TOKEN",
+				Types: [] string { "localhost" },
+			},
+		})
+		if usr, error := user.Current (); error == nil {
+			os.MkdirAll ( path.Join ( usr.HomeDir, ".jrctl" ), 0755 )
+			viper.SafeWriteConfig ()
+		}
 	}
-	viper.AutomaticEnv ()
 	viper.ReadInConfig ()
-	if ( viper.GetBool ("debug") ) {
+	if ( env.GetBool ( "debug", false ) ) {
 		fmt.Println ("---")
-		fmt.Println ( color.CyanString ( "config:" ), viper.ConfigFileUsed () )
-		fmt.Println ( color.CyanString ( "debug:" ), viper.GetString ("debug") )
-		fmt.Println ( color.CyanString ( "color:" ), viper.GetString ("color") )
-		fmt.Println ( color.CyanString ( "public_api_endpoint:" ), viper.GetString ("public_api_endpoint") )
-		fmt.Println ( color.CyanString ( "secret_endpoint:" ), viper.GetString ("secret_endpoint") )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("config"), viper.ConfigFileUsed () )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("debug"), env.GetBool ( "debug", false ) )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("insecure"), env.GetBool ( "insecure", false ) )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("color"), env.GetBool ( "color", true ) )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("public_api_endpoint"), env.GetString ( "public_api_endpoint", "api-public.jetrails.cloud" ) )
+		fmt.Printf ( "%s: %v\n", color.CyanString ("secret_endpoint"), env.GetString ( "secret_endpoint", "secret.jetrails.cloud" ) )
 		fmt.Println ("---")
 	}
 }

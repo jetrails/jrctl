@@ -5,7 +5,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/env"
 	"github.com/jetrails/jrctl/sdk/transfer"
 	"github.com/jetrails/jrctl/sdk/utils"
 )
@@ -17,9 +17,6 @@ var transferReceiveCmd = &cobra.Command {
 		utils.Paragraph ( [] string {
 			"Download file from secure server.",
 			"If no output path is specified, then the file is stored in the current directory and will be named after the file identifier.",
-		}),
-		utils.Paragraph ( [] string {
-			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -36,15 +33,16 @@ var transferReceiveCmd = &cobra.Command {
 			output = "./" + identifier
 		}
 		context := transfer.PublicApiContext {
-			Endpoint: viper.GetString ("public_api_endpoint"),
-			Debug: viper.GetBool ("debug"),
+			Endpoint: env.GetString ( "public_api_endpoint", "api-public.jetrails.cloud" ),
+			Debug: env.GetBool ( "debug", false ),
+			Insecure: env.GetBool ( "insecure", false ),
 		}
 		request := transfer.ReceiveRequest {
 			Identifier: identifier,
 			Password: password,
 		}
 		response, error := transfer.Receive ( context, request )
-		if error.Code != 200 && error.Code != 0 {
+		if error != nil && error.Code != 200 {
 			fmt.Printf ( "\n%s\n\n", error.Message )
 			return
 		}

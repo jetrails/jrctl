@@ -11,7 +11,7 @@ import (
 func Version ( context Context ) VersionResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
-	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
+	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	_, body, errors := request.
 		Get ( fmt.Sprintf ("https://%s/version", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).
@@ -36,7 +36,7 @@ func Version ( context Context ) VersionResponse {
 func ListServices ( context Context ) ListServicesResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
-	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
+	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	_, body, errors := request.
 		Get ( fmt.Sprintf ("https://%s/service", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).
@@ -61,7 +61,7 @@ func ListServices ( context Context ) ListServicesResponse {
 func Restart ( context Context, data RestartRequest ) RestartResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
-	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
+	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	_, body, errors := request.
 		Post ( fmt.Sprintf ("https://%s/service/restart", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).

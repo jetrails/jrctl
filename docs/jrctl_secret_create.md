@@ -8,9 +8,6 @@ Create a new one-time secret. A secret's content can be populated by passing a
 filepath, or it can be manually specified through STDIN. Optionally, the
 secret's url can be copied to your clipboard by passing the --clipboard flag!
 
-The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT,
-JR_SECRET_ENDPOINT.
-
 ```
 jrctl secret create [flags]
 ```

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/env"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/secret"
 )
@@ -17,9 +17,6 @@ var secretDeleteCmd = &cobra.Command {
 			"Delete secret without viewing contents.",
 			"Passing the secret identifier will make a request to destroy the secret without displaying the secret's contents.",
 			"If the secret's URL is passed, the identifier is extracted automatically.",
-		}),
-		utils.Paragraph ( [] string {
-			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -34,17 +31,18 @@ var secretDeleteCmd = &cobra.Command {
 	},
 	Run: func ( cmd * cobra.Command, args [] string ) {
 		identifier := args [ 0 ]
-		identifier = strings.TrimPrefix ( identifier, fmt.Sprintf ( "https://%s/secret/", viper.GetString ("secret_endpoint") ) )
+		identifier = strings.TrimPrefix ( identifier, fmt.Sprintf ( "https://%s/secret/", env.GetString ( "secret_endpoint", "secret.jetrails.cloud" ) ) )
 		identifier = strings.Trim ( identifier, "/" )
 		context := secret.PublicApiContext {
-			Endpoint: viper.GetString ("public_api_endpoint"),
-			Debug: viper.GetBool ("debug"),
+			Endpoint: env.GetString ( "public_api_endpoint", "api-public.jetrails.cloud" ),
+			Debug: env.GetBool ( "debug", false ),
+			Insecure: env.GetBool ( "insecure", false ),
 		}
 		request := secret.SecretDeleteRequest {
 			Identifier: identifier,
 		}
 		response, error := secret.SecretDelete ( context, request )
-		if error.Code != 200 && error.Code != 0 {
+		if error != nil && error.Code != 200 {
 			fmt.Printf ( "\n%s\n\n", error.Message )
 			return
 		}

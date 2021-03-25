@@ -5,21 +5,10 @@ import (
 	"sort"
 	"errors"
 	"strings"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
 	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/env"
 	"github.com/jetrails/jrctl/sdk/utils"
 )
-
-func LoadServerAuth () string {
-	var c ServerConfig
-	if yamlfile, error := ioutil.ReadFile ("/etc/jetrailsd/config.yaml"); error == nil {
-		if error = yaml.Unmarshal ( yamlfile, &c ); error == nil {
-			return c.Auth
-		}
-	}
-	return ""
-}
 
 func CollectTypes () [] string {
 	var types [] string
@@ -96,13 +85,15 @@ func Filter ( contexts [] Context, filters [] string ) [] Context {
 
 func LoadServers () [] Context {
 	var contexts [] Context
-	debug := viper.GetBool ("debug")
+	debug := env.GetBool ( "debug", false )
+	insecure := env.GetBool ( "insecure", true )
 	viper.UnmarshalKey ( "servers", &contexts )
 	if len ( contexts ) == 0 {
 		context := Context {
 			Debug: debug,
+			Insecure: insecure,
 			Endpoint: "127.0.0.1:27482",
-			Token: LoadServerAuth (),
+			Token: "AUTH_TOKEN_IS_NOT_CONFIGURED",
 			Types: [] string { "localhost" },
 		}
 		contexts = append ( contexts, context )

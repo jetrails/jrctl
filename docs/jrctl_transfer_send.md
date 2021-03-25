@@ -6,8 +6,6 @@ Upload file to secure server
 
 Upload file to secure server. File is encrypted and stored for an hour.
 
-The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.
-
 ```
 jrctl transfer send [flags]
 ```

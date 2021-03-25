@@ -12,7 +12,7 @@ import (
 func List ( context server.Context ) ListResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
-	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
+	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	_, body, errors := request.
 		Get ( fmt.Sprintf ("https://%s/whitelist", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).
@@ -37,7 +37,7 @@ func List ( context server.Context ) ListResponse {
 func Add ( context server.Context, data AllowRequest ) AllowResponse {
 	var request = gorequest.New ()
 	request.SetDebug ( context.Debug )
-	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: true })
+	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	_, body, errors := request.
 		Put ( fmt.Sprintf ("https://%s/whitelist", context.Endpoint ) ).
 		Set ( "Content-Type", "application/json" ).

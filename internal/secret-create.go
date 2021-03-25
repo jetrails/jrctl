@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
+	"github.com/jetrails/jrctl/sdk/env"
 	"github.com/jetrails/jrctl/sdk/secret"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/atotto/clipboard"
@@ -18,9 +18,6 @@ var secretCreateCmd = &cobra.Command {
 			"Create a new one-time secret.",
 			"A secret's content can be populated by passing a filepath, or it can be manually specified through STDIN.",
 			"Optionally, the secret's url can be copied to your clipboard by passing the --clipboard flag!",
-		}),
-		utils.Paragraph ( [] string {
-			"The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT, JR_SECRET_ENDPOINT.",
 		}),
 	}),
 	Example: utils.Examples ([] string {
@@ -49,8 +46,9 @@ var secretCreateCmd = &cobra.Command {
 			content = utils.PromptContent ("Secret")
 		}
 		context := secret.PublicApiContext {
-			Endpoint: viper.GetString ("public_api_endpoint"),
-			Debug: viper.GetBool ("debug"),
+			Endpoint: env.GetString ( "public_api_endpoint", "api-public.jetrails.cloud" ),
+			Debug: env.GetBool ( "debug", false ),
+			Insecure: env.GetBool ( "insecure", false ),
 		}
 		request := secret.SecretCreateRequest {
 			Data: content,
@@ -59,13 +57,13 @@ var secretCreateCmd = &cobra.Command {
 			AutoGenerate: generate,
 		}
 		response, error := secret.SecretCreate ( context, request )
-		if error.Code != 200 && error.Code != 0 {
+		if error != nil && error.Code != 200 {
 			fmt.Printf ( "\n%s\n\n", error.Message )
 			return
 		}
 		url := fmt.Sprintf (
 			"https://%s/secret/%s",
-			viper.GetString ("secret_endpoint"),
+			env.GetString ( "secret_endpoint", "secret.jetrails.cloud" ),
 			response.Identifier,
 		)
 		displayPassword := "None"

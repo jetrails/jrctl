@@ -1,8 +1,8 @@
 package color
 
 import (
-	"os"
 	"fmt"
+	"github.com/jetrails/jrctl/sdk/env"
 )
 
 const Format string = "\x1b[%dm%s\x1b[0m"
@@ -16,7 +16,7 @@ const Cyan int = 36
 const White int = 37
 
 func hasColor () bool {
-	return os.Getenv ("JR_COLOR") == "" || os.Getenv ("JR_COLOR") == "true"
+	return env.GetBool ( "color", true )
 }
 
 func GetLogo () string {

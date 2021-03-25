@@ -3,8 +3,8 @@ package utils
 import (
 	"regexp"
 	"strings"
-	"os"
 	"os/user"
+	"github.com/jetrails/jrctl/sdk/env"
 )
 
 func Includes ( a string, list [] string ) bool {
@@ -18,7 +18,7 @@ func Includes ( a string, list [] string ) bool {
 
 func Examples ( examples [] string ) string {
 	space := "  "
-	if os.Getenv ("JR_DOCS") == "true" {
+	if env.GetBool ( "docs", false ) {
 		space = ""
 	}
 	for i, e := range examples {

@@ -7,8 +7,6 @@ Download file from secure server
 Download file from secure server. If no output path is specified, then the file
 is stored in the current directory and will be named after the file identifier.
 
-The following environmental variables can be used: JR_PUBLIC_API_ENDPOINT.
-
 ```
 jrctl transfer receive [flags]
 ```
