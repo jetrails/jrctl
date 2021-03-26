@@ -13,18 +13,25 @@ jrctl\-transfer\-receive \- Download file from secure server
 
 .SH DESCRIPTION
 .PP
-Download file from secure server. If no output path is specified, then the file
-is stored in the current directory and will be named after the file identifier.
+Download file from secure server.
 
 
 .SH OPTIONS
+.PP
+\fB\-f\fP, \fB\-\-force\fP[=false]
+	force download, overwrite existing file
+
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
 	help for receive
 
 .PP
-\fB\-o\fP, \fB\-\-output\fP=""
-	specify output file path
+\fB\-n\fP, \fB\-\-name\fP=""
+	specify file name
+
+.PP
+\fB\-o\fP, \fB\-\-out\-dir\fP=""
+	specify download directory, default $PWD
 
 
 .SH EXAMPLE
@@ -33,7 +40,10 @@ is stored in the current directory and will be named after the file identifier.
 
 .nf
 jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo
-jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o private.png
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-f
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o ./private/
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-n custom.name
+jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o ./private/ \-n custom.name
 
 .fi
 .RE

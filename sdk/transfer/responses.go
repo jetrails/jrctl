@@ -15,5 +15,6 @@ type SendResponse struct {
 }
 
 type ReceiveResponse struct {
+	FileName string
 	Bytes [] byte
 }

@@ -27,6 +27,23 @@ func ReadFile ( path string ) ( string, error ) {
 	return string ( content ), nil
 }
 
+func PromptYesNo ( prompt string ) bool {
+	reader := bufio.NewReader ( os.Stdin )
+	for {
+		fmt.Printf ( "%s [y/n]: ", prompt )
+		response, error := reader.ReadString ( '\n' )
+		if error != nil {
+			return false
+		}
+		response = strings.ToLower ( strings.TrimSpace ( response ) )
+		if response == "y" || response == "yes" {
+			return true
+		} else if response == "n" || response == "no" {
+			return false
+		}
+	}
+}
+
 func SaveScreen () {
 	fmt.Printf ("\033[?1049h\033[H")
 }

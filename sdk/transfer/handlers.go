@@ -2,6 +2,7 @@ package transfer
 
 import (
 	"fmt"
+	"mime"
 	"encoding/json"
 	"crypto/tls"
 	"github.com/jetrails/jrctl/sdk/utils"
@@ -64,5 +65,12 @@ func Receive ( context PublicApiContext, data ReceiveRequest ) ( ReceiveResponse
 		}
 		return ReceiveResponse {}, &errorResponse
 	}
-	return ReceiveResponse { Bytes: [] byte ( body ) }, nil
+	disposition := response.Header.Get ("Content-Disposition")
+	filename := data.Identifier + "-" + data.Password
+	if _, params, error := mime.ParseMediaType ( disposition ); error == nil {
+		if params ["filename"] != "" {
+			filename = params ["filename"]
+		}
+	}
+	return ReceiveResponse { FileName: filename, Bytes: [] byte ( body ) }, nil
 }
