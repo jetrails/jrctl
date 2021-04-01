@@ -5,6 +5,7 @@ import (
 	"mime"
 	"encoding/json"
 	"crypto/tls"
+	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/parnurzeal/gorequest"
 )
@@ -15,6 +16,7 @@ func Send ( context PublicApiContext, data SendRequest ) ( SendResponse, * Error
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	response, body, errors := request.
 		Post ( fmt.Sprintf ( "https://%s/%s", context.Endpoint, "transfer/upload" ) ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Type ("multipart").
 		SendFile ( data.FilePath ).
 		End ()
@@ -46,6 +48,7 @@ func Receive ( context PublicApiContext, data ReceiveRequest ) ( ReceiveResponse
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	response, body, errors := request.
 		Get ( fmt.Sprintf ( "https://%s/%s", context.Endpoint, "transfer/download" ) ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Query ( data ).
 		End ()
 	if errors != nil {

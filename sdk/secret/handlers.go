@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"crypto/tls"
 	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -14,6 +15,8 @@ func SecretCreate ( context PublicApiContext, data SecretCreateRequest ) ( Secre
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	response, body, errors := request.
 		Post ( fmt.Sprintf ( "https://%s/%s", context.Endpoint, "secret" ) ).
+		Set ( "Content-Type", "application/json" ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Send ( data ).
 		End ()
 	if errors != nil {
@@ -44,6 +47,8 @@ func SecretDelete ( context PublicApiContext, data SecretDeleteRequest ) ( Secre
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	response, body, errors := request.
 		Delete ( fmt.Sprintf ( "https://%s/%s", context.Endpoint, "secret" ) ).
+		Set ( "Content-Type", "application/json" ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Send ( data ).
 		End ()
 	if errors != nil {
@@ -74,6 +79,8 @@ func SecretRead ( context PublicApiContext, data SecretReadRequest ) ( SecretRea
 	request.TLSClientConfig ( &tls.Config { InsecureSkipVerify: context.Insecure })
 	response, body, errors := request.
 		Get ( fmt.Sprintf ( "https://%s/%s", context.Endpoint, "secret" ) ).
+		Set ( "Content-Type", "application/json" ).
+		Set ( "User-Agent", fmt.Sprintf ( "jrctl/%s", version.VersionString ) ).
 		Query ( data ).
 		End ()
 	if errors != nil {
