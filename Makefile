@@ -3,7 +3,7 @@ VERSION=$(shell git describe --tags `git rev-list --tags --max-count=1`)
 LINUX=$(EXECUTABLE)_linux_amd64
 DARWIN=$(EXECUTABLE)_darwin_amd64
 
-.PHONY: help clean docs
+.PHONY: help clean docs format
 
 build: linux darwin ## Build for all platforms
 	@echo version: $(VERSION)
@@ -28,6 +28,9 @@ docs: ## Generate documentation
 	mkdir -p docs man
 	rm -rf man/* docs/*.md
 	JR_DOCS=true JR_COLOR=false go run tools/generate-docs.go
+
+format: ## Format code with goimports
+	goimports -w cmd internal tools sdk
 
 package: build docs ## Package binary for many distributions
 	mkdir -p ./dist

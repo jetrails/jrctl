@@ -1,41 +1,42 @@
 package utils
 
 import (
-	"strings"
-	"os"
-	"fmt"
 	"bufio"
+	"fmt"
 	"io/ioutil"
+	"os"
+	"strings"
+
 	"golang.org/x/crypto/ssh/terminal"
 )
 
-func PromptPassword ( prompt string, value string ) string {
+func PromptPassword(prompt string, value string) string {
 	if value == "" {
-		fmt.Printf ( prompt )
-		input, _ := terminal.ReadPassword ( 0 )
-		fmt.Printf ("\r\033[K")
-		return string ( input )
+		fmt.Printf(prompt)
+		input, _ := terminal.ReadPassword(0)
+		fmt.Printf("\r\033[K")
+		return string(input)
 	}
 	return value
 }
 
-func ReadFile ( path string ) ( string, error ) {
-	content, error := ioutil.ReadFile ( path )
+func ReadFile(path string) (string, error) {
+	content, error := ioutil.ReadFile(path)
 	if error != nil {
 		return "", error
 	}
-	return string ( content ), nil
+	return string(content), nil
 }
 
-func PromptYesNo ( prompt string ) bool {
-	reader := bufio.NewReader ( os.Stdin )
+func PromptYesNo(prompt string) bool {
+	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Printf ( "%s [y/n]: ", prompt )
-		response, error := reader.ReadString ( '\n' )
+		fmt.Printf("%s [y/n]: ", prompt)
+		response, error := reader.ReadString('\n')
 		if error != nil {
 			return false
 		}
-		response = strings.ToLower ( strings.TrimSpace ( response ) )
+		response = strings.ToLower(strings.TrimSpace(response))
 		if response == "y" || response == "yes" {
 			return true
 		} else if response == "n" || response == "no" {
@@ -44,27 +45,27 @@ func PromptYesNo ( prompt string ) bool {
 	}
 }
 
-func SaveScreen () {
-	fmt.Printf ("\033[?1049h\033[H")
+func SaveScreen() {
+	fmt.Printf("\033[?1049h\033[H")
 }
 
-func RestoreScreen () {
-	fmt.Printf ("\033[?1049l")
-	fmt.Printf ("\033[34h\033[?25h")
+func RestoreScreen() {
+	fmt.Printf("\033[?1049l")
+	fmt.Printf("\033[34h\033[?25h")
 }
 
-func PromptContent ( prompt string ) string {
-	SaveScreen ()
-	defer RestoreScreen ()
+func PromptContent(prompt string) string {
+	SaveScreen()
+	defer RestoreScreen()
 	var input = ""
-	reader := bufio.NewReader ( os.Stdin )
-	fmt.Printf ( "%s (Ctrl-D to end input):\n\n", prompt )
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Printf("%s (Ctrl-D to end input):\n\n", prompt)
 	for true {
-		byte, _ := reader.ReadByte ()
+		byte, _ := reader.ReadByte()
 		if byte == 0 {
 			break
 		}
-		input += string ( byte )
+		input += string(byte)
 	}
-	return strings.TrimSpace ( input )
+	return strings.TrimSpace(input)
 }

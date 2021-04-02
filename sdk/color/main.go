@@ -2,6 +2,7 @@ package color
 
 import (
 	"fmt"
+
 	"github.com/jetrails/jrctl/sdk/env"
 )
 
@@ -15,31 +16,31 @@ const Magenta int = 35
 const Cyan int = 36
 const White int = 37
 
-func hasColor () bool {
-	return env.GetBool ( "color", true )
+func hasColor() bool {
+	return env.GetBool("color", true)
 }
 
-func GetLogo () string {
-	return GreenString (">") + "jetrails" + GreenString ("_")
+func GetLogo() string {
+	return GreenString(">") + "jetrails" + GreenString("_")
 }
 
-func GreenString ( data string ) string {
-	if hasColor () {
-		return fmt.Sprintf ( Format, Green, data )
+func GreenString(data string) string {
+	if hasColor() {
+		return fmt.Sprintf(Format, Green, data)
 	}
 	return data
 }
 
-func CyanString ( data string ) string {
-	if hasColor () {
-		return fmt.Sprintf ( Format, Cyan, data )
+func CyanString(data string) string {
+	if hasColor() {
+		return fmt.Sprintf(Format, Cyan, data)
 	}
 	return data
 }
 
-func RedString ( data string ) string {
-	if hasColor () {
-		return fmt.Sprintf ( Format, Red, data )
+func RedString(data string) string {
+	if hasColor() {
+		return fmt.Sprintf(Format, Red, data)
 	}
 	return data
 }

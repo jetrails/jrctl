@@ -1,6 +1,6 @@
 package server
 
 type RestartRequest struct {
-	Service string  `json:"service"`
-	Version string  `json:"version"`
+	Service string `json:"service"`
+	Version string `json:"version"`
 }

@@ -1,13 +1,14 @@
 package utils
 
 import (
+	"os/user"
 	"regexp"
 	"strings"
-	"os/user"
+
 	"github.com/jetrails/jrctl/sdk/env"
 )
 
-func Includes ( a string, list [] string ) bool {
+func Includes(a string, list []string) bool {
 	for _, b := range list {
 		if b == a {
 			return true
@@ -16,31 +17,31 @@ func Includes ( a string, list [] string ) bool {
 	return false
 }
 
-func Examples ( examples [] string ) string {
+func Examples(examples []string) string {
 	space := "  "
-	if env.GetBool ( "docs", false ) {
+	if env.GetBool("docs", false) {
 		space = ""
 	}
 	for i, e := range examples {
-		examples [ i ] = space + e
+		examples[i] = space + e
 	}
-	return strings.Join ( examples, "\n" )
+	return strings.Join(examples, "\n")
 }
 
-func Combine ( lines [] string ) string {
-	return strings.Join ( lines, "\n\n" )
+func Combine(lines []string) string {
+	return strings.Join(lines, "\n\n")
 }
 
-func Paragraph ( lines [] string ) string {
+func Paragraph(lines []string) string {
 	width := 80
 	result := ""
 	line := ""
 	delim := ""
 	lineDelim := ""
-	combined := strings.Join ( lines, " " )
-	for _, word := range strings.Split ( combined, " " ) {
+	combined := strings.Join(lines, " ")
+	for _, word := range strings.Split(combined, " ") {
 		temp := line + delim + word
-		if ( len ( temp ) <= width ) {
+		if len(temp) <= width {
 			line = temp
 		} else {
 			result = result + lineDelim + line
@@ -52,14 +53,14 @@ func Paragraph ( lines [] string ) string {
 	return result + lineDelim + line
 }
 
-func GetUser () string {
-	user, error := user.Current ()
+func GetUser() string {
+	user, error := user.Current()
 	if error != nil {
 		return "unknown"
 	}
-	return SafeString ( user.Username )
+	return SafeString(user.Username)
 }
 
-func SafeString ( input string ) string {
-	return regexp.MustCompile ("[^a-zA-Z0-9]+").ReplaceAllString ( input, "_" )
+func SafeString(input string) string {
+	return regexp.MustCompile("[^a-zA-Z0-9]+").ReplaceAllString(input, "_")
 }
