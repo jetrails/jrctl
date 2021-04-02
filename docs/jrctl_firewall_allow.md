@@ -38,4 +38,5 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
 ### SEE ALSO
 
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
+* [jrctl firewall allow cloudflare](jrctl_firewall_allow_cloudflare.md)	 - Whitelist Cloudflare IP addresses
 

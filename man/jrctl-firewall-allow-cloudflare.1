@@ -1,0 +1,43 @@
+.nh
+.TH "JetRails CLI" "1" "Apr 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-firewall\-allow\-cloudflare \- Whitelist Cloudflare IP addresses
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl firewall allow cloudflare [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Whitelist Cloudflare IP addresses.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for cloudflare
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP="localhost"
+	specify server type, useful for cluster
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl firewall allow cloudflare
+jrctl firewall allow cloudflare \-t www
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-firewall\-allow(1)\fP

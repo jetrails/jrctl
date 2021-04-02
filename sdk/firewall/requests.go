@@ -6,3 +6,7 @@ type AllowRequest struct {
 	Blame string    `json:"blame"`
 	Comment string  `json:"comment"`
 }
+
+type CloudflareRequest struct {
+	Blame string    `json:"blame"`
+}
