@@ -3,14 +3,14 @@ package internal
 import (
 	"os"
 
-	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/spf13/cobra"
 )
 
 var completionCmd = &cobra.Command{
 	Use:   "completion [bash|zsh|fish]",
 	Short: "Generate completion script",
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"# bash - Linux",
 		"jrctl completion bash > /etc/bash_completion.d/jrctl",
 		"# bash - MacOS",
@@ -37,6 +37,6 @@ var completionCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(completionCmd)
+	RootCmd.AddCommand(completionCmd)
 	completionCmd.Flags().SortFlags = true
 }

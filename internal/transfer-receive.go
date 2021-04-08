@@ -7,21 +7,22 @@ import (
 	"path"
 	"strings"
 
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/input"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/transfer"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var transferReceiveCmd = &cobra.Command{
 	Use:   "receive",
 	Short: "Download file from secure server",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Download file from secure server.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo",
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -f",
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -o ./private/",
@@ -60,7 +61,7 @@ var transferReceiveCmd = &cobra.Command{
 		os.MkdirAll(outDir, 0755)
 		fmt.Println()
 		if _, error := os.Stat(filepath); error == nil {
-			if !force && !utils.PromptYesNo("File already exists, overwrite") {
+			if !force && !input.PromptYesNo("File already exists, overwrite") {
 				fmt.Printf("Skipping, did not write file to disk\n\n")
 				return
 			}

@@ -5,24 +5,24 @@ import (
 	"strings"
 
 	"github.com/atotto/clipboard"
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/secret"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var secretReadCmd = &cobra.Command{
 	Use:   "read IDENTIFIER",
 	Short: "Display contents of secret",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Display contents of secret.",
 			"Passing the secret identifier will allow us to retrieve the contents of the secret and print it to STDOUT.",
 			"Optionally, you can copy the contents to your clipboard by passing the --clipboard flag!",
 			"If the secret's URL is passed, the identifier is extracted automatically.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c",
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass",

@@ -5,23 +5,24 @@ import (
 	"strconv"
 
 	"github.com/atotto/clipboard"
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/input"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/secret"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var secretCreateCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create a new one-time secret",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Create a new one-time secret.",
 			"A secret's content can be populated by passing a filepath, or it can be manually specified through STDIN.",
 			"Optionally, the secret's url can be copied to your clipboard by passing the --clipboard flag!",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl secret create",
 		"jrctl secret create -c -a",
 		"jrctl secret create -c -t 60",
@@ -36,7 +37,7 @@ var secretCreateCmd = &cobra.Command{
 		generate, _ := cmd.Flags().GetBool("auto-generate")
 		password, _ := cmd.Flags().GetString("password")
 		if filepath != "" {
-			fileContents, error := utils.ReadFile(filepath)
+			fileContents, error := input.ReadFile(filepath)
 			if error != nil {
 				fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 				return
@@ -44,7 +45,7 @@ var secretCreateCmd = &cobra.Command{
 			content = fileContents
 		}
 		if content == "" {
-			content = utils.PromptContent("Secret")
+			content = input.PromptContent("Secret")
 		}
 		context := secret.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
@@ -78,7 +79,7 @@ var secretCreateCmd = &cobra.Command{
 			[]string{"TTL", "Password", "Secret URL"},
 			[]string{strconv.Itoa(ttl) + "s", displayPassword, url},
 		}
-		utils.TablePrint("Could not create secret.", rows, 1)
+		text.TablePrint("Could not create secret.", rows, 1)
 	},
 }
 

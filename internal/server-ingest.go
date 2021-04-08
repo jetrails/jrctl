@@ -7,8 +7,8 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v3"
@@ -17,12 +17,12 @@ import (
 var serverIngestCmd = &cobra.Command{
 	Use:   "ingest",
 	Short: "Ingest server token and save it to config",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Ingest server token and save it to config.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"echo -n TOKEN | jrctl server ingest -t localhost",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -95,7 +95,7 @@ var serverIngestCmd = &cobra.Command{
 				return
 			}
 		}
-		utils.TablePrint(emptyMsg, rows, 1)
+		text.TablePrint(emptyMsg, rows, 1)
 	},
 }
 

@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/array"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +15,8 @@ var serverRestartCmd = &cobra.Command{
 	Use:   "restart SERVICE...",
 	Args:  cobra.MinimumNArgs(1),
 	Short: "Restart specified service(s) running on configured server(s)",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Restart specified service(s) running on configured server(s).",
 			"In order to successfully restart a service, the server first validates the respected service's config file.",
 			"Once deemed valid, the service is restarted.",
@@ -24,7 +25,7 @@ var serverRestartCmd = &cobra.Command{
 			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl server restart nginx",
 		"jrctl server restart nginx varnish",
 		"jrctl server restart nginx varnish php-fpm",
@@ -33,7 +34,7 @@ var serverRestartCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		validServices := server.CollectServices()
 		for _, arg := range args {
-			if !utils.Includes(arg, validServices) {
+			if !array.HasString(validServices, arg) {
 				return errors.New(fmt.Sprintf(
 					"%q is not found, available services include: %v",
 					arg, "\""+strings.Join(validServices, "\", \"")+"\"",
@@ -66,7 +67,7 @@ var serverRestartCmd = &cobra.Command{
 		if len(rows) > 1 {
 			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
 		}
-		utils.TablePrint(fmt.Sprintf("Specified service(s) not running on %q server(s).", selector), rows, 1)
+		text.TablePrint(fmt.Sprintf("Specified service(s) not running on %q server(s).", selector), rows, 1)
 	},
 }
 

@@ -1,14 +1,14 @@
 package internal
 
 import (
-	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/spf13/cobra"
 )
 
 var secretCmd = &cobra.Command{
 	Use:   "secret",
 	Short: "Interact with one-time secret service",
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl secret create -h",
 		"jrctl secret delete -h",
 		"jrctl secret read -h",
@@ -16,6 +16,6 @@ var secretCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(secretCmd)
+	RootCmd.AddCommand(secretCmd)
 	secretCmd.Flags().SortFlags = true
 }

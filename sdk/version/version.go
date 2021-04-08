@@ -7,8 +7,8 @@ import (
 	"strings"
 
 	vercmp "github.com/hashicorp/go-version"
-	"github.com/jetrails/jrctl/sdk/color"
-	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/pkg/cache"
+	"github.com/jetrails/jrctl/pkg/color"
 	"github.com/parnurzeal/gorequest"
 )
 
@@ -35,7 +35,7 @@ func FindStable(releases []ReleaseEntry) (ReleaseEntry, error) {
 
 func CheckVersion(debug bool) {
 	var cacheWindow int64 = 60 * 60
-	cachedVersion, hit := utils.GetCache("version:"+VersionString, cacheWindow)
+	cachedVersion, hit := cache.GetCache("version:"+VersionString, cacheWindow)
 	versionObj, _ := vercmp.NewVersion(VersionString)
 	if hit {
 		cachedVersionObj, _ := vercmp.NewVersion(cachedVersion)
@@ -58,7 +58,7 @@ func CheckVersion(debug bool) {
 		var releases []ReleaseEntry
 		if error := json.Unmarshal([]byte(body), &releases); error == nil {
 			if newest, error := FindStable(releases); error == nil {
-				utils.SetCache("version:"+VersionString, newest.TagName, cacheWindow)
+				cache.SetCache("version:"+VersionString, newest.TagName, cacheWindow)
 				targetVersionObj, _ := vercmp.NewVersion(newest.TagName)
 				if versionObj.LessThan(targetVersionObj) {
 					fmt.Printf(

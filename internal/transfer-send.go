@@ -5,29 +5,30 @@ import (
 	"strconv"
 
 	"github.com/atotto/clipboard"
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/input"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/transfer"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var transferSendCmd = &cobra.Command{
 	Use:   "send",
 	Short: "Upload file to secure server",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Upload file to secure server.",
 			"File is encrypted and stored for an hour.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl transfer send private.png",
 	}),
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		filepath := args[0]
 		copy, _ := cmd.Flags().GetBool("clipboard")
-		if _, error := utils.ReadFile(filepath); error != nil {
+		if _, error := input.ReadFile(filepath); error != nil {
 			fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 			return
 		}
@@ -50,7 +51,7 @@ var transferSendCmd = &cobra.Command{
 			[]string{"TTL", "Identifier"},
 			[]string{strconv.Itoa(response.TTL) + "s", identifier},
 		}
-		utils.TablePrint("Could not send file.", rows, 1)
+		text.TablePrint("Could not send file.", rows, 1)
 	},
 }
 

@@ -5,21 +5,21 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var serverListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List servers in configured deployment",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"List servers in configured deployment.",
 			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl server list",
 		"jrctl server list -t admin",
 		"jrctl server list -t localhost",
@@ -63,7 +63,7 @@ var serverListCmd = &cobra.Command{
 		if selector != "" && len(rows) > 1 {
 			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
 		}
-		utils.TablePrint(emptyMsg, rows, 1)
+		text.TablePrint(emptyMsg, rows, 1)
 	},
 }
 

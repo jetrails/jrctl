@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/firewall"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var firewallAllowCloudflareCmd = &cobra.Command{
 	Use:   "cloudflare",
 	Short: "Whitelist Cloudflare IP addresses",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Whitelist Cloudflare IP addresses.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl firewall allow cloudflare",
 		"jrctl firewall allow cloudflare -t www",
 	}),
@@ -37,7 +37,7 @@ var firewallAllowCloudflareCmd = &cobra.Command{
 		if len(rows) > 1 {
 			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
 		}
-		utils.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
+		text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 	},
 }
 

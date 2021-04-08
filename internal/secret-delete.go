@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/secret"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var secretDeleteCmd = &cobra.Command{
 	Use:   "delete IDENTIFIER",
 	Short: "Delete secret without viewing contents",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Delete secret without viewing contents.",
 			"Passing the secret identifier will make a request to destroy the secret without displaying the secret's contents.",
 			"If the secret's URL is passed, the identifier is extracted automatically.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
 	}),
 	Args: func(cmd *cobra.Command, args []string) error {

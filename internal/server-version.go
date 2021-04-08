@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var serverVersionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Display daemon version running on configured servers",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Display daemon version running on configured servers.",
 			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl server version",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -50,7 +50,7 @@ var serverVersionCmd = &cobra.Command{
 		if selector != "" && len(rows) > 1 {
 			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
 		}
-		utils.TablePrint(emptyMsg, rows, 1)
+		text.TablePrint(emptyMsg, rows, 1)
 	},
 }
 

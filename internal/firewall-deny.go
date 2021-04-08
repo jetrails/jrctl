@@ -4,23 +4,23 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/firewall"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var firewallDenyCmd = &cobra.Command{
 	Use:   "deny",
 	Short: "Permanently denies a source IP address to a specific port",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"Denies a specified IP address to bypass the local system firewall by creating an 'deny' entry into the permanent firewall config.",
 			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
 			"Able to control a single (localhost) server as well as cluster of servers.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"# Stand-Alone Server",
 		"jrctl firewall deny -a 1.1.1.1 -p 80 -p 443",
 		"",
@@ -43,7 +43,7 @@ var firewallDenyCmd = &cobra.Command{
 				Address:  address,
 				Ports:    ports,
 				Protocol: protocol,
-				Comment:  utils.SafeString(comment),
+				Comment:  text.SanitizeString("[^a-zA-Z0-9]+", comment),
 			}
 			response := firewall.Deny(context, data)
 			row := []string{
@@ -56,7 +56,7 @@ var firewallDenyCmd = &cobra.Command{
 		if len(rows) > 1 {
 			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
 		}
-		utils.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
+		text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 	},
 }
 

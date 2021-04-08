@@ -6,8 +6,8 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/jetrails/jrctl/sdk/env"
-	"github.com/jetrails/jrctl/sdk/utils"
+	"github.com/jetrails/jrctl/pkg/array"
+	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/spf13/viper"
 )
 
@@ -17,7 +17,7 @@ func CollectTypes() []string {
 	viper.UnmarshalKey("servers", &contexts)
 	for _, context := range contexts {
 		for _, t := range context.Types {
-			if !utils.Includes(t, types) {
+			if !array.HasString(types, t) {
 				types = append(types, t)
 			}
 		}
@@ -32,7 +32,7 @@ func CollectServices() []string {
 		response := ListServices(context)
 		if response.Code == 200 {
 			for _, service := range response.Payload {
-				if !utils.Includes(service, services) {
+				if !array.HasString(services, service) {
 					services = append(services, service)
 				}
 			}
@@ -45,9 +45,9 @@ func CollectServices() []string {
 func FilterWithService(selector, service string) []Context {
 	var filtered []Context
 	for _, context := range LoadServers() {
-		if utils.Includes(selector, context.Types) {
+		if array.HasString(context.Types, selector) {
 			response := ListServices(context)
-			if response.Code == 200 && utils.Includes(service, response.Payload) {
+			if response.Code == 200 && array.HasString(response.Payload, service) {
 				filtered = append(filtered, context)
 			}
 		}
@@ -57,7 +57,7 @@ func FilterWithService(selector, service string) []Context {
 
 func IsValidType(t string) bool {
 	types := CollectTypes()
-	return utils.Includes(t, types)
+	return array.HasString(types, t)
 }
 
 func IsValidTypeError(t string) error {
@@ -73,7 +73,7 @@ func Filter(contexts []Context, filters []string) []Context {
 	for _, context := range contexts {
 		found := 0
 		for _, filter := range filters {
-			if utils.Includes(filter, context.Types) {
+			if array.HasString(context.Types, filter) {
 				found++
 			}
 		}

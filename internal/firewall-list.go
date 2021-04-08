@@ -4,22 +4,22 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/firewall"
 	"github.com/jetrails/jrctl/sdk/server"
-	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/spf13/cobra"
 )
 
 var firewallListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List firewall entries across configured servers",
-	Long: utils.Combine([]string{
-		utils.Paragraph([]string{
+	Long: text.Combine([]string{
+		text.Paragraph([]string{
 			"List firewall entries across configured servers.",
 			"Specifing a server type will only display results for servers of that type.",
 		}),
 	}),
-	Example: utils.Examples([]string{
+	Example: text.Examples([]string{
 		"jrctl firewall list",
 		"jrctl firewall list -t admin",
 		"jrctl firewall list -t db",
@@ -58,10 +58,10 @@ var firewallListCmd = &cobra.Command{
 			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
 		}
 		fmt.Println()
-		utils.TablePrint(emptyMsg, responseRows, 0)
+		text.TablePrint(emptyMsg, responseRows, 0)
 		fmt.Println()
 		if len(responseRows) > 1 {
-			utils.TablePrint("No firewall entries found.", entryRows, 0)
+			text.TablePrint("No firewall entries found.", entryRows, 0)
 			fmt.Println()
 		}
 	},

@@ -3,7 +3,7 @@ package color
 import (
 	"fmt"
 
-	"github.com/jetrails/jrctl/sdk/env"
+	"github.com/jetrails/jrctl/pkg/env"
 )
 
 const Format string = "\x1b[%dm%s\x1b[0m"

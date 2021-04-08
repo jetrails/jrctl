@@ -1,4 +1,4 @@
-package utils
+package input
 
 import (
 	"bufio"
@@ -6,19 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
-
-	"golang.org/x/crypto/ssh/terminal"
 )
-
-func PromptPassword(prompt string, value string) string {
-	if value == "" {
-		fmt.Printf(prompt)
-		input, _ := terminal.ReadPassword(0)
-		fmt.Printf("\r\033[K")
-		return string(input)
-	}
-	return value
-}
 
 func ReadFile(path string) (string, error) {
 	content, error := ioutil.ReadFile(path)
