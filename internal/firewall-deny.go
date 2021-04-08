@@ -10,23 +10,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var firewallAllowCmd = &cobra.Command{
-	Use:   "allow",
-	Short: "Permanently allows a source IP address to a specific port",
+var firewallDenyCmd = &cobra.Command{
+	Use:   "deny",
+	Short: "Permanently denies a source IP address to a specific port",
 	Long: utils.Combine([]string{
 		utils.Paragraph([]string{
-			"Allows a specified IP address to bypass the local system firewall by creating an 'allow' entry into the permanent firewall config.",
+			"Denies a specified IP address to bypass the local system firewall by creating an 'deny' entry into the permanent firewall config.",
 			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
 			"Able to control a single (localhost) server as well as cluster of servers.",
 		}),
 	}),
 	Example: utils.Examples([]string{
 		"# Stand-Alone Server",
-		"jrctl firewall allow -a 1.1.1.1 -p 80 -p 443",
+		"jrctl firewall deny -a 1.1.1.1 -p 80 -p 443",
 		"",
 		"# Multi-Server Cluster",
-		"jrctl firewall allow -t db -a 1.1.1.1 -p 3306",
-		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'",
+		"jrctl firewall deny -t db -a 1.1.1.1 -p 3306",
+		"jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		address, _ := cmd.Flags().GetString("address")
@@ -39,13 +39,13 @@ var firewallAllowCmd = &cobra.Command{
 		}
 		rows := [][]string{[]string{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
-			data := firewall.AllowRequest{
+			data := firewall.DenyRequest{
 				Address:  address,
 				Ports:    ports,
 				Protocol: protocol,
 				Comment:  utils.SafeString(comment),
 			}
-			response := firewall.Allow(context, data)
+			response := firewall.Deny(context, data)
 			row := []string{
 				strings.TrimSuffix(context.Endpoint, ":27482"),
 				response.Messages[0],
@@ -61,13 +61,13 @@ var firewallAllowCmd = &cobra.Command{
 }
 
 func init() {
-	firewallCmd.AddCommand(firewallAllowCmd)
-	firewallAllowCmd.Flags().SortFlags = true
-	firewallAllowCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
-	firewallAllowCmd.Flags().StringP("address", "a", "", "ip address")
-	firewallAllowCmd.Flags().IntSliceP("port", "p", []int{}, "port to allow, can be specified multiple times")
-	firewallAllowCmd.Flags().String("protocol", "tcp", "specify 'tcp' or 'udp'")
-	firewallAllowCmd.Flags().StringP("comment", "c", "", "add a comment to the firewall entry (optional)")
-	firewallAllowCmd.MarkFlagRequired("address")
-	firewallAllowCmd.MarkFlagRequired("port")
+	firewallCmd.AddCommand(firewallDenyCmd)
+	firewallDenyCmd.Flags().SortFlags = true
+	firewallDenyCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
+	firewallDenyCmd.Flags().StringP("address", "a", "", "ip address")
+	firewallDenyCmd.Flags().IntSliceP("port", "p", []int{}, "port to deny, can be specified multiple times")
+	firewallDenyCmd.Flags().String("protocol", "tcp", "specify 'tcp' or 'udp', default is 'tcp'")
+	firewallDenyCmd.Flags().StringP("comment", "c", "", "add a comment to the firewall entry (optional)")
+	firewallDenyCmd.MarkFlagRequired("address")
+	firewallDenyCmd.MarkFlagRequired("port")
 }

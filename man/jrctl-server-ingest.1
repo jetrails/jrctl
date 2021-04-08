@@ -1,0 +1,42 @@
+.nh
+.TH "JetRails CLI" "1" "Apr 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-server\-ingest \- Ingest server token and save it to config
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl server ingest [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Ingest server token and save it to config.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for ingest
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=""
+	specify server type selector
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+echo \-n TOKEN | jrctl server ingest \-t localhost
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-server(1)\fP

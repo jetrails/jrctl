@@ -5,6 +5,9 @@ DARWIN=$(EXECUTABLE)_darwin_amd64
 
 .PHONY: help clean docs format
 
+help: ## Display available commands
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+
 build: linux darwin ## Build for all platforms
 	@echo version: $(VERSION)
 
@@ -13,16 +16,13 @@ linux: $(LINUX)
 darwin: $(DARWIN)
 
 $(LINUX):
-	env GOOS=linux GOARCH=amd64 go build -i -v -o "bin/$(LINUX)" -ldflags="-s -w -X main.version=$(VERSION)" -trimpath ./cmd/jrctl/main.go
+	env GOOS=linux GOARCH=amd64 go build -v -o "bin/$(LINUX)" -ldflags="-s -w -X main.version=$(VERSION)" -trimpath ./cmd/jrctl/main.go
 
 $(DARWIN):
-	env GOOS=darwin GOARCH=amd64 go build -i -v -o "bin/$(DARWIN)" -ldflags="-s -w -X main.version=$(VERSION)" -trimpath ./cmd/jrctl/main.go
+	env GOOS=darwin GOARCH=amd64 go build -v -o "bin/$(DARWIN)" -ldflags="-s -w -X main.version=$(VERSION)" -trimpath ./cmd/jrctl/main.go
 
 clean: ## Delete built binaries
 	rm -f "bin/$(LINUX)" "bin/$(DARWIN)"
-
-help: ## Display available commands
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 docs: ## Generate documentation
 	mkdir -p docs man

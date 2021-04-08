@@ -1,6 +1,6 @@
-## jrctl firewall allow
+## jrctl firewall unallow
 
-Permanently allows a source IP address to a specific port
+Deletes allow entry given a source IP address and a port number
 
 ### Synopsis
 
@@ -11,7 +11,7 @@ audit log. Able to control a single (localhost) server as well as cluster of
 servers.
 
 ```
-jrctl firewall allow [flags]
+jrctl firewall unallow [flags]
 ```
 
 ### Examples
@@ -29,15 +29,14 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
 
 ```
   -a, --address string    ip address
-  -c, --comment string    add a comment to the firewall entry (optional)
-  -h, --help              help for allow
-  -p, --port ints         port to allow, can be specified multiple times
-      --protocol string   specify 'tcp' or 'udp' (default "tcp")
+  -h, --help              help for unallow
+  -p, --port int          port to unallow
+      --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
   -t, --type string       specify server type, useful for cluster (default "localhost")
 ```
 
 ### SEE ALSO
 
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
-* [jrctl firewall allow cloudflare](jrctl_firewall_allow_cloudflare.md)	 - Whitelist Cloudflare IP addresses
+* [jrctl firewall unallow cloudflare](jrctl_firewall_unallow_cloudflare.md)	 - Remove allow entries for Cloudflare IP addresses
 

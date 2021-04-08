@@ -3,12 +3,12 @@
 
 .SH NAME
 .PP
-jrctl\-firewall\-allow \- Permanently allows a source IP address to a specific port
+jrctl\-firewall\-unallow \- Deletes allow entry given a source IP address and a port number
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl firewall allow [flags]\fP
+\fBjrctl firewall unallow [flags]\fP
 
 
 .SH DESCRIPTION
@@ -26,20 +26,16 @@ servers.
 	ip address
 
 .PP
-\fB\-c\fP, \fB\-\-comment\fP=""
-	add a comment to the firewall entry (optional)
-
-.PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for allow
+	help for unallow
 
 .PP
-\fB\-p\fP, \fB\-\-port\fP=[]
-	port to allow, can be specified multiple times
+\fB\-p\fP, \fB\-\-port\fP=0
+	port to unallow
 
 .PP
 \fB\-\-protocol\fP="tcp"
-	specify 'tcp' or 'udp'
+	specify 'tcp' or 'udp', default is 'tcp'
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP="localhost"
@@ -64,4 +60,4 @@ jrctl firewall allow \-t admin \-a 1.1.1.1 \-p 22 \-c 'Office'
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-firewall(1)\fP, \fBjrctl\-firewall\-allow\-cloudflare(1)\fP
+\fBjrctl\-firewall(1)\fP, \fBjrctl\-firewall\-unallow\-cloudflare(1)\fP

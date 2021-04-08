@@ -1,6 +1,9 @@
 package firewall
 
 type Entry struct {
-	Address string `json:"address"`
-	Port    []int  `json:"port"`
+	Action    string   `json:"action"`
+	Source    string   `json:"source"`
+	Ports     []int    `json:"ports"`
+	Protocols []string `json:"protocols"`
+	Comment   string   `json:"comment"`
 }

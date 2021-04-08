@@ -14,18 +14,46 @@ type AllowResponse struct {
 	Payload  AllowRequest `json:"payload"`
 }
 
+type UnAllowResponse struct {
+	Status   string         `json:"status"`
+	Code     int            `json:"code"`
+	Messages []string       `json:"messages"`
+	Payload  UnAllowRequest `json:"payload"`
+}
+
+type DenyResponse struct {
+	Status   string      `json:"status"`
+	Code     int         `json:"code"`
+	Messages []string    `json:"messages"`
+	Payload  DenyRequest `json:"payload"`
+}
+
+type UnDenyResponse struct {
+	Status   string        `json:"status"`
+	Code     int           `json:"code"`
+	Messages []string      `json:"messages"`
+	Payload  UnDenyRequest `json:"payload"`
+}
+
 type CloudflareEntry struct {
 	Address string `json:"address"`
 	Message string `json:"message"`
 }
 
 type CloudflareEntries struct {
-	Skipped []string          `json:"skipped"`
-	Allowed []string          `json:"allowed"`
-	Failed  []CloudflareEntry `json:"failed"`
+	Skipped   []string          `json:"skipped"`
+	Succeeded []string          `json:"succeeded"`
+	Failed    []CloudflareEntry `json:"failed"`
 }
 
-type CloudflareResponse struct {
+type AllowCloudflareResponse struct {
+	Status   string            `json:"status"`
+	Code     int               `json:"code"`
+	Messages []string          `json:"messages"`
+	Payload  CloudflareEntries `json:"payload"`
+}
+
+type UnAllowCloudflareResponse struct {
 	Status   string            `json:"status"`
 	Code     int               `json:"code"`
 	Messages []string          `json:"messages"`

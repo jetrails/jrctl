@@ -10,23 +10,23 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var firewallAllowCloudflareCmd = &cobra.Command{
+var firewallUnAllowCloudflareCmd = &cobra.Command{
 	Use:   "cloudflare",
-	Short: "Whitelist Cloudflare IP addresses",
+	Short: "Remove allow entries for Cloudflare IP addresses",
 	Long: utils.Combine([]string{
 		utils.Paragraph([]string{
-			"Whitelist Cloudflare IP addresses.",
+			"Remove allow entries for Cloudflare IP addresses.",
 		}),
 	}),
 	Example: utils.Examples([]string{
-		"jrctl firewall allow cloudflare",
-		"jrctl firewall allow cloudflare -t www",
+		"jrctl firewall unallow cloudflare",
+		"jrctl firewall unallow cloudflare -t www",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
 		rows := [][]string{[]string{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
-			response := firewall.AllowCloudflare(context)
+			response := firewall.UnAllowCloudflare(context)
 			row := []string{
 				strings.TrimSuffix(context.Endpoint, ":27482"),
 				response.Messages[0],
@@ -42,7 +42,7 @@ var firewallAllowCloudflareCmd = &cobra.Command{
 }
 
 func init() {
-	firewallAllowCmd.AddCommand(firewallAllowCloudflareCmd)
-	firewallAllowCloudflareCmd.Flags().SortFlags = true
-	firewallAllowCloudflareCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
+	firewallUnAllowCmd.AddCommand(firewallUnAllowCloudflareCmd)
+	firewallUnAllowCloudflareCmd.Flags().SortFlags = true
+	firewallUnAllowCloudflareCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 }

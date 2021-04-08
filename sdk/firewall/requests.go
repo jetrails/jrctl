@@ -1,12 +1,35 @@
 package firewall
 
 type AllowRequest struct {
-	Address string `json:"address"`
-	Ports   []int  `json:"ports"`
-	Blame   string `json:"blame"`
-	Comment string `json:"comment"`
+	Address  string `json:"address"`
+	Ports    []int  `json:"ports"`
+	Protocol string `json:"protocol"`
+	Comment  string `json:"comment"`
 }
 
-type CloudflareRequest struct {
-	Blame string `json:"blame"`
+type UnAllowRequest struct {
+	Address  string `json:"address"`
+	Port     int    `json:"port"`
+	Protocol string `json:"protocol"`
+}
+
+type DenyRequest struct {
+	Address  string `json:"address"`
+	Ports    []int  `json:"ports"`
+	Protocol string `json:"protocol"`
+	Comment  string `json:"comment"`
+}
+
+type UnDenyRequest struct {
+	Address  string `json:"address"`
+	Port     int    `json:"port"`
+	Protocol string `json:"protocol"`
+}
+
+type AllowCloudflareRequest struct {
+	// Empty
+}
+
+type UnAllowCloudflareRequest struct {
+	// Empty
 }
