@@ -3,10 +3,10 @@ package internal
 import (
 	"fmt"
 	"strconv"
+	"io/ioutil"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"
-	"github.com/jetrails/jrctl/pkg/input"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/transfer"
 	"github.com/spf13/cobra"
@@ -28,7 +28,7 @@ var transferSendCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		filepath := args[0]
 		copy, _ := cmd.Flags().GetBool("clipboard")
-		if _, error := input.ReadFile(filepath); error != nil {
+		if _, error := ioutil.ReadFile(filepath); error != nil {
 			fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 			return
 		}

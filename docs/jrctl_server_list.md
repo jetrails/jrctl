@@ -14,10 +14,10 @@ jrctl server list [flags]
 ### Examples
 
 ```
-jrctl server list
-jrctl server list -t admin
-jrctl server list -t localhost
-jrctl server list -t www
+  jrctl server list
+  jrctl server list -t admin
+  jrctl server list -t localhost
+  jrctl server list -t www
 ```
 
 ### Options

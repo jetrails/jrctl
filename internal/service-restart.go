@@ -34,7 +34,7 @@ var serverRestartCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		validServices := server.CollectServices()
 		for _, arg := range args {
-			if !array.HasString(validServices, arg) {
+			if !array.ContainsString(validServices, arg) {
 				return errors.New(fmt.Sprintf(
 					"%q is not found, available services include: %v",
 					arg, "\""+strings.Join(validServices, "\", \"")+"\"",

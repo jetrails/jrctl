@@ -4,7 +4,7 @@ import (
 	"strconv"
 )
 
-func HasString(haystack []string, needle string) bool {
+func ContainsString(haystack []string, needle string) bool {
 	for _, item := range haystack {
 		if item == needle {
 			return true
@@ -13,7 +13,7 @@ func HasString(haystack []string, needle string) bool {
 	return false
 }
 
-func HasInt(haystack []int, needle int) bool {
+func ContainsInt(haystack []int, needle int) bool {
 	for _, item := range haystack {
 		if item == needle {
 			return true
@@ -42,15 +42,6 @@ func HasUniqueStrings(items []string) bool {
 	return true
 }
 
-func HasValidStringValues(valid, items []string) bool {
-	for _, item := range items {
-		if !HasString(valid, item) {
-			return false
-		}
-	}
-	return true
-}
-
 func HasUniqueInts(items []int) bool {
 	track := map[int]bool{}
 	for _, item := range items {
@@ -58,6 +49,15 @@ func HasUniqueInts(items []int) bool {
 			return false
 		}
 		track[item] = true
+	}
+	return true
+}
+
+func HasValidStringValues(haystack, needles []string) bool {
+	for _, item := range haystack {
+		if !ContainsString(needles, item) {
+			return false
+		}
 	}
 	return true
 }

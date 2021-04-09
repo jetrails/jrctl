@@ -4,23 +4,22 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-
-	"github.com/jetrails/jrctl/pkg/env"
+	"os"
 )
+
+func Combine(lines []string) string {
+	return strings.Join(lines, "\n\n")
+}
 
 func Examples(examples []string) string {
 	space := "  "
-	if env.GetBool("docs", false) {
+	if os.Getenv("docs") == "true" {
 		space = ""
 	}
 	for i, e := range examples {
 		examples[i] = space + e
 	}
 	return strings.Join(examples, "\n")
-}
-
-func Combine(lines []string) string {
-	return strings.Join(lines, "\n\n")
 }
 
 func Paragraph(lines []string) string {

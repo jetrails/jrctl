@@ -27,7 +27,7 @@ clean: ## Delete built binaries
 docs: ## Generate documentation
 	mkdir -p docs man
 	rm -rf man/* docs/*.md
-	DOCS=true COLOR=false go run tools/generate-docs.go
+	DOCS=true NO_COLOR=true go run tools/generate-docs.go
 
 format: ## Format code with goimports
 	goimports -w cmd internal tools sdk pkg

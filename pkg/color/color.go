@@ -2,8 +2,7 @@ package color
 
 import (
 	"fmt"
-
-	"github.com/jetrails/jrctl/pkg/env"
+	"os"
 )
 
 const Format string = "\x1b[%dm%s\x1b[0m"
@@ -16,31 +15,70 @@ const Magenta int = 35
 const Cyan int = 36
 const White int = 37
 
+var hasColorCached * bool
+
 func hasColor() bool {
-	return env.GetBool("color", true)
+	if ( hasColorCached != nil ) {
+		return *hasColorCached
+	}
+	_, result := os.LookupEnv("NO_COLOR")
+	result = !result
+	hasColorCached = &result
+	return *hasColorCached
 }
 
-func GetLogo() string {
-	return GreenString(">") + "jetrails" + GreenString("_")
-}
-
-func GreenString(data string) string {
+func BlackString ( data string ) string {
 	if hasColor() {
-		return fmt.Sprintf(Format, Green, data)
+		return fmt.Sprintf ( Format, Black, data )
 	}
 	return data
 }
 
-func CyanString(data string) string {
+func RedString ( data string ) string {
 	if hasColor() {
-		return fmt.Sprintf(Format, Cyan, data)
+		return fmt.Sprintf ( Format, Red, data )
 	}
 	return data
 }
 
-func RedString(data string) string {
+func GreenString ( data string ) string {
 	if hasColor() {
-		return fmt.Sprintf(Format, Red, data)
+		return fmt.Sprintf ( Format, Green, data )
+	}
+	return data
+}
+
+func YellowString ( data string ) string {
+	if hasColor() {
+		return fmt.Sprintf ( Format, Yellow, data )
+	}
+	return data
+}
+
+func BlueString ( data string ) string {
+	if hasColor() {
+		return fmt.Sprintf ( Format, Blue, data )
+	}
+	return data
+}
+
+func MagentaString ( data string ) string {
+	if hasColor() {
+		return fmt.Sprintf ( Format, Magenta, data )
+	}
+	return data
+}
+
+func CyanString ( data string ) string {
+	if hasColor() {
+		return fmt.Sprintf ( Format, Cyan, data )
+	}
+	return data
+}
+
+func WhiteString ( data string ) string {
+	if hasColor() {
+		return fmt.Sprintf ( Format, White, data )
 	}
 	return data
 }

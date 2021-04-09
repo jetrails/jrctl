@@ -15,11 +15,11 @@ jrctl secret create [flags]
 ### Examples
 
 ```
-jrctl secret create
-jrctl secret create -c -a
-jrctl secret create -c -t 60
-jrctl secret create -c -p secretpass
-jrctl secret create -c -f ~/.ssh/id_rsa.pub
+  jrctl secret create
+  jrctl secret create -c -a
+  jrctl secret create -c -t 60
+  jrctl secret create -c -p secretpass
+  jrctl secret create -c -f ~/.ssh/id_rsa.pub
 ```
 
 ### Options

@@ -5,8 +5,8 @@ Interact with firewall to whitelist IP addresses/ports
 ### Examples
 
 ```
-jrctl firewall allow -h
-jrctl firewall list -h
+  jrctl firewall allow -h
+  jrctl firewall list -h
 ```
 
 ### Options

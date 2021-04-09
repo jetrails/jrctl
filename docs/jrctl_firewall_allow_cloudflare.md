@@ -13,8 +13,8 @@ jrctl firewall allow cloudflare [flags]
 ### Examples
 
 ```
-jrctl firewall allow cloudflare
-jrctl firewall allow cloudflare -t www
+  jrctl firewall allow cloudflare
+  jrctl firewall allow cloudflare -t www
 ```
 
 ### Options

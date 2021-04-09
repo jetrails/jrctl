@@ -3,17 +3,17 @@ package input
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 )
 
-func ReadFile(path string) (string, error) {
-	content, error := ioutil.ReadFile(path)
-	if error != nil {
-		return "", error
-	}
-	return string(content), nil
+func saveScreen() {
+	fmt.Printf("\033[?1049h\033[H")
+}
+
+func restoreScreen() {
+	fmt.Printf("\033[?1049l")
+	fmt.Printf("\033[34h\033[?25h")
 }
 
 func PromptYesNo(prompt string) bool {
@@ -31,15 +31,6 @@ func PromptYesNo(prompt string) bool {
 			return false
 		}
 	}
-}
-
-func saveScreen() {
-	fmt.Printf("\033[?1049h\033[H")
-}
-
-func restoreScreen() {
-	fmt.Printf("\033[?1049l")
-	fmt.Printf("\033[34h\033[?25h")
 }
 
 func PromptContent(prompt string) string {

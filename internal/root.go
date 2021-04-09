@@ -18,17 +18,16 @@ import (
 var RootCmd = &cobra.Command{
 	Use:     "jrctl",
 	Version: version.VersionString,
-	Short:   "Command line tool to help interact with the " + color.GetLogo() + " API.",
+	Short:   "Command line tool to help interact with the >jetrails_ API.",
 	Long: text.Paragraph([]string{
-		"Command line tool to help interact with the " + color.GetLogo() + " API.",
-		"Hosted on Github, " + color.GreenString("https://github.com/jetrails/jrctl") + ".",
+		"Command line tool to help interact with the >jetrails_ API.",
+		"Hosted on Github, https://github.com/jetrails/jrctl.",
 		"For issues/requests, please open an issue in our Github repository.",
 	}),
 	DisableAutoGenTag: true,
 }
 
 func init() {
-	env.EnvPrefix = "JR_"
 	cobra.OnInitialize(initConfig)
 	version.CheckVersion(env.GetBool("debug", false))
 }
@@ -54,7 +53,6 @@ func initConfig() {
 		fmt.Printf("%s: %v\n", color.CyanString("config"), viper.ConfigFileUsed())
 		fmt.Printf("%s: %v\n", color.CyanString("debug"), env.GetBool("debug", false))
 		fmt.Printf("%s: %v\n", color.CyanString("insecure"), env.GetBool("insecure", false))
-		fmt.Printf("%s: %v\n", color.CyanString("color"), env.GetBool("color", true))
 		fmt.Printf("%s: %v\n", color.CyanString("public_api_endpoint"), env.GetString("public_api_endpoint", "api-public.jetrails.cloud"))
 		fmt.Printf("%s: %v\n", color.CyanString("secret_endpoint"), env.GetString("secret_endpoint", "secret.jetrails.cloud"))
 		fmt.Println("---")

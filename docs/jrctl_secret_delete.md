@@ -15,7 +15,7 @@ jrctl secret delete IDENTIFIER [flags]
 ### Examples
 
 ```
-jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
+  jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
 ```
 
 ### Options

@@ -13,7 +13,7 @@ jrctl server ingest [flags]
 ### Examples
 
 ```
-echo -n TOKEN | jrctl server ingest -t localhost
+  echo -n TOKEN | jrctl server ingest -t localhost
 ```
 
 ### Options

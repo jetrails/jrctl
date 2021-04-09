@@ -17,7 +17,7 @@ func CollectTypes() []string {
 	viper.UnmarshalKey("servers", &contexts)
 	for _, context := range contexts {
 		for _, t := range context.Types {
-			if !array.HasString(types, t) {
+			if !array.ContainsString(types, t) {
 				types = append(types, t)
 			}
 		}
@@ -32,7 +32,7 @@ func CollectServices() []string {
 		response := ListServices(context)
 		if response.Code == 200 {
 			for _, service := range response.Payload {
-				if !array.HasString(services, service) {
+				if !array.ContainsString(services, service) {
 					services = append(services, service)
 				}
 			}
@@ -45,9 +45,9 @@ func CollectServices() []string {
 func FilterWithService(selector, service string) []Context {
 	var filtered []Context
 	for _, context := range LoadServers() {
-		if array.HasString(context.Types, selector) {
+		if array.ContainsString(context.Types, selector) {
 			response := ListServices(context)
-			if response.Code == 200 && array.HasString(response.Payload, service) {
+			if response.Code == 200 && array.ContainsString(response.Payload, service) {
 				filtered = append(filtered, context)
 			}
 		}
@@ -57,7 +57,7 @@ func FilterWithService(selector, service string) []Context {
 
 func IsValidType(t string) bool {
 	types := CollectTypes()
-	return array.HasString(types, t)
+	return array.ContainsString(types, t)
 }
 
 func IsValidTypeError(t string) error {
@@ -73,7 +73,7 @@ func Filter(contexts []Context, filters []string) []Context {
 	for _, context := range contexts {
 		found := 0
 		for _, filter := range filters {
-			if array.HasString(context.Types, filter) {
+			if array.ContainsString(context.Types, filter) {
 				found++
 			}
 		}

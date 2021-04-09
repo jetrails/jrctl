@@ -14,10 +14,10 @@ jrctl firewall list [flags]
 ### Examples
 
 ```
-jrctl firewall list
-jrctl firewall list -t admin
-jrctl firewall list -t db
-jrctl firewall list -t www
+  jrctl firewall list
+  jrctl firewall list -t admin
+  jrctl firewall list -t db
+  jrctl firewall list -t www
 ```
 
 ### Options
