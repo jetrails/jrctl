@@ -17,12 +17,12 @@ jrctl firewall undeny [flags]
 ### Examples
 
 ```
-  # Stand-Alone Server
-  jrctl firewall deny -a 1.1.1.1 -p 80 -p 443
-  
-  # Multi-Server Cluster
-  jrctl firewall deny -t db -a 1.1.1.1 -p 3306
-  jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
+# Stand-Alone Server
+jrctl firewall deny -a 1.1.1.1 -p 80 -p 443
+
+# Multi-Server Cluster
+jrctl firewall deny -t db -a 1.1.1.1 -p 3306
+jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
 ```
 
 ### Options

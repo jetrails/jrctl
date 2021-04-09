@@ -13,7 +13,7 @@ jrctl transfer send [flags]
 ### Examples
 
 ```
-  jrctl transfer send private.png
+jrctl transfer send private.png
 ```
 
 ### Options

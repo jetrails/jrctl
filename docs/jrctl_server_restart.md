@@ -18,10 +18,10 @@ jrctl server restart SERVICE... [flags]
 ### Examples
 
 ```
-  jrctl server restart nginx
-  jrctl server restart nginx varnish
-  jrctl server restart nginx varnish php-fpm
-  jrctl server restart nginx varnish php-fpm-7.2 nginx
+jrctl server restart nginx
+jrctl server restart nginx varnish
+jrctl server restart nginx varnish php-fpm
+jrctl server restart nginx varnish php-fpm-7.2 nginx
 ```
 
 ### Options

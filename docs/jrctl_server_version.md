@@ -14,7 +14,7 @@ jrctl server version [flags]
 ### Examples
 
 ```
-  jrctl server version
+jrctl server version
 ```
 
 ### Options

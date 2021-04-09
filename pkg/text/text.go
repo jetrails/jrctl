@@ -13,7 +13,7 @@ func Combine(lines []string) string {
 
 func Examples(examples []string) string {
 	space := "  "
-	if os.Getenv("docs") == "true" {
+	if os.Getenv("DOCS") == "true" {
 		space = ""
 	}
 	for i, e := range examples {

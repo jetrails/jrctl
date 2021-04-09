@@ -5,9 +5,9 @@ Interact with servers in configured deployment
 ### Examples
 
 ```
-  jrctl server list -h
-  jrctl server restart -h
-  jrctl server version -h
+jrctl server list -h
+jrctl server restart -h
+jrctl server version -h
 ```
 
 ### Options
