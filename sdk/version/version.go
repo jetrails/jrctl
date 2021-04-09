@@ -34,16 +34,15 @@ func FindStable(releases []ReleaseEntry) (ReleaseEntry, error) {
 }
 
 func CheckVersion(debug bool) {
-	var cacheWindow int64 = 60 * 60
-	cachedVersion, hit := cache.GetCache("version:"+VersionString, cacheWindow)
+	cachedVersion, _ := cache.Get("latest-version-" + VersionString)
 	versionObj, _ := vercmp.NewVersion(VersionString)
-	if hit {
-		cachedVersionObj, _ := vercmp.NewVersion(cachedVersion)
+	if len(string(cachedVersion)) > 0 {
+		cachedVersionObj, _ := vercmp.NewVersion(string(cachedVersion))
 		if versionObj.LessThan(cachedVersionObj) {
 			fmt.Printf(
 				"Software is out-of-date. Update to the latest version: %s.\n%s\n\n",
-				cachedVersion,
-				color.RedString(fmt.Sprintf(TagUrlTemplate, cachedVersion)),
+				string(cachedVersion),
+				color.RedString(fmt.Sprintf(TagUrlTemplate, string(cachedVersion))),
 			)
 		}
 		return
@@ -58,7 +57,7 @@ func CheckVersion(debug bool) {
 		var releases []ReleaseEntry
 		if error := json.Unmarshal([]byte(body), &releases); error == nil {
 			if newest, error := FindStable(releases); error == nil {
-				cache.SetCache("version:"+VersionString, newest.TagName, cacheWindow)
+				cache.Set("latest-version-"+VersionString, []byte(newest.TagName), 60*60)
 				targetVersionObj, _ := vercmp.NewVersion(newest.TagName)
 				if versionObj.LessThan(targetVersionObj) {
 					fmt.Printf(

@@ -33,18 +33,18 @@ func PromptYesNo(prompt string) bool {
 	}
 }
 
-func SaveScreen() {
+func saveScreen() {
 	fmt.Printf("\033[?1049h\033[H")
 }
 
-func RestoreScreen() {
+func restoreScreen() {
 	fmt.Printf("\033[?1049l")
 	fmt.Printf("\033[34h\033[?25h")
 }
 
 func PromptContent(prompt string) string {
-	SaveScreen()
-	defer RestoreScreen()
+	saveScreen()
+	defer restoreScreen()
 	var input = ""
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Printf("%s (Ctrl-D to end input):\n\n", prompt)
