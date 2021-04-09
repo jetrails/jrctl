@@ -3,7 +3,9 @@ package input
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -34,6 +36,9 @@ func PromptYesNo(prompt string) bool {
 }
 
 func PromptContent(prompt string) string {
+	if value, error := getInputFromEditor(); error == nil {
+		return value
+	}
 	saveScreen()
 	defer restoreScreen()
 	var input = ""
@@ -47,4 +52,40 @@ func PromptContent(prompt string) string {
 		input += string(byte)
 	}
 	return strings.TrimSpace(input)
+}
+
+func openFileInEditor(filename string) error {
+	if editor := os.Getenv("EDITOR"); editor != "" {
+		if executable, error := exec.LookPath(editor); error == nil {
+			cmd := exec.Command(executable, filename)
+			cmd.Stdin = os.Stdin
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			return cmd.Run()
+		} else {
+			return error
+		}
+	} else {
+		return fmt.Errorf("EDITOR env variable not set to anything")
+	}
+}
+
+func getInputFromEditor() (string, error) {
+	file, error := ioutil.TempFile(os.TempDir(), "*")
+	if error != nil {
+		return "", error
+	}
+	filename := file.Name()
+	defer os.Remove(filename)
+	if error = file.Close(); error != nil {
+		return "", error
+	}
+	if error = openFileInEditor(filename); error != nil {
+		return "", error
+	}
+	bytes, error := ioutil.ReadFile(filename)
+	if error != nil {
+		return "", error
+	}
+	return string(bytes), nil
 }

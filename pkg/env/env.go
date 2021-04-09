@@ -2,8 +2,8 @@ package env
 
 import (
 	"os"
-	"strings"
 	"strconv"
+	"strings"
 )
 
 var EnvPrefix = ""
@@ -25,7 +25,7 @@ func GetBool(key string, fallback bool) bool {
 
 func GetInt(key string, fallback int) int {
 	if value := os.Getenv(normalizeKey(key)); normalizeValue(value) != "" {
-		if v, error := strconv.Atoi ( normalizeValue(value) ); error == nil {
+		if v, error := strconv.Atoi(normalizeValue(value)); error == nil {
 			return v
 		}
 	}

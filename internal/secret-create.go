@@ -2,13 +2,13 @@ package internal
 
 import (
 	"fmt"
-	"strconv"
 	"io/ioutil"
+	"strconv"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"
-	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/pkg/input"
+	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/secret"
 	"github.com/spf13/cobra"
 )
@@ -43,7 +43,7 @@ var secretCreateCmd = &cobra.Command{
 				fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 				return
 			}
-			content = string (fileContents)
+			content = string(fileContents)
 		}
 		if content == "" {
 			content = input.PromptContent("Secret")

@@ -2,8 +2,8 @@ package internal
 
 import (
 	"fmt"
-	"strconv"
 	"io/ioutil"
+	"strconv"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"

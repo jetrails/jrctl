@@ -15,10 +15,10 @@ const Magenta int = 35
 const Cyan int = 36
 const White int = 37
 
-var hasColorCached * bool
+var hasColorCached *bool
 
 func hasColor() bool {
-	if ( hasColorCached != nil ) {
+	if hasColorCached != nil {
 		return *hasColorCached
 	}
 	_, result := os.LookupEnv("NO_COLOR")
@@ -27,58 +27,58 @@ func hasColor() bool {
 	return *hasColorCached
 }
 
-func BlackString ( data string ) string {
+func BlackString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Black, data )
+		return fmt.Sprintf(Format, Black, data)
 	}
 	return data
 }
 
-func RedString ( data string ) string {
+func RedString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Red, data )
+		return fmt.Sprintf(Format, Red, data)
 	}
 	return data
 }
 
-func GreenString ( data string ) string {
+func GreenString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Green, data )
+		return fmt.Sprintf(Format, Green, data)
 	}
 	return data
 }
 
-func YellowString ( data string ) string {
+func YellowString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Yellow, data )
+		return fmt.Sprintf(Format, Yellow, data)
 	}
 	return data
 }
 
-func BlueString ( data string ) string {
+func BlueString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Blue, data )
+		return fmt.Sprintf(Format, Blue, data)
 	}
 	return data
 }
 
-func MagentaString ( data string ) string {
+func MagentaString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Magenta, data )
+		return fmt.Sprintf(Format, Magenta, data)
 	}
 	return data
 }
 
-func CyanString ( data string ) string {
+func CyanString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, Cyan, data )
+		return fmt.Sprintf(Format, Cyan, data)
 	}
 	return data
 }
 
-func WhiteString ( data string ) string {
+func WhiteString(data string) string {
 	if hasColor() {
-		return fmt.Sprintf ( Format, White, data )
+		return fmt.Sprintf(Format, White, data)
 	}
 	return data
 }

@@ -2,9 +2,9 @@ package text
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
-	"os"
 )
 
 func Combine(lines []string) string {
