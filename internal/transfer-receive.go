@@ -28,12 +28,30 @@ var transferReceiveCmd = &cobra.Command{
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -o ./private/",
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -n custom.name",
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -o ./private/ -n custom.name",
+		"echo 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo | jrctl transfer receive",
 	}),
-	Args: cobra.ExactArgs(1),
+	Args: func(cmd *cobra.Command, args []string) error {
+		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
+			return nil
+		}
+		if error := cobra.ExactArgs(1)(cmd, args); error != nil {
+			return error
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		var password string
 		var identifier string
-		fmt.Sscanf(args[0], "%36s-%32s", &identifier, &password)
+		var argument string
+		if len(args) == 0 {
+			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+				argument = strings.TrimSpace(string(bytes))
+			}
+		} else {
+			argument = args[0]
+		}
+		fmt.Sscanf(argument, "%36s-%32s", &identifier, &password)
 		context := transfer.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
 			Debug:    env.GetBool("debug", false),
@@ -45,8 +63,10 @@ var transferReceiveCmd = &cobra.Command{
 		}
 		response, error := transfer.Receive(context, request)
 		if error != nil && error.Code != 200 {
-			fmt.Printf("\n%s\n\n", error.Message)
-			return
+			if !quiet {
+				fmt.Printf("\n%s\n\n", error.Message)
+			}
+			os.Exit(1)
 		}
 		force, _ := cmd.Flags().GetBool("force")
 		outDir, _ := cmd.Flags().GetString("out-dir")
@@ -59,17 +79,22 @@ var transferReceiveCmd = &cobra.Command{
 		}
 		filepath := path.Join(outDir, name)
 		os.MkdirAll(outDir, 0755)
-		fmt.Println()
+		if !quiet {
+			fmt.Println()
+		}
 		if _, error := os.Stat(filepath); error == nil {
-			if !force && !input.PromptYesNo("File already exists, overwrite") {
-				fmt.Printf("Skipping, did not write file to disk\n\n")
-				return
+			if !force && (quiet || !input.PromptYesNo("File already exists, overwrite")) {
+				if !quiet {
+					fmt.Printf("Skipping, did not write file to disk\n\n")
+				}
+				os.Exit(1)
 			}
 		}
-		if error := ioutil.WriteFile(filepath, response.Bytes, 0644); error == nil {
+		if error := ioutil.WriteFile(filepath, response.Bytes, 0644); error == nil && !quiet {
 			fmt.Printf("Downloaded file to %q\n\n", filepath)
-		} else {
+		} else if !quiet {
 			fmt.Printf("Failed to write data to %q\n\n", filepath)
+			os.Exit(1)
 		}
 	},
 }
@@ -77,6 +102,7 @@ var transferReceiveCmd = &cobra.Command{
 func init() {
 	transferCmd.AddCommand(transferReceiveCmd)
 	transferReceiveCmd.Flags().SortFlags = true
+	transferReceiveCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	transferReceiveCmd.Flags().StringP("out-dir", "o", "", "specify download directory, default $PWD")
 	transferReceiveCmd.Flags().StringP("name", "n", "", "specify file name")
 	transferReceiveCmd.Flags().BoolP("force", "f", false, "force download, overwrite existing file")

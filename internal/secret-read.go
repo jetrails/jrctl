@@ -2,6 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/atotto/clipboard"
@@ -26,18 +28,29 @@ var secretReadCmd = &cobra.Command{
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c",
 		"jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass",
+		"echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret read",
 	}),
 	Args: func(cmd *cobra.Command, args []string) error {
-		check := cobra.MinimumNArgs(1)
-		if error := check(cmd, args); error != nil {
+		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
+			return nil
+		}
+		if error := cobra.ExactArgs(1)(cmd, args); error != nil {
 			return error
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		identifier := args[0]
+		identifier := ""
+		if len(args) == 0 {
+			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+				identifier = strings.TrimSpace(string(bytes))
+			}
+		} else {
+			identifier = args[0]
+		}
 		identifier = strings.TrimPrefix(identifier, fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.cloud")))
 		identifier = strings.Trim(identifier, "/")
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		password, _ := cmd.Flags().GetString("password")
 		context := secret.PublicApiContext{
@@ -51,8 +64,10 @@ var secretReadCmd = &cobra.Command{
 		}
 		response, error := secret.SecretRead(context, request)
 		if error != nil && error.Code != 200 {
-			fmt.Printf("\n%s\n\n", error.Message)
-			return
+			if !quiet {
+				fmt.Printf("\n%s\n\n", error.Message)
+			}
+			os.Exit(1)
 		} else {
 			fmt.Printf("\n%s\n\n", response.Data)
 		}

@@ -16,12 +16,14 @@ jrctl secret delete IDENTIFIER [flags]
 
 ```
 jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
+echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret delete
 ```
 
 ### Options
 
 ```
-  -h, --help   help for delete
+  -h, --help    help for delete
+  -q, --quiet   output as little information as possible
 ```
 
 ### SEE ALSO

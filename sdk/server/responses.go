@@ -20,3 +20,10 @@ type RestartResponse struct {
 	Messages []string    `json:"messages"`
 	Payload  interface{} `json:"payload"`
 }
+
+type TokenResponse struct {
+	Status   string     `json:"status"`
+	Code     int        `json:"code"`
+	Messages []string   `json:"messages"`
+	Payload  *TokenData `json:"payload"`
+}

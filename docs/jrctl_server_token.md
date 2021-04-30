@@ -1,25 +1,25 @@
-## jrctl server ingest
+## jrctl server token
 
-Ingest server token and save it to config
+Displays token information for all configured servers
 
 ### Synopsis
 
-Ingest server token and save it to config.
+Displays token information for all configured servers.
 
 ```
-jrctl server ingest [flags]
+jrctl server token [flags]
 ```
 
 ### Examples
 
 ```
-echo -n TOKEN | jrctl server ingest -t localhost
+jrctl server token
 ```
 
 ### Options
 
 ```
-  -h, --help          help for ingest
+  -h, --help          help for token
   -q, --quiet         output as little information as possible
   -t, --type string   specify server type selector
 ```

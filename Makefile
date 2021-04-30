@@ -32,7 +32,7 @@ docs: ## Generate documentation
 format: ## Format code with goimports
 	goimports -w cmd internal tools sdk pkg
 
-package: build docs ## Package binary for many distributions
+package: format build docs ## Package binary for many distributions
 	mkdir -p ./dist
 	rm -f ./dist/*
 	nfpm pkg --packager deb --target ./dist

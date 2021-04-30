@@ -30,6 +30,7 @@ var firewallUnAllowCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		address, _ := cmd.Flags().GetString("address")
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		port, _ := cmd.Flags().GetInt("port")
 		protocol, _ := cmd.Flags().GetString("protocol")
 		selector, _ := cmd.Flags().GetString("type")
@@ -48,16 +49,19 @@ var firewallUnAllowCmd = &cobra.Command{
 			rows = append(rows, row)
 		}
 		server.FilterForEach([]string{selector}, runner)
-		if len(rows) > 1 {
-			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+		if !quiet {
+			if len(rows) > 1 {
+				fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+			}
+			text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 		}
-		text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 	},
 }
 
 func init() {
 	firewallCmd.AddCommand(firewallUnAllowCmd)
 	firewallUnAllowCmd.Flags().SortFlags = true
+	firewallUnAllowCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	firewallUnAllowCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 	firewallUnAllowCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallUnAllowCmd.Flags().IntP("port", "p", 0, "port to unallow")

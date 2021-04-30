@@ -33,6 +33,7 @@ jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
   -h, --help              help for deny
   -p, --port ints         port to deny, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
+  -q, --quiet             output as little information as possible
   -t, --type string       specify server type, useful for cluster (default "localhost")
 ```
 

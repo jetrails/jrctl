@@ -33,6 +33,10 @@ Download file from secure server.
 \fB\-o\fP, \fB\-\-out\-dir\fP=""
 	specify download directory, default $PWD
 
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	output as little information as possible
+
 
 .SH EXAMPLE
 .PP
@@ -44,6 +48,7 @@ jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwc
 jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o ./private/
 jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-n custom.name
 jrctl transfer receive 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo \-o ./private/ \-n custom.name
+echo 7c6acde6\-639c\-47fe\-8ebb\-a4ac877ef72b\-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo | jrctl transfer receive
 
 .fi
 .RE

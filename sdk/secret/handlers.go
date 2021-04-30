@@ -23,7 +23,7 @@ func SecretCreate(context PublicApiContext, data SecretCreateRequest) (SecretCre
 	if errors != nil {
 		return SecretCreateResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
 	}
-	if response.StatusCode != 200 {
+	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
 		json.Unmarshal([]byte(body), &errorResponse)
 		if errorResponse.Code == 0 {
@@ -55,7 +55,7 @@ func SecretDelete(context PublicApiContext, data SecretDeleteRequest) (SecretDel
 	if errors != nil {
 		return SecretDeleteResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
 	}
-	if response.StatusCode != 200 {
+	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
 		json.Unmarshal([]byte(body), &errorResponse)
 		if errorResponse.Code == 0 {
@@ -87,7 +87,7 @@ func SecretRead(context PublicApiContext, data SecretReadRequest) (SecretReadRes
 	if errors != nil {
 		return SecretReadResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
 	}
-	if response.StatusCode != 200 {
+	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
 		json.Unmarshal([]byte(body), &errorResponse)
 		if errorResponse.Code == 0 {

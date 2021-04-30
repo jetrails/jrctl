@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 
 	"github.com/atotto/clipboard"
@@ -29,9 +30,11 @@ var secretCreateCmd = &cobra.Command{
 		"jrctl secret create -c -t 60",
 		"jrctl secret create -c -p secretpass",
 		"jrctl secret create -c -f ~/.ssh/id_rsa.pub",
+		"echo 'Hello World' | jrctl secret create",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		var content string = ""
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		filepath, _ := cmd.Flags().GetString("file")
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		ttl, _ := cmd.Flags().GetInt("ttl")
@@ -40,10 +43,17 @@ var secretCreateCmd = &cobra.Command{
 		if filepath != "" {
 			fileContents, error := ioutil.ReadFile(filepath)
 			if error != nil {
-				fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
-				return
+				if !quiet {
+					fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
+				}
+				os.Exit(1)
 			}
 			content = string(fileContents)
+		}
+		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
+			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+				content = string(bytes)
+			}
 		}
 		if content == "" {
 			content = input.PromptContent("Secret")
@@ -61,8 +71,10 @@ var secretCreateCmd = &cobra.Command{
 		}
 		response, error := secret.SecretCreate(context, request)
 		if error != nil && error.Code != 200 {
-			fmt.Printf("\n%s\n\n", error.Message)
-			return
+			if !quiet {
+				fmt.Printf("\n%s\n\n", error.Message)
+			}
+			os.Exit(1)
 		}
 		url := fmt.Sprintf(
 			"https://%s/secret/%s",
@@ -80,13 +92,18 @@ var secretCreateCmd = &cobra.Command{
 			[]string{"TTL", "Password", "Secret URL"},
 			[]string{strconv.Itoa(ttl) + "s", displayPassword, url},
 		}
-		text.TablePrint("Could not create secret.", rows, 1)
+		if !quiet {
+			text.TablePrint("Could not create secret.", rows, 1)
+		} else {
+			fmt.Println(url)
+		}
 	},
 }
 
 func init() {
 	secretCmd.AddCommand(secretCreateCmd)
 	secretCreateCmd.Flags().SortFlags = true
+	secretCreateCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	secretCreateCmd.Flags().IntP("ttl", "t", 1*24*60*60, "specify custom ttl in seconds")
 	secretCreateCmd.Flags().BoolP("auto-generate", "a", false, "automatically generate password")
 	secretCreateCmd.Flags().StringP("password", "p", "", "protect secret with a password")

@@ -29,6 +29,7 @@ var firewallDenyCmd = &cobra.Command{
 		"jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		address, _ := cmd.Flags().GetString("address")
 		ports, _ := cmd.Flags().GetIntSlice("port")
 		comment, _ := cmd.Flags().GetString("comment")
@@ -53,16 +54,19 @@ var firewallDenyCmd = &cobra.Command{
 			rows = append(rows, row)
 		}
 		server.FilterForEach([]string{selector}, runner)
-		if len(rows) > 1 {
-			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+		if !quiet {
+			if len(rows) > 1 {
+				fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+			}
+			text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 		}
-		text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 	},
 }
 
 func init() {
 	firewallCmd.AddCommand(firewallDenyCmd)
 	firewallDenyCmd.Flags().SortFlags = true
+	firewallDenyCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	firewallDenyCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 	firewallDenyCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallDenyCmd.Flags().IntSliceP("port", "p", []int{}, "port to deny, can be specified multiple times")

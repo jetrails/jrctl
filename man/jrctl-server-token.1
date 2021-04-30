@@ -3,31 +3,31 @@
 
 .SH NAME
 .PP
-jrctl\-transfer\-send \- Upload file to secure server
+jrctl\-server\-token \- Displays token information for all configured servers
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl transfer send [flags]\fP
+\fBjrctl server token [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-Upload file to secure server. File is encrypted and stored for an hour.
+Displays token information for all configured servers.
 
 
 .SH OPTIONS
 .PP
-\fB\-c\fP, \fB\-\-clipboard\fP[=false]
-	copy file identifier to clipboard
-
-.PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for send
+	help for token
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
 	output as little information as possible
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=""
+	specify server type selector
 
 
 .SH EXAMPLE
@@ -35,7 +35,7 @@ Upload file to secure server. File is encrypted and stored for an hour.
 .RS
 
 .nf
-jrctl transfer send private.png
+jrctl server token
 
 .fi
 .RE
@@ -43,4 +43,4 @@ jrctl transfer send private.png
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-transfer(1)\fP
+\fBjrctl\-server(1)\fP

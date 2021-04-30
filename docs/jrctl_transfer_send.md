@@ -21,6 +21,7 @@ jrctl transfer send private.png
 ```
   -c, --clipboard   copy file identifier to clipboard
   -h, --help        help for send
+  -q, --quiet       output as little information as possible
 ```
 
 ### SEE ALSO

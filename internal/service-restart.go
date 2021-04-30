@@ -45,6 +45,7 @@ var serverRestartCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		rows := [][]string{[]string{"Server", "Service", "Response"}}
 		selector, _ := cmd.Flags().GetString("type")
 		for _, arg := range args {
@@ -64,15 +65,18 @@ var serverRestartCmd = &cobra.Command{
 			}
 			server.FilterWithServiceForEach(selector, arg, runner)
 		}
-		if len(rows) > 1 {
-			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+		if !quiet {
+			if len(rows) > 1 {
+				fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+			}
+			text.TablePrint(fmt.Sprintf("Specified service(s) not running on %q server(s).", selector), rows, 1)
 		}
-		text.TablePrint(fmt.Sprintf("Specified service(s) not running on %q server(s).", selector), rows, 1)
 	},
 }
 
 func init() {
 	serverCmd.AddCommand(serverRestartCmd)
 	serverRestartCmd.Flags().SortFlags = true
+	serverRestartCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	serverRestartCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 }

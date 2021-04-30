@@ -23,6 +23,7 @@ var firewallUnAllowCloudflareCmd = &cobra.Command{
 		"jrctl firewall unallow cloudflare -t www",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		selector, _ := cmd.Flags().GetString("type")
 		rows := [][]string{[]string{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
@@ -34,15 +35,18 @@ var firewallUnAllowCloudflareCmd = &cobra.Command{
 			rows = append(rows, row)
 		}
 		server.FilterForEach([]string{selector}, runner)
-		if len(rows) > 1 {
-			fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+		if !quiet {
+			if len(rows) > 1 {
+				fmt.Printf("\nExecuted only on %q server(s):\n", selector)
+			}
+			text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 		}
-		text.TablePrint(fmt.Sprintf("No configured %q server(s) found.", selector), rows, 1)
 	},
 }
 
 func init() {
 	firewallUnAllowCmd.AddCommand(firewallUnAllowCloudflareCmd)
 	firewallUnAllowCloudflareCmd.Flags().SortFlags = true
+	firewallUnAllowCloudflareCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	firewallUnAllowCloudflareCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 }

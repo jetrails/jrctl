@@ -32,7 +32,7 @@ $ rm /var/cache/apt/archives/jrctl_2.0.0_amd64.deb
 
 ## Building & Running
 
-This project uses a simple [Makefile](./Makefile) to build the final binary.
+This project uses a simple [Makefile](./Makefile) as a build system.
 
 |     Command    | Description                               |
 |:--------------:|-------------------------------------------|
@@ -40,8 +40,9 @@ This project uses a simple [Makefile](./Makefile) to build the final binary.
 |  `make clean`  | Delete built binaries                     |
 |  `make docs`   | Generate documentation                    |
 | `make package` | Package binary for many distributions     |
+| `make format`  | Format code with goimports                |
 |  `make help`   | Display available commands                |
 
 ## Configuration File
 
-A configuration file is used to load user settings. It can be found in `~/.jrctl.yaml`. Environmental variables can also be used to override the configured settings.
+A configuration file is used to load user settings. It can be found in `~/.jrctl/config.yaml`. Some features can be configured via environmental variables.

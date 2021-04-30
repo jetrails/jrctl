@@ -33,6 +33,7 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
   -h, --help              help for allow
   -p, --port ints         port to allow, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp' (default "tcp")
+  -q, --quiet             output as little information as possible
   -t, --type string       specify server type, useful for cluster (default "localhost")
 ```
 

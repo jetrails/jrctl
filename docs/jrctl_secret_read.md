@@ -19,6 +19,7 @@ jrctl secret read IDENTIFIER [flags]
 jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq
 jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c
 jrctl secret read 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq -c -p secretpass
+echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret read
 ```
 
 ### Options

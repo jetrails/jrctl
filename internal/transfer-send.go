@@ -3,6 +3,7 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"strconv"
 
 	"github.com/atotto/clipboard"
@@ -26,6 +27,7 @@ var transferSendCmd = &cobra.Command{
 	}),
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		filepath := args[0]
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		if _, error := ioutil.ReadFile(filepath); error != nil {
@@ -40,8 +42,10 @@ var transferSendCmd = &cobra.Command{
 		request := transfer.SendRequest{FilePath: filepath}
 		response, error := transfer.Send(context, request)
 		if error != nil && error.Code != 200 {
-			fmt.Printf("\n%s\n\n", error.Message)
-			return
+			if !quiet {
+				fmt.Printf("\n%s\n\n", error.Message)
+			}
+			os.Exit(1)
 		}
 		identifier := fmt.Sprintf("%s-%s", response.Identifier, response.Password)
 		if copy {
@@ -51,12 +55,17 @@ var transferSendCmd = &cobra.Command{
 			[]string{"TTL", "Identifier"},
 			[]string{strconv.Itoa(response.TTL) + "s", identifier},
 		}
-		text.TablePrint("Could not send file.", rows, 1)
+		if !quiet {
+			text.TablePrint("Could not send file.", rows, 1)
+		} else {
+			fmt.Println(identifier)
+		}
 	},
 }
 
 func init() {
 	transferCmd.AddCommand(transferSendCmd)
 	transferSendCmd.Flags().SortFlags = true
+	transferSendCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	transferSendCmd.Flags().BoolP("clipboard", "c", false, "copy file identifier to clipboard")
 }

@@ -28,6 +28,7 @@ jrctl server restart nginx varnish php-fpm-7.2 nginx
 
 ```
   -h, --help          help for restart
+  -q, --quiet         output as little information as possible
   -t, --type string   specify server type, useful for cluster (default "localhost")
 ```
 

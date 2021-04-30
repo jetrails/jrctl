@@ -20,6 +20,7 @@ jrctl secret create -c -a
 jrctl secret create -c -t 60
 jrctl secret create -c -p secretpass
 jrctl secret create -c -f ~/.ssh/id_rsa.pub
+echo 'Hello World' | jrctl secret create
 ```
 
 ### Options
@@ -30,6 +31,7 @@ jrctl secret create -c -f ~/.ssh/id_rsa.pub
   -f, --file string       use file contents as secret data
   -h, --help              help for create
   -p, --password string   protect secret with a password
+  -q, --quiet             output as little information as possible
   -t, --ttl int           specify custom ttl in seconds (default 86400)
 ```
 

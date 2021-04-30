@@ -53,7 +53,7 @@ func CheckVersion(debug bool) {
 		Get(ReleasesUrl).
 		Query("page=1&per_page=100").
 		End()
-	if response.StatusCode == 200 {
+	if response != nil && response.StatusCode == 200 {
 		var releases []ReleaseEntry
 		if error := json.Unmarshal([]byte(body), &releases); error == nil {
 			if newest, error := FindStable(releases); error == nil {

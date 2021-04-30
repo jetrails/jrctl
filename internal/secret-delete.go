@@ -2,6 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/jetrails/jrctl/pkg/env"
@@ -22,18 +24,29 @@ var secretDeleteCmd = &cobra.Command{
 	}),
 	Example: text.Examples([]string{
 		"jrctl secret delete 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq",
+		"echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret delete",
 	}),
 	Args: func(cmd *cobra.Command, args []string) error {
-		check := cobra.MinimumNArgs(1)
-		if error := check(cmd, args); error != nil {
+		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
+			return nil
+		}
+		if error := cobra.ExactArgs(1)(cmd, args); error != nil {
 			return error
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		identifier := args[0]
+		identifier := ""
+		if len(args) == 0 {
+			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+				identifier = strings.TrimSpace(string(bytes))
+			}
+		} else {
+			identifier = args[0]
+		}
 		identifier = strings.TrimPrefix(identifier, fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.cloud")))
 		identifier = strings.Trim(identifier, "/")
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		context := secret.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
 			Debug:    env.GetBool("debug", false),
@@ -44,14 +57,19 @@ var secretDeleteCmd = &cobra.Command{
 		}
 		response, error := secret.SecretDelete(context, request)
 		if error != nil && error.Code != 200 {
-			fmt.Printf("\n%s\n\n", error.Message)
-			return
+			if !quiet {
+				fmt.Printf("\n%s\n\n", error.Message)
+			}
+			os.Exit(1)
 		}
-		fmt.Printf("Successfully deleted secret: '%s'\n", response.Identifier)
+		if !quiet {
+			fmt.Printf("\nSuccessfully deleted secret: '%s'\n\n", response.Identifier)
+		}
 	},
 }
 
 func init() {
 	secretCmd.AddCommand(secretDeleteCmd)
 	secretDeleteCmd.Flags().SortFlags = true
+	secretDeleteCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 }
