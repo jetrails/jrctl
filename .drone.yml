@@ -1,0 +1,56 @@
+kind: pipeline
+type: kubernetes
+name: release-to-github
+
+steps:
+-   name: change-log
+    image: alpine/git
+    volumes:
+    -   name: build-volume
+        path: /usr/src
+    commands:
+    -   git fetch --tags
+    -   echo -e "### Change-Log:\n" > ./CHANGELOG.md
+    -   git log "$(git tag --sort=-creatordate | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
+    -   cp ./CHANGELOG.md /usr/src/CHANGELOG.md
+-   name: build
+    image: golang:1.14
+    volumes:
+    -   name: build-volume
+        path: /go/src
+    commands:
+    -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.6.0/nfpm_amd64.deb --output nfpm.deb
+    -   dpkg -i nfpm.deb && rm nfpm.deb
+    -   go get golang.org/x/tools/cmd/goimports
+    -   go mod download
+    -   make VERSION=${DRONE_TAG} package
+    -   cp -R ./dist /go/src/
+-   name: publish
+    image: plugins/github-release
+    volumes:
+    -   name: build-volume
+        path: /drone/src/generated
+    settings:
+        api_key:
+            from_secret: github_token
+        files:
+        -   generated/dist/*
+        title: Version ${DRONE_TAG}
+        note: generated/CHANGELOG.md
+volumes:
+-   name: build-volume
+    temp: {}
+trigger:
+    event:
+    -   tag
+    ref:
+    -   refs/tags/*
+
+---
+
+kind: secret
+name: github_token
+
+get:
+    path: github.com/data/personal-access-token/drone-publish-release
+    name: token
