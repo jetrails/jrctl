@@ -22,6 +22,7 @@ var serverTokenCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		filter := []string{}
 		emptyMsg := "No configured servers found."
 		if selector != "" {
@@ -48,10 +49,16 @@ var serverTokenCmd = &cobra.Command{
 			rows = append(rows, row)
 		}
 		server.FilterForEach(filter, runner)
-		if selector != "" && len(rows) > 1 {
-			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
+		if quiet {
+			for _, row := range rows[1:] {
+				fmt.Printf("%s\n", row[0])
+			}
+		} else {
+			if selector != "" && len(rows) > 1 {
+				fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
+			}
+			text.TablePrint(emptyMsg, rows, 1)
 		}
-		text.TablePrint(emptyMsg, rows, 1)
 	},
 }
 
