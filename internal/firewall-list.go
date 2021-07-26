@@ -28,7 +28,7 @@ var firewallListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
 		responseRows := [][]string{[]string{"Server", "Response"}}
-		entryRows := [][]string{[]string{"Server", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)"}}
+		entryRows := [][]string{[]string{"Server", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
 		filter := []string{}
 		emptyMsg := "No configured servers found."
 		if selector != "" {
@@ -43,12 +43,17 @@ var firewallListCmd = &cobra.Command{
 			}
 			responseRows = append(responseRows, responseRow)
 			for _, entry := range response.Payload {
+				commentEnd := strings.Index(entry.Comment, " -- ")
+				if commentEnd == -1 {
+					commentEnd = len(entry.Comment)
+				}
 				entryRow := []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
 					entry.Action,
 					entry.Source,
 					strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Ports)), ", "), "[]"),
 					strings.Join(entry.Protocols, ", "),
+					fmt.Sprintf("%q", entry.Comment[:commentEnd]),
 				}
 				entryRows = append(entryRows, entryRow)
 			}
