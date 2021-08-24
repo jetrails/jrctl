@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/jetrails/jrctl/sdk/version"
@@ -15,6 +16,7 @@ func List(context server.Context) ListResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(5*time.Second).
 		Get(fmt.Sprintf("https://%s/firewall", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -43,6 +45,7 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(3*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/allow", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -70,6 +73,7 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(3*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/allow", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -97,6 +101,7 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(3*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/deny", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -124,6 +129,7 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(3*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/deny", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -151,6 +157,7 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(15*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/allow/cloudflare", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -183,6 +190,7 @@ func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
+		Timeout(15*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/allow/cloudflare", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).

@@ -4,6 +4,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/version"
@@ -15,6 +16,7 @@ func SecretCreate(context PublicApiContext, data SecretCreateRequest) (SecretCre
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	response, body, errors := request.
+		Timeout(10*time.Second).
 		Post(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -47,6 +49,7 @@ func SecretDelete(context PublicApiContext, data SecretDeleteRequest) (SecretDel
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	response, body, errors := request.
+		Timeout(10*time.Second).
 		Delete(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -79,6 +82,7 @@ func SecretRead(context PublicApiContext, data SecretReadRequest) (SecretReadRes
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	response, body, errors := request.
+		Timeout(10*time.Second).
 		Get(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).

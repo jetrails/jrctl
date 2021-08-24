@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	vercmp "github.com/hashicorp/go-version"
 	"github.com/jetrails/jrctl/pkg/cache"
@@ -30,7 +31,7 @@ func FindStable(releases []ReleaseEntry) (ReleaseEntry, error) {
 			return release, nil
 		}
 	}
-	return ReleaseEntry{}, errors.New("No stable version found")
+	return ReleaseEntry{}, errors.New("no stable version found")
 }
 
 func CheckVersion(debug bool) {
@@ -50,6 +51,7 @@ func CheckVersion(debug bool) {
 	var request = gorequest.New()
 	request.SetDebug(debug)
 	response, body, _ := request.
+		Timeout(5 * time.Second).
 		Get(ReleasesUrl).
 		Query("page=1&per_page=100").
 		End()

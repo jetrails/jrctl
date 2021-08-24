@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"mime"
+	"time"
 
 	"github.com/jetrails/jrctl/sdk/utils"
 	"github.com/jetrails/jrctl/sdk/version"
@@ -16,6 +17,7 @@ func Send(context PublicApiContext, data SendRequest) (SendResponse, *ErrorRespo
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	response, body, errors := request.
+		Timeout(10*time.Minute).
 		Post(fmt.Sprintf("https://%s/%s", context.Endpoint, "transfer/upload")).
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Type("multipart").
@@ -48,6 +50,7 @@ func Receive(context PublicApiContext, data ReceiveRequest) (ReceiveResponse, *E
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	response, body, errors := request.
+		Timeout(10*time.Minute).
 		Get(fmt.Sprintf("https://%s/%s", context.Endpoint, "transfer/download")).
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Query(data).

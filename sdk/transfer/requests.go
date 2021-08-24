@@ -1,7 +1,7 @@
 package transfer
 
 type SendRequest struct {
-	FilePath string `json:file_path`
+	FilePath string `json:"file_path"`
 }
 
 type ReceiveRequest struct {
