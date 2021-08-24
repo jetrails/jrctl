@@ -38,7 +38,7 @@ func initConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.SetDefault("servers", []server.Entry{
-		server.Entry{
+		{
 			Endpoint: "127.0.0.1:27482",
 			Token:    "REPLACE_WITH_AUTH_TOKEN",
 			Types:    []string{"localhost"},

@@ -25,7 +25,7 @@ var firewallUnAllowCloudflareCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		selector, _ := cmd.Flags().GetString("type")
-		rows := [][]string{[]string{"Server", "Response"}}
+		rows := [][]string{{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
 			response := firewall.UnAllowCloudflare(context)
 			row := []string{

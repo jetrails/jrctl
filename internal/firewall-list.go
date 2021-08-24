@@ -27,8 +27,8 @@ var firewallListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
-		responseRows := [][]string{[]string{"Server", "Response"}}
-		entryRows := [][]string{[]string{"Server", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
+		responseRows := [][]string{{"Server", "Response"}}
+		entryRows := [][]string{{"Server", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
 		filter := []string{}
 		emptyMsg := "No configured servers found."
 		if selector != "" {

@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -31,7 +30,7 @@ var serverIngestCmd = &cobra.Command{
 	Args: func(cmd *cobra.Command, args []string) error {
 		types, _ := cmd.Flags().GetStringSlice("type")
 		if len(types) == 0 {
-			return errors.New(fmt.Sprintf("%q expects at least one value", "type"))
+			return fmt.Errorf("%q expects at least one value", "type")
 		}
 		return nil
 	},
@@ -57,7 +56,7 @@ var serverIngestCmd = &cobra.Command{
 		}
 		types, _ := cmd.Flags().GetStringSlice("type")
 		emptyMsg := fmt.Sprintf("No configured server with type(s) \"%s\" found.", strings.Join(types, "\", \""))
-		rows := [][]string{[]string{"Server", "Type(s)", "Action"}}
+		rows := [][]string{{"Server", "Type(s)", "Action"}}
 		savedServers := []server.Entry{}
 		if error := viper.UnmarshalKey("servers", &savedServers); error != nil {
 			if !quiet {

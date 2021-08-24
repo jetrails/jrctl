@@ -29,7 +29,7 @@ var serverTokenCmd = &cobra.Command{
 			filter = []string{selector}
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
-		rows := [][]string{[]string{"Server", "Token ID", "Identity", "Allowed Client IPs"}}
+		rows := [][]string{{"Server", "Token ID", "Identity", "Allowed Client IPs"}}
 		runner := func(index, total int, context server.Context) {
 			response := server.TokenInfo(context)
 			var row []string

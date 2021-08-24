@@ -38,7 +38,7 @@ var firewallDenyCmd = &cobra.Command{
 		if comment == "" {
 			comment = "None"
 		}
-		rows := [][]string{[]string{"Server", "Response"}}
+		rows := [][]string{{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
 			data := firewall.DenyRequest{
 				Address:  address,

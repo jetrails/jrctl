@@ -30,6 +30,7 @@ docs: ## Generate documentation
 	DOCS=true NO_COLOR=true go run tools/generate-docs.go
 
 format: ## Format code with goimports
+	gofmt -w -s cmd internal tools sdk pkg
 	goimports -w cmd internal tools sdk pkg
 
 package: format build docs ## Package binary for many distributions

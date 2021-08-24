@@ -34,7 +34,7 @@ var serverListCmd = &cobra.Command{
 			filter = []string{selector}
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
-		rows := [][]string{[]string{"Server", "Type(s)", "Service(s)"}}
+		rows := [][]string{{"Server", "Type(s)", "Service(s)"}}
 		runner := func(index, total int, context server.Context) {
 			sort.Strings(context.Types)
 			response := server.ListServices(context)

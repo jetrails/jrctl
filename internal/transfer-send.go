@@ -52,8 +52,8 @@ var transferSendCmd = &cobra.Command{
 			clipboard.WriteAll(identifier)
 		}
 		rows := [][]string{
-			[]string{"TTL", "Identifier"},
-			[]string{strconv.Itoa(response.TTL) + "s", identifier},
+			{"TTL", "Identifier"},
+			{strconv.Itoa(response.TTL) + "s", identifier},
 		}
 		if !quiet {
 			text.TablePrint("Could not send file.", rows, 1)

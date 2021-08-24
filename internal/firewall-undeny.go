@@ -34,7 +34,7 @@ var firewallUnDenyCmd = &cobra.Command{
 		port, _ := cmd.Flags().GetInt("port")
 		protocol, _ := cmd.Flags().GetString("protocol")
 		selector, _ := cmd.Flags().GetString("type")
-		rows := [][]string{[]string{"Server", "Response"}}
+		rows := [][]string{{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
 			data := firewall.UnDenyRequest{
 				Address:  address,

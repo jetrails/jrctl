@@ -1,7 +1,6 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
@@ -35,10 +34,10 @@ var serverRestartCmd = &cobra.Command{
 		validServices := server.CollectServices()
 		for _, arg := range args {
 			if !array.ContainsString(validServices, arg) {
-				return errors.New(fmt.Sprintf(
+				return fmt.Errorf(
 					"%q is not found, available services include: %v",
 					arg, "\""+strings.Join(validServices, "\", \"")+"\"",
-				))
+				)
 			}
 		}
 		cmd.Run(cmd, args)
@@ -46,7 +45,7 @@ var serverRestartCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		rows := [][]string{[]string{"Server", "Service", "Response"}}
+		rows := [][]string{{"Server", "Service", "Response"}}
 		selector, _ := cmd.Flags().GetString("type")
 		for _, arg := range args {
 			runner := func(index, total int, context server.Context) {

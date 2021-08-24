@@ -1,7 +1,6 @@
 package server
 
 import (
-	"errors"
 	"fmt"
 	"sort"
 	"strings"
@@ -65,7 +64,7 @@ func IsValidTypeError(t string) error {
 		return nil
 	}
 	list := strings.Join(CollectTypes(), ", ")
-	return errors.New(fmt.Sprintf("%q must be one of: %v", "type", list))
+	return fmt.Errorf("%q must be one of: %v", "type", list)
 }
 
 func Filter(contexts []Context, filters []string) []Context {
@@ -99,7 +98,7 @@ func LoadServers() []Context {
 		}
 		contexts = append(contexts, context)
 	}
-	for i, _ := range contexts {
+	for i := range contexts {
 		contexts[i].Debug = debug
 		contexts[i].Insecure = insecure
 	}

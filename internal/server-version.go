@@ -29,7 +29,7 @@ var serverVersionCmd = &cobra.Command{
 			filter = []string{selector}
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
-		rows := [][]string{[]string{"Server", "Version"}}
+		rows := [][]string{{"Server", "Version"}}
 		runner := func(index, total int, context server.Context) {
 			response := server.Version(context)
 			var row []string

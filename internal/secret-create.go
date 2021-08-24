@@ -89,8 +89,8 @@ var secretCreateCmd = &cobra.Command{
 			clipboard.WriteAll(url)
 		}
 		rows := [][]string{
-			[]string{"TTL", "Password", "Secret URL"},
-			[]string{strconv.Itoa(ttl) + "s", displayPassword, url},
+			{"TTL", "Password", "Secret URL"},
+			{strconv.Itoa(ttl) + "s", displayPassword, url},
 		}
 		if !quiet {
 			text.TablePrint("Could not create secret.", rows, 1)
