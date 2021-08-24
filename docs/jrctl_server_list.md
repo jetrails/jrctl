@@ -24,6 +24,7 @@ jrctl server list -t www
 
 ```
   -h, --help          help for list
+  -q, --quiet         output as little information as possible
   -t, --type string   specify server type selector
 ```
 

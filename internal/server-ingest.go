@@ -1,12 +1,13 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
-	"sort"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
@@ -24,9 +25,20 @@ var serverIngestCmd = &cobra.Command{
 	}),
 	Example: text.Examples([]string{
 		"echo -n TOKEN | jrctl server ingest -t localhost",
+		"echo -n TOKEN | jrctl server ingest -t jump -e 10.10.10.7",
+		"echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f",
 	}),
+	Args: func(cmd *cobra.Command, args []string) error {
+		types, _ := cmd.Flags().GetStringSlice("type")
+		if len(types) == 0 {
+			return errors.New(fmt.Sprintf("%q expects at least one value", "type"))
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
+		force, _ := cmd.Flags().GetBool("force")
+		endpoint, _ := cmd.Flags().GetString("endpoint")
 		var tokenValue string = ""
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
 			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
@@ -43,9 +55,8 @@ var serverIngestCmd = &cobra.Command{
 			}
 			os.Exit(1)
 		}
-		selector, _ := cmd.Flags().GetString("type")
-		filter := []string{selector}
-		emptyMsg := fmt.Sprintf("No configured %q server(s) found.", selector)
+		types, _ := cmd.Flags().GetStringSlice("type")
+		emptyMsg := fmt.Sprintf("No configured server with type(s) \"%s\" found.", strings.Join(types, "\", \""))
 		rows := [][]string{[]string{"Server", "Type(s)", "Action"}}
 		savedServers := []server.Entry{}
 		if error := viper.UnmarshalKey("servers", &savedServers); error != nil {
@@ -54,25 +65,31 @@ var serverIngestCmd = &cobra.Command{
 			}
 			os.Exit(1)
 		}
-		runner := func(index, total int, context server.Context) {
-			for i, savedServer := range savedServers {
-				sort.Strings(context.Types)
-				sort.Strings(savedServer.Types)
-				if true &&
-					savedServer.Endpoint == context.Endpoint &&
-					savedServer.Token == context.Token &&
-					strings.Join(savedServer.Types, "|") == strings.Join(context.Types, "|") {
-					savedServers[i].Token = tokenValue
-					row := []string{
-						strings.TrimSuffix(context.Endpoint, ":27482"),
-						strings.Join(context.Types, ", "),
-						"Ingested",
-					}
-					rows = append(rows, row)
+		for i, savedServer := range savedServers {
+			if array.HasValidStringValues(types, savedServer.Types) {
+				savedServers[i].Token = tokenValue
+				row := []string{
+					strings.TrimSuffix(savedServer.Endpoint, ":27482"),
+					strings.Join(savedServer.Types, ", "),
+					"Updated",
 				}
+				rows = append(rows, row)
 			}
 		}
-		server.FilterForEach(filter, runner)
+		if force {
+			createdEntry := server.Entry{
+				Endpoint: endpoint,
+				Token:    tokenValue,
+				Types:    types,
+			}
+			savedServers = append(savedServers, createdEntry)
+			row := []string{
+				strings.TrimSuffix(createdEntry.Endpoint, ":27482"),
+				strings.Join(createdEntry.Types, ", "),
+				"Created",
+			}
+			rows = append(rows, row)
+		}
 		if len(rows) > 1 {
 			if data, error := ioutil.ReadFile(viper.ConfigFileUsed()); error == nil {
 				var c interface{}
@@ -84,7 +101,7 @@ var serverIngestCmd = &cobra.Command{
 								defer file.Close()
 								file.Write(d)
 								if !quiet {
-									fmt.Printf("\nIngested token for %q server(s):\n", selector)
+									fmt.Printf("\nIngested token for server(s) with type(s) \"%s\".\n", strings.Join(types, "\", \""))
 								}
 							} else {
 								if !quiet {
@@ -122,6 +139,8 @@ func init() {
 	serverCmd.AddCommand(serverIngestCmd)
 	serverIngestCmd.Flags().SortFlags = true
 	serverIngestCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	serverIngestCmd.Flags().StringP("type", "t", "", "specify server type selector")
+	serverIngestCmd.Flags().BoolP("force", "f", false, "create new entry even if matching entries exist")
+	serverIngestCmd.Flags().StringP("endpoint", "e", "127.0.0.1:27482", "server endpoint used for new entries only")
+	serverIngestCmd.Flags().StringSliceP("type", "t", []string{}, "type selector(s), all must be present to match entry")
 	serverIngestCmd.MarkFlagRequired("type")
 }

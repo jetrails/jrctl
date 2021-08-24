@@ -1,5 +1,5 @@
 .nh
-.TH "JetRails CLI" "1" "Jul 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
+.TH "JetRails CLI" "1" "Aug 2021" "Copyright 2021 ADF, Inc. All Rights Reserved " ""
 
 .SH NAME
 .PP
@@ -18,6 +18,14 @@ Ingest server token and save it to config.
 
 .SH OPTIONS
 .PP
+\fB\-e\fP, \fB\-\-endpoint\fP="127.0.0.1:27482"
+	server endpoint used for new entries only
+
+.PP
+\fB\-f\fP, \fB\-\-force\fP[=false]
+	create new entry even if matching entries exist
+
+.PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
 	help for ingest
 
@@ -26,8 +34,8 @@ Ingest server token and save it to config.
 	output as little information as possible
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP=""
-	specify server type selector
+\fB\-t\fP, \fB\-\-type\fP=[]
+	type selector(s), all must be present to match entry
 
 
 .SH EXAMPLE
@@ -36,6 +44,8 @@ Ingest server token and save it to config.
 
 .nf
 echo \-n TOKEN | jrctl server ingest \-t localhost
+echo \-n TOKEN | jrctl server ingest \-t jump \-e 10.10.10.7
+echo \-n TOKEN | jrctl server ingest \-t web \-e 10.10.10.6 \-f
 
 .fi
 .RE
