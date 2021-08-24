@@ -23,6 +23,7 @@ $(DARWIN):
 
 clean: ## Delete built binaries
 	rm -f "bin/$(LINUX)" "bin/$(DARWIN)"
+	rm -rf ./dist/*
 
 docs: ## Generate documentation
 	mkdir -p docs man
