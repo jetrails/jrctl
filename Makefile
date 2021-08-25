@@ -16,7 +16,7 @@ bump: ## Bump version in source files based on latest git tag
 	VERSION=$(VERSION); sed -E -i '' "s/(version: )([0-9.]+)/\1$$VERSION/g" ./nfpm.yaml
 	VERSION=$(VERSION); sed -E -i '' "s/(const VersionString string = \")([0-9.]+)(\")/\1$$VERSION\3/g" ./sdk/version/version.go
 
-build: bump linux darwin ## Build for all platforms
+build: linux darwin ## Build for all platforms
 	@echo version: $(VERSION)
 
 linux: $(LINUX)

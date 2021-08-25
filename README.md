@@ -2,7 +2,7 @@
 > Command line tool to help interact with our API
 
 ![](https://img.shields.io/badge/License-JetRails_License-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
-![](https://img.shields.io/badge/Version-2.1.0-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
+![](https://img.shields.io/badge/Version-2.1.2-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 ![](https://img.shields.io/badge/OS-MacOS/Linux-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 
 ## About
@@ -19,15 +19,15 @@ $ brew install jrctl
 ## Installation (RedHat)
 
 ```shell
-$ rpm -i https://github.com/jetrails/jrctl/releases/download/2.1.0/jrctl-2.1.0.x86_64.rpm
+$ rpm -i https://github.com/jetrails/jrctl/releases/download/2.1.2/jrctl-2.1.2.x86_64.rpm
 ```
 
 ## Installation (Debian)
 
 ```shell
-$ curl -sL -o /var/cache/apt/archives/jrctl_2.1.0_amd64.deb https://github.com/jetrails/jrctl/releases/download/2.1.0/jrctl_2.1.0_amd64.deb
-$ dpkg -i /var/cache/apt/archives/jrctl_2.1.0_amd64.deb
-$ rm /var/cache/apt/archives/jrctl_2.1.0_amd64.deb
+$ curl -sL -o /var/cache/apt/archives/jrctl_2.1.2_amd64.deb https://github.com/jetrails/jrctl/releases/download/2.1.2/jrctl_2.1.2_amd64.deb
+$ dpkg -i /var/cache/apt/archives/jrctl_2.1.2_amd64.deb
+$ rm /var/cache/apt/archives/jrctl_2.1.2_amd64.deb
 ```
 
 ## Building & Running
