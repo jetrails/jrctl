@@ -3,18 +3,18 @@ VERSION=$(shell git describe --tags `git rev-list --tags --max-count=1`)
 LINUX=$(EXECUTABLE)_linux_amd64
 DARWIN=$(EXECUTABLE)_darwin_amd64
 
-.PHONY: help clean docs format
+.PHONY: help bump clean docs format package $(LINUX) $(DARWIN)
 
 help: ## Display available commands
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 bump: ## Bump version in source files based on latest git tag
-	VERSION=$(VERSION); sed -E -i '' "s/(Version-)([\d.]+)(-green)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(jrctl_)([\d.]+)(_)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(jrctl-)([\d.]+)(\.)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(download\/)([\d.]+)(\/jrctl)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(version: )([\d.]+)/\1$$VERSION/g" ./nfpm.yaml
-	VERSION=$(VERSION); sed -E -i '' "s/(const VersionString string = \")([\d.]+)(\")/\1$$VERSION\3/g" ./sdk/version/version.go
+	VERSION=$(VERSION); sed -E -i '' "s/(Version-)([0-9.]+)(-green)/\1$$VERSION\3/g" ./README.md
+	VERSION=$(VERSION); sed -E -i '' "s/(jrctl_)([0-9.]+)(_)/\1$$VERSION\3/g" ./README.md
+	VERSION=$(VERSION); sed -E -i '' "s/(jrctl-)([0-9.]+)(\.)/\1$$VERSION\3/g" ./README.md
+	VERSION=$(VERSION); sed -E -i '' "s/(download\/)([0-9.]+)(\/jrctl)/\1$$VERSION\3/g" ./README.md
+	VERSION=$(VERSION); sed -E -i '' "s/(version: )([0-9.]+)/\1$$VERSION/g" ./nfpm.yaml
+	VERSION=$(VERSION); sed -E -i '' "s/(const VersionString string = \")([0-9.]+)(\")/\1$$VERSION\3/g" ./sdk/version/version.go
 
 build: bump linux darwin ## Build for all platforms
 	@echo version: $(VERSION)
