@@ -47,4 +47,6 @@ package: format build docs ## Package binary for many distributions
 	rm -f ./dist/*
 	nfpm pkg --packager deb --target ./dist
 	nfpm pkg --packager rpm --target ./dist
+	mv ./dist/jrctl-*.x86_64.rpm ./dist/jrctl-$(VERSION).x86_64.rpm
+	mv ./dist/jrctl_*_amd64.deb ./dist/jrctl_$(VERSION)_amd64.deb
 	tar -czvf ./dist/$(EXECUTABLE)-$(VERSION)-darwin.tar.gz man bin/$(DARWIN)
