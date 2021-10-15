@@ -27,7 +27,8 @@ func FindStable(releases []ReleaseEntry) (ReleaseEntry, error) {
 	for _, release := range releases {
 		isAlpha := strings.HasSuffix(release.TagName, "-alpha")
 		isBeta := strings.HasSuffix(release.TagName, "-beta")
-		if !release.PreRelease && !release.Draft && !isAlpha && !isBeta {
+		isLatest := release.TagName == "latest"
+		if !release.PreRelease && !release.Draft && !isAlpha && !isBeta && !isLatest {
 			return release, nil
 		}
 	}
