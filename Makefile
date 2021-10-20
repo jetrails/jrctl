@@ -10,9 +10,6 @@ help: ## Display available commands
 
 bump: ## Bump version in source files based on latest git tag
 	VERSION=$(VERSION); sed -E -i '' "s/(Version-)([0-9.]+)(-green)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(jrctl_)([0-9.]+)(_)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(jrctl-)([0-9.]+)(\.)/\1$$VERSION\3/g" ./README.md
-	VERSION=$(VERSION); sed -E -i '' "s/(download\/)([0-9.]+)(\/jrctl)/\1$$VERSION\3/g" ./README.md
 	VERSION=$(VERSION); sed -E -i '' "s/(version: )([0-9.]+)/\1$$VERSION/g" ./nfpm.yaml
 	VERSION=$(VERSION); sed -E -i '' "s/(const VersionString string = \")([0-9.]+)(\")/\1$$VERSION\3/g" ./sdk/version/version.go
 

@@ -19,15 +19,15 @@ $ brew install jrctl
 ## Installation (RedHat)
 
 ```shell
-$ rpm -i https://github.com/jetrails/jrctl/releases/download/2.1.3/jrctl-2.1.3.x86_64.rpm
+$ rpm -i https://github.com/jetrails/jrctl/releases/download/latest/jrctl-latest.x86_64.rpm
 ```
 
 ## Installation (Debian)
 
 ```shell
-$ curl -sL -o /var/cache/apt/archives/jrctl_2.1.3_amd64.deb https://github.com/jetrails/jrctl/releases/download/2.1.3/jrctl_2.1.3_amd64.deb
-$ dpkg -i /var/cache/apt/archives/jrctl_2.1.3_amd64.deb
-$ rm /var/cache/apt/archives/jrctl_2.1.3_amd64.deb
+$ curl -sL -o /var/cache/apt/archives/jrctl_latest_amd64.deb https://github.com/jetrails/jrctl/releases/download/latest/jrctl_latest_amd64.deb
+$ dpkg -i /var/cache/apt/archives/jrctl_latest_amd64.deb
+$ rm /var/cache/apt/archives/jrctl_latest_amd64.deb
 ```
 
 ## Building & Running
