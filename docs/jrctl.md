@@ -20,4 +20,5 @@ our Github repository.
 * [jrctl secret](jrctl_secret.md)	 - Interact with one-time secret service
 * [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
 * [jrctl transfer](jrctl_transfer.md)	 - Securely transfer files from one machine to another
+* [jrctl update](jrctl_update.md)	 - Check to see if there is an update available
 
