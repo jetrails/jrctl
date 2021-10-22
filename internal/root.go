@@ -30,7 +30,6 @@ var RootCmd = &cobra.Command{
 func init() {
 	RootCmd.Flags().SortFlags = true
 	cobra.OnInitialize(initConfig)
-	version.CheckVersion(env.GetBool("debug", false))
 }
 
 func initConfig() {
