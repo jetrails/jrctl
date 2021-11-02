@@ -11,7 +11,7 @@ steps:
     commands:
     -   git fetch --tags
     -   echo -e "### Change-Log:\n" > ./CHANGELOG.md
-    -   git log "$(git tag --sort=-creatordate | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
+    -   git log "$(git tag --sort=-creatordate | grep -v latest | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | grep -v latest | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
     -   cp ./CHANGELOG.md /usr/src/CHANGELOG.md
 -   name: build
     image: golang:1.14
@@ -21,6 +21,7 @@ steps:
     commands:
     -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.6.0/nfpm_amd64.deb --output nfpm.deb
     -   dpkg -i nfpm.deb && rm nfpm.deb
+    -   apt update && apt install -y gettext-base
     -   go get golang.org/x/tools/cmd/goimports
     -   go mod download
     -   make VERSION=${DRONE_TAG} package

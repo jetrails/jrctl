@@ -19,29 +19,30 @@ $ brew install jrctl
 ## Installation (RedHat)
 
 ```shell
-$ rpm -i https://github.com/jetrails/jrctl/releases/download/latest/jrctl-latest.x86_64.rpm
+$ rpm -i https://github.com/jetrails/jrctl/releases/download/latest/jrctl_latest_linux_amd64.rpm
 ```
 
 ## Installation (Debian)
 
 ```shell
-$ curl -sL -o /var/cache/apt/archives/jrctl_latest_amd64.deb https://github.com/jetrails/jrctl/releases/download/latest/jrctl_latest_amd64.deb
-$ dpkg -i /var/cache/apt/archives/jrctl_latest_amd64.deb
-$ rm /var/cache/apt/archives/jrctl_latest_amd64.deb
+$ curl -sL -o /var/cache/apt/archives/jrctl_latest_linux_amd64.deb https://github.com/jetrails/jrctl/releases/download/latest/jrctl_latest_linux_amd64.deb
+$ dpkg -i /var/cache/apt/archives/jrctl_latest_linux_amd64.deb
+$ rm /var/cache/apt/archives/jrctl_latest_linux_amd64.deb
 ```
 
 ## Building & Running
 
 This project uses a simple [Makefile](./Makefile) as a build system.
 
-|     Command    | Description                               |
-|:--------------:|-------------------------------------------|
-|  `make build`  | Build binaries and output to `bin` folder |
-|  `make clean`  | Delete built binaries                     |
-|  `make docs`   | Generate documentation                    |
-| `make package` | Package binary for many distributions     |
-| `make format`  | Format code with goimports                |
-|  `make help`   | Display available commands                |
+|     Command        | Description                               |
+|:------------------:|-------------------------------------------|
+|  `make build`      | Build binaries and output to `bin` folder |
+|  `make build-all`  | Build for all platforms                   |
+|  `make clean`      | Delete built binaries                     |
+|  `make docs`       | Generate documentation                    |
+| `make package`     | Package binary for many distributions     |
+| `make format`      | Format code with goimports                |
+|  `make help`       | Display available commands                |
 
 ## Configuration File
 

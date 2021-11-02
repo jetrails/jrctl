@@ -2,7 +2,7 @@
 # https://nfpm.goreleaser.com/configuration/
 
 name: jrctl
-arch: amd64
+arch: ${GOARCH}
 platform: linux
 version: 2.1.4
 section: default
@@ -15,7 +15,7 @@ license: The JetRails License
 contents:
 -   src: man/*
     dst: /usr/share/man/man1
--   src: bin/jrctl_linux_amd64
+-   src: bin/jrctl_linux_${GOARCH}
     dst: /usr/bin/jrctl
 scripts:
     postinstall: scripts/post-install.sh
