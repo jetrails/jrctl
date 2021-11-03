@@ -22,6 +22,8 @@ var serverTokenCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
+		identity, _ := cmd.Flags().GetString("identity")
+		tokenID, _ := cmd.Flags().GetString("token-id")
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		filter := []string{}
 		emptyMsg := "No configured servers found."
@@ -39,6 +41,12 @@ var serverTokenCmd = &cobra.Command{
 					response.Messages[0],
 				}
 			} else {
+				if identity != "" && identity != response.Payload.Identity {
+					return
+				}
+				if tokenID != "" && tokenID != response.Payload.TokenID {
+					return
+				}
 				row = []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
 					response.Payload.TokenID,
@@ -51,7 +59,7 @@ var serverTokenCmd = &cobra.Command{
 		server.FilterForEach(filter, runner)
 		if quiet {
 			for _, row := range rows[1:] {
-				fmt.Printf("%s\n", row[0])
+				fmt.Printf("%s\n", row[1])
 			}
 		} else {
 			if selector != "" && len(rows) > 1 {
@@ -66,5 +74,7 @@ func init() {
 	serverCmd.AddCommand(serverTokenCmd)
 	serverTokenCmd.Flags().SortFlags = true
 	serverTokenCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	serverTokenCmd.Flags().StringP("type", "t", "", "specify server type selector")
+	serverTokenCmd.Flags().StringP("type", "t", "", "specify server type selector, optional")
+	serverTokenCmd.Flags().StringP("identity", "i", "", "filter with identity, optional")
+	serverTokenCmd.Flags().StringP("token-id", "I", "", "filter with token id, optional")
 }
