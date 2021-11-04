@@ -36,6 +36,8 @@ steps:
             from_secret: github_token
         files:
         -   generated/dist/*
+        file_exists: overwrite
+        overwrite: true
         title: Version ${DRONE_TAG}
         note: generated/CHANGELOG.md
 volumes:
