@@ -53,7 +53,7 @@ var transferReceiveCmd = &cobra.Command{
 		}
 		fmt.Sscanf(argument, "%36s-%32s", &identifier, &password)
 		context := transfer.PublicApiContext{
-			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
+			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
 			Insecure: env.GetBool("insecure", false),
 		}

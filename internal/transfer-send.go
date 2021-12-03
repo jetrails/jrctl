@@ -35,7 +35,7 @@ var transferSendCmd = &cobra.Command{
 			return
 		}
 		context := transfer.PublicApiContext{
-			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
+			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
 			Insecure: env.GetBool("insecure", false),
 		}

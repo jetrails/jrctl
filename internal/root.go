@@ -53,8 +53,8 @@ func initConfig() {
 		fmt.Printf("%s: %v\n", color.CyanString("config"), viper.ConfigFileUsed())
 		fmt.Printf("%s: %v\n", color.CyanString("debug"), env.GetBool("debug", false))
 		fmt.Printf("%s: %v\n", color.CyanString("insecure"), env.GetBool("insecure", false))
-		fmt.Printf("%s: %v\n", color.CyanString("public_api_endpoint"), env.GetString("public_api_endpoint", "api-public.jetrails.cloud"))
-		fmt.Printf("%s: %v\n", color.CyanString("secret_endpoint"), env.GetString("secret_endpoint", "secret.jetrails.cloud"))
+		fmt.Printf("%s: %v\n", color.CyanString("public_api_endpoint"), env.GetString("public_api_endpoint", "api-public.jetrails.com"))
+		fmt.Printf("%s: %v\n", color.CyanString("secret_endpoint"), env.GetString("secret_endpoint", "secret.jetrails.com"))
 		fmt.Println("---")
 	}
 }

@@ -59,7 +59,7 @@ var secretCreateCmd = &cobra.Command{
 			content = input.PromptContent("Secret")
 		}
 		context := secret.PublicApiContext{
-			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
+			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
 			Insecure: env.GetBool("insecure", false),
 		}
@@ -78,7 +78,7 @@ var secretCreateCmd = &cobra.Command{
 		}
 		url := fmt.Sprintf(
 			"https://%s/secret/%s",
-			env.GetString("secret_endpoint", "secret.jetrails.cloud"),
+			env.GetString("secret_endpoint", "secret.jetrails.com"),
 			response.Identifier,
 		)
 		displayPassword := "None"

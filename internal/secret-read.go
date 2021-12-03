@@ -48,13 +48,13 @@ var secretReadCmd = &cobra.Command{
 		} else {
 			identifier = args[0]
 		}
-		identifier = strings.TrimPrefix(identifier, fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.cloud")))
+		identifier = strings.TrimPrefix(identifier, fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.com")))
 		identifier = strings.Trim(identifier, "/")
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		password, _ := cmd.Flags().GetString("password")
 		context := secret.PublicApiContext{
-			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.cloud"),
+			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
 			Insecure: env.GetBool("insecure", false),
 		}
