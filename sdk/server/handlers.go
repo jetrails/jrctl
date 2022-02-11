@@ -93,7 +93,7 @@ func Restart(context Context, data RestartRequest) RestartResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errors := request.
-		Timeout(10*time.Second).
+		Timeout(30*time.Second).
 		Put(fmt.Sprintf("https://%s/service/restart", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
