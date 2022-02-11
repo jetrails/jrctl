@@ -30,6 +30,7 @@ jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
 ```
   -a, --address string    ip address
   -c, --comment string    add a comment to the firewall entry (optional)
+  -f, --file string       use text file with line separated ips
   -h, --help              help for allow
   -p, --port ints         port to allow, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp' (default "tcp")

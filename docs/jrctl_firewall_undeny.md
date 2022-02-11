@@ -29,6 +29,7 @@ jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
 
 ```
   -a, --address string    ip address
+  -f, --file string       use text file with line separated ips
   -h, --help              help for undeny
   -p, --port int          port to undeny
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")

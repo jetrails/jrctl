@@ -2,6 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
 	"strings"
 
 	"github.com/jetrails/jrctl/pkg/text"
@@ -28,25 +30,58 @@ var firewallUnAllowCmd = &cobra.Command{
 		"jrctl firewall allow -t db -a 1.1.1.1 -p 3306",
 		"jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'",
 	}),
+	Args: func(cmd *cobra.Command, args []string) error {
+		if !cmd.Flag("address").Changed && !cmd.Flag("file").Changed {
+			return fmt.Errorf("must pass either the 'address' or 'file' flag")
+		}
+		if cmd.Flag("address").Changed && cmd.Flag("file").Changed {
+			return fmt.Errorf("cannot pass both the 'address' and 'file' flag")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
-		address, _ := cmd.Flags().GetString("address")
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		port, _ := cmd.Flags().GetInt("port")
 		protocol, _ := cmd.Flags().GetString("protocol")
 		selector, _ := cmd.Flags().GetString("type")
+		address, _ := cmd.Flags().GetString("address")
+		file, _ := cmd.Flags().GetString("file")
+		var addresses []string
+		if cmd.Flag("address").Changed {
+			addresses = []string{address}
+		} else {
+			fileContents, fileError := ioutil.ReadFile(file)
+			if fileError != nil {
+				fmt.Printf("could not read contents of file %q", file)
+				os.Exit(1)
+			}
+			lines := strings.Split(string(fileContents), "\n")
+			for _, line := range lines {
+				line = strings.Trim(line, " \t\r")
+				if line != "" {
+					addresses = append(addresses, line)
+				}
+			}
+			if len(addresses) == 0 {
+				fmt.Printf("file %q appears to have no entries\n", file)
+				os.Exit(1)
+			}
+		}
 		rows := [][]string{{"Server", "Response"}}
 		runner := func(index, total int, context server.Context) {
-			data := firewall.UnAllowRequest{
-				Address:  address,
-				Port:     port,
-				Protocol: protocol,
+			for _, address := range addresses {
+				data := firewall.UnAllowRequest{
+					Address:  address,
+					Port:     port,
+					Protocol: protocol,
+				}
+				response := firewall.UnAllow(context, data)
+				row := []string{
+					strings.TrimSuffix(context.Endpoint, ":27482"),
+					response.Messages[0],
+				}
+				rows = append(rows, row)
 			}
-			response := firewall.UnAllow(context, data)
-			row := []string{
-				strings.TrimSuffix(context.Endpoint, ":27482"),
-				response.Messages[0],
-			}
-			rows = append(rows, row)
 		}
 		server.FilterForEach([]string{selector}, runner)
 		if !quiet {
@@ -64,8 +99,8 @@ func init() {
 	firewallUnAllowCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 	firewallUnAllowCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 	firewallUnAllowCmd.Flags().StringP("address", "a", "", "ip address")
+	firewallUnAllowCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
 	firewallUnAllowCmd.Flags().IntP("port", "p", 0, "port to unallow")
 	firewallUnAllowCmd.Flags().String("protocol", "tcp", "specify 'tcp' or 'udp', default is 'tcp'")
-	firewallUnAllowCmd.MarkFlagRequired("address")
 	firewallUnAllowCmd.MarkFlagRequired("port")
 }
