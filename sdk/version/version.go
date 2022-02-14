@@ -11,7 +11,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-const VersionString string = "2.2.1"
+const VersionString string = "2.3.0"
 const ReleasesUrl = "https://github.com/jetrails/jrctl/releases"
 const ReleasesApiUrl = "https://api.github.com/repos/jetrails/jrctl/releases"
 const TagUrlTemplate = "https://github.com/jetrails/jrctl/releases/tag/%s"
