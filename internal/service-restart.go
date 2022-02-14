@@ -53,6 +53,9 @@ var serverRestartCmd = &cobra.Command{
 				if strings.HasPrefix(arg, "php-fpm") {
 					data.Service = "php-fpm"
 					data.Version = strings.Join(strings.Split(arg, "-")[2:], "-")
+				} else if strings.HasPrefix(arg, "redis") {
+					data.Service = "redis"
+					data.Version = strings.Join(strings.Split(arg, "-")[1:], "-")
 				}
 				response := server.Restart(context, data)
 				row := []string{
