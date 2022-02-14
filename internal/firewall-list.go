@@ -10,6 +10,24 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func squashOrAppendEntry(rows [][]string, entry []string) [][]string {
+	portColIndex := 4
+	for rowIndex, row := range rows {
+		allButPortAreSame := true
+		for colIndex, col := range row {
+			if entry[colIndex] != col && colIndex != portColIndex {
+				allButPortAreSame = false
+				break
+			}
+		}
+		if allButPortAreSame {
+			rows[rowIndex][portColIndex] = rows[rowIndex][portColIndex] + ", " + entry[portColIndex]
+			return rows
+		}
+	}
+	return append(rows, entry)
+}
+
 var firewallListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "List firewall entries across configured servers",
@@ -27,8 +45,8 @@ var firewallListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
-		responseRows := [][]string{{"Server", "Response"}}
-		entryRows := [][]string{{"Server", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
+		responseRows := [][]string{{"Hostname", "Server", "Type(s)", "Response"}}
+		entryTables := [][][]string{}
 		filter := []string{}
 		emptyMsg := "No configured servers found."
 		if selector != "" {
@@ -36,9 +54,12 @@ var firewallListCmd = &cobra.Command{
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
 		runner := func(index, total int, context server.Context) {
+			entryRows := [][]string{{"Hostname", "Type(s)", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
 			response := firewall.List(context)
 			responseRow := []string{
+				response.Metadata["Hostname"],
 				strings.TrimSuffix(context.Endpoint, ":27482"),
+				strings.Join(context.Types, ", "),
 				response.Messages[0],
 			}
 			responseRows = append(responseRows, responseRow)
@@ -48,15 +69,17 @@ var firewallListCmd = &cobra.Command{
 					commentEnd = len(entry.Comment)
 				}
 				entryRow := []string{
-					strings.TrimSuffix(context.Endpoint, ":27482"),
+					response.Metadata["Hostname"],
+					strings.Join(context.Types, ", "),
 					entry.Action,
 					entry.Source,
 					strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Ports)), ", "), "[]"),
 					strings.Join(entry.Protocols, ", "),
 					fmt.Sprintf("%q", entry.Comment[:commentEnd]),
 				}
-				entryRows = append(entryRows, entryRow)
+				entryRows = squashOrAppendEntry(entryRows, entryRow)
 			}
+			entryTables = append(entryTables, entryRows)
 		}
 		server.FilterForEach(filter, runner)
 		if selector != "" && len(responseRows) > 1 {
@@ -66,8 +89,10 @@ var firewallListCmd = &cobra.Command{
 		text.TablePrint(emptyMsg, responseRows, 0)
 		fmt.Println()
 		if len(responseRows) > 1 {
-			text.TablePrint("No firewall entries found.", entryRows, 0)
-			fmt.Println()
+			for _, table := range entryTables {
+				text.TablePrint("No firewall entries found.", table, 0)
+				fmt.Println()
+			}
 		}
 	},
 }

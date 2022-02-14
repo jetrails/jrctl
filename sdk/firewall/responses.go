@@ -1,10 +1,11 @@
 package firewall
 
 type ListResponse struct {
-	Status   string   `json:"status"`
-	Code     int      `json:"code"`
-	Messages []string `json:"messages"`
-	Payload  []Entry  `json:"payload"`
+	Status   string            `json:"status"`
+	Code     int               `json:"code"`
+	Messages []string          `json:"messages"`
+	Metadata map[string]string `json:"metadata"`
+	Payload  []Entry           `json:"payload"`
 }
 
 type AllowResponse struct {
