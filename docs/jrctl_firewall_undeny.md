@@ -4,11 +4,8 @@ Deletes deny entry given a source IP address and a port number
 
 ### Synopsis
 
-Denies a specified IP address to bypass the local system firewall by creating an
-'deny' entry into the permanent firewall config. Grants unprivileged users
-ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) server as well as cluster of
-servers.
+Removes a 'deny' entry. Able to control a single (localhost) server as well as
+cluster of servers.
 
 ```
 jrctl firewall undeny [flags]
@@ -18,11 +15,11 @@ jrctl firewall undeny [flags]
 
 ```
 # Stand-Alone Server
-jrctl firewall deny -a 1.1.1.1 -p 80 -p 443
+jrctl firewall undeny -a 1.1.1.1 -p 22
 
 # Multi-Server Cluster
-jrctl firewall deny -t db -a 1.1.1.1 -p 3306
-jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
+jrctl firewall undeny -t db -a 1.1.1.1 -p 3306
+jrctl firewall undeny -t admin -a 1.1.1.1 -p 22
 ```
 
 ### Options

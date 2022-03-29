@@ -4,11 +4,8 @@ Deletes allow entry given a source IP address and a port number
 
 ### Synopsis
 
-Allows a specified IP address to bypass the local system firewall by creating an
-'allow' entry into the permanent firewall config. Grants unprivileged users
-ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) server as well as cluster of
-servers.
+Removes a 'allow' entry. Able to control a single (localhost) server as well as
+cluster of servers.
 
 ```
 jrctl firewall unallow [flags]
@@ -18,11 +15,11 @@ jrctl firewall unallow [flags]
 
 ```
 # Stand-Alone Server
-jrctl firewall allow -a 1.1.1.1 -p 80 -p 443
+jrctl firewall unallow -a 1.1.1.1 -p 22
 
 # Multi-Server Cluster
-jrctl firewall allow -t db -a 1.1.1.1 -p 3306
-jrctl firewall allow -t admin -a 1.1.1.1 -p 22 -c 'Office'
+jrctl firewall unallow -t db -a 1.1.1.1 -p 3306
+jrctl firewall unallow -t admin -a 1.1.1.1 -p 22
 ```
 
 ### Options
