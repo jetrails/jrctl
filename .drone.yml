@@ -19,7 +19,7 @@ steps:
     -   name: build-volume
         path: /go/src
     commands:
-    -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.6.0/nfpm_amd64.deb --output nfpm.deb
+    -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.14.0/nfpm_amd64.deb --output nfpm.deb
     -   dpkg -i nfpm.deb && rm nfpm.deb
     -   apt update && apt install -y gettext-base
     -   go get golang.org/x/tools/cmd/goimports
