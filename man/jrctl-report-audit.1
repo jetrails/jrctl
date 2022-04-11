@@ -1,0 +1,48 @@
+.nh
+.TH "JetRails CLI" "1" "Apr 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-report\-audit \- Month\-to\-date security audit to ensure access is properly limited
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl report audit [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Month\-to\-date security audit to ensure access is properly limited.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for audit
+
+.PP
+\fB\-o\fP, \fB\-\-output\fP="table"
+	specify 'table' or 'json'
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=""
+	specify server type selector
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl report audit
+jrctl report audit \-t www
+jrctl report audit \-o json
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-report(1)\fP

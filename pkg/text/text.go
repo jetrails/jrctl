@@ -83,3 +83,9 @@ func TablePrint(message string, rows [][]string, padding int) {
 func SanitizeString(allowed, input string) string {
 	return regexp.MustCompile(allowed).ReplaceAllString(input, "_")
 }
+
+func HeaderPrint(title string) {
+	fmt.Println("# ")
+	fmt.Println("# " + title)
+	fmt.Println("# ")
+}

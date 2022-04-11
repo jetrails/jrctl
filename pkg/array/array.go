@@ -61,3 +61,15 @@ func HasValidStringValues(haystack, needles []string) bool {
 	}
 	return true
 }
+
+func UniqueStrings(items []string) []string {
+	set := []string{}
+	track := map[string]bool{}
+	for _, item := range items {
+		if track[item] != true {
+			set = append(set, item)
+			track[item] = true
+		}
+	}
+	return set
+}
