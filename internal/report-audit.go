@@ -76,18 +76,19 @@ var reportAuditCmd = &cobra.Command{
 						response.Metadata["hostname"].(string),
 						entry.Action,
 						strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Ports)), ", "), "[]"),
+						strings.Join(entry.Protocols, ", "),
 						entry.Source,
-						fmt.Sprintf("%q", entry.Comment[:commentEnd]),
+						fmt.Sprintf("%q", strings.ReplaceAll(entry.Comment[:commentEnd], "_", " ")),
 					}
-					whitelistRows = append(whitelistRows, entryRow)
+					whitelistRows = squashOrAppendEntry(whitelistRows, entryRow, 2)
 				}
-				for _, user := range array.UniqueStrings(append(response.Payload.PasswordAccess, response.Payload.SSHAccess...)) {
+				for _, user := range array.UniqueStrings(append(response.Payload.PassAccess, response.Payload.KeyAccess...)) {
 					checkMap := map[bool]string{true: "✔", false: " "}
 					entry := []string{
 						response.Metadata["hostname"].(string),
 						user,
-						checkMap[array.ContainsString(response.Payload.PasswordAccess, user)],
-						checkMap[array.ContainsString(response.Payload.SSHAccess, user)],
+						checkMap[array.ContainsString(response.Payload.PassAccess, user)],
+						checkMap[array.ContainsString(response.Payload.KeyAccess, user)],
 					}
 					accessRows = append(accessRows, entry)
 				}
@@ -97,7 +98,6 @@ var reportAuditCmd = &cobra.Command{
 		server.FilterForEach(filter, runner)
 		if output == "json" {
 			encoded, _ := json.MarshalIndent(rawResponses, "", "\t")
-			// fmt.Printf ( "%#v", rawResponses )
 			fmt.Println(string(encoded))
 			return
 		}
@@ -105,7 +105,7 @@ var reportAuditCmd = &cobra.Command{
 			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
 		}
 		fmt.Println()
-		text.HeaderPrint("Matching Servers")
+		text.HeaderPrint([]string{"Reported System(s)"})
 		fmt.Println()
 		text.TablePrint(emptyMsg, responseRows, 0)
 		fmt.Println()
@@ -113,20 +113,28 @@ var reportAuditCmd = &cobra.Command{
 			sort.SliceStable(activityRows, func(i, j int) bool {
 				return activityRows[i][1] < activityRows[j][1]
 			})
-			whitelistRows = append([][]string{{"Hostname", "Action", "Port", "IP Address", "Comment"}}, whitelistRows...)
+			whitelistRows = append([][]string{{"Hostname", "Action", "Port(s)", "Protocol(s)", "IPV4/CIDR", "Comment"}}, whitelistRows...)
 			activityRows = append([][]string{{"Hostname", "Timestamp", "Method", "IP Address", "User"}}, activityRows...)
-			accessRows = append([][]string{{"Hostname", "User", "Password", "SSH"}}, accessRows...)
-			text.HeaderPrint("Access Log")
+			accessRows = append([][]string{{"Hostname", "User", "Password", "SSH Key"}}, accessRows...)
+			text.HeaderPrint([]string{
+				"SSH Access Activity:",
+				"Incoming connections from internal network IPs are not shown",
+				"These networks include BACKUP_NETWORK, AUTOMATION_NETWORK, DIRECT_NETWORK, MANAGEMENT_NETWORK.",
+			})
 			fmt.Println()
-			text.TablePrint("No audit reports to display.", activityRows, 0)
+			text.TablePrint("No access log entries found.", activityRows, 0)
 			fmt.Println()
-			text.HeaderPrint("Firewall Entries")
+			text.HeaderPrint([]string{
+				"Current Firewall Entries:",
+				"Internal network IPs are obfuscated.",
+				"These networks include BACKUP_NETWORK, AUTOMATION_NETWORK, DIRECT_NETWORK, MANAGEMENT_NETWORK.",
+			})
 			fmt.Println()
-			text.TablePrint("No audit reports to display.", whitelistRows, 0)
+			text.TablePrint("No firewall entries found.", whitelistRows, 0)
 			fmt.Println()
-			text.HeaderPrint("User Access")
+			text.HeaderPrint([]string{"Current SSH User List"})
 			fmt.Println()
-			text.TablePrint("No audit reports to display.", accessRows, 0)
+			text.TablePrint("No user access entries found.", accessRows, 0)
 			fmt.Println()
 		}
 	},

@@ -5,10 +5,10 @@ import (
 )
 
 type AuditData struct {
-	Whitelisted    []firewall.Entry `json:"whitelisted"`
-	PasswordAccess []string         `json:"password_access"`
-	SSHAccess      []string         `json:"ssh_access"`
-	Activity       []AccessLogEntry `json:"activity"`
+	Whitelisted []firewall.Entry `json:"whitelisted"`
+	PassAccess  []string         `json:"pass_access"`
+	KeyAccess   []string         `json:"key_access"`
+	Activity    []AccessLogEntry `json:"activity"`
 }
 
 type AccessLogEntry struct {

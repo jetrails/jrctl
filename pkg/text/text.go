@@ -84,8 +84,10 @@ func SanitizeString(allowed, input string) string {
 	return regexp.MustCompile(allowed).ReplaceAllString(input, "_")
 }
 
-func HeaderPrint(title string) {
+func HeaderPrint(lines []string) {
 	fmt.Println("# ")
-	fmt.Println("# " + title)
+	for _, line := range lines {
+		fmt.Println("# " + line)
+	}
 	fmt.Println("# ")
 }

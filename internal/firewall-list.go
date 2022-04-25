@@ -4,24 +4,26 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/firewall"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
 )
 
-func squashOrAppendEntry(rows [][]string, entry []string) [][]string {
-	portColIndex := 4
+func squashOrAppendEntry(rows [][]string, entry []string, varyIndex int) [][]string {
 	for rowIndex, row := range rows {
-		allButPortAreSame := true
+		allButVaryIsSame := true
 		for colIndex, col := range row {
-			if entry[colIndex] != col && colIndex != portColIndex {
-				allButPortAreSame = false
+			if entry[colIndex] != col && colIndex != varyIndex {
+				allButVaryIsSame = false
 				break
 			}
 		}
-		if allButPortAreSame {
-			rows[rowIndex][portColIndex] = rows[rowIndex][portColIndex] + ", " + entry[portColIndex]
+		if allButVaryIsSame {
+			if !array.ContainsString(strings.Split(rows[rowIndex][varyIndex], ", "), entry[varyIndex]) {
+				rows[rowIndex][varyIndex] = rows[rowIndex][varyIndex] + ", " + entry[varyIndex]
+			}
 			return rows
 		}
 	}
@@ -75,9 +77,9 @@ var firewallListCmd = &cobra.Command{
 					entry.Source,
 					strings.Trim(strings.Join(strings.Fields(fmt.Sprint(entry.Ports)), ", "), "[]"),
 					strings.Join(entry.Protocols, ", "),
-					fmt.Sprintf("%q", entry.Comment[:commentEnd]),
+					fmt.Sprintf("%q", strings.ReplaceAll(entry.Comment[:commentEnd], "_", " ")),
 				}
-				entryRows = squashOrAppendEntry(entryRows, entryRow)
+				entryRows = squashOrAppendEntry(entryRows, entryRow, 4)
 			}
 			entryTables = append(entryTables, entryRows)
 		}
