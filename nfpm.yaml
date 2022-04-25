@@ -4,7 +4,7 @@
 name: jrctl
 arch: ${GOARCH}
 platform: linux
-version: 2.4.0
+version: 2.5.0
 section: default
 priority: extra
 maintainer: Rafael Grigorian <development@jetrails.com>
