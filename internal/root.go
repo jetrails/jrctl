@@ -28,6 +28,10 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
+	RootCmd.SetHelpCommand ( &cobra.Command{
+		Use:    "no-help",
+		Hidden: true,
+	})
 	RootCmd.Flags().SortFlags = true
 	cobra.OnInitialize(initConfig)
 }
