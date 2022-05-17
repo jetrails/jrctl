@@ -30,15 +30,15 @@ var secretDeleteCmd = &cobra.Command{
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
 			return nil
 		}
-		if error := cobra.ExactArgs(1)(cmd, args); error != nil {
-			return error
+		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
+			return err
 		}
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		identifier := ""
 		if len(args) == 0 {
-			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
 				identifier = strings.TrimSpace(string(bytes))
 			}
 		} else {
@@ -55,10 +55,10 @@ var secretDeleteCmd = &cobra.Command{
 		request := secret.SecretDeleteRequest{
 			Identifier: identifier,
 		}
-		response, error := secret.SecretDelete(context, request)
-		if error != nil && error.Code != 200 {
+		response, err := secret.SecretDelete(context, request)
+		if err != nil && err.Code != 200 {
 			if !quiet {
-				fmt.Printf("\n%s\n\n", error.Message)
+				fmt.Printf("\n%s\n\n", err.Message)
 			}
 			os.Exit(1)
 		}

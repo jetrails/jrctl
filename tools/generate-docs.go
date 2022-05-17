@@ -17,10 +17,10 @@ func main() {
 		Source:  fmt.Sprintf("Copyright %4d ADF, Inc. All Rights Reserved ", now.Year()),
 		Date:    &now,
 	}
-	if error := doc.GenMarkdownTree(internal.RootCmd, "./docs"); error != nil {
-		log.Fatal(error)
+	if err := doc.GenMarkdownTree(internal.RootCmd, "./docs"); err != nil {
+		log.Fatal(err)
 	}
-	if error := doc.GenManTree(internal.RootCmd, header, "./man"); error != nil {
-		log.Fatal(error)
+	if err := doc.GenManTree(internal.RootCmd, header, "./man"); err != nil {
+		log.Fatal(err)
 	}
 }

@@ -31,7 +31,7 @@ var transferSendCmd = &cobra.Command{
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		filepath := args[0]
 		copy, _ := cmd.Flags().GetBool("clipboard")
-		if _, error := ioutil.ReadFile(filepath); error != nil {
+		if _, err := ioutil.ReadFile(filepath); err != nil {
 			fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 			return
 		}
@@ -41,10 +41,10 @@ var transferSendCmd = &cobra.Command{
 			Insecure: env.GetBool("insecure", false),
 		}
 		request := transfer.SendRequest{FilePath: filepath}
-		response, error := transfer.Send(context, request)
-		if error != nil && error.Code != 200 {
+		response, err := transfer.Send(context, request)
+		if err != nil && err.Code != 200 {
 			if !quiet {
-				fmt.Printf("\n%s\n\n", error.Message)
+				fmt.Printf("\n%s\n\n", err.Message)
 			}
 			os.Exit(1)
 		}

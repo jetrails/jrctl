@@ -40,7 +40,7 @@ var serverIngestCmd = &cobra.Command{
 		endpoint, _ := cmd.Flags().GetString("endpoint")
 		var tokenValue string = ""
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
-			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
 				tokenValue = strings.TrimSpace(string(bytes))
 			} else {
 				if !quiet {
@@ -58,7 +58,7 @@ var serverIngestCmd = &cobra.Command{
 		emptyMsg := fmt.Sprintf("No configured server with type(s) \"%s\" found.", strings.Join(types, "\", \""))
 		rows := [][]string{{"Server", "Type(s)", "Action"}}
 		savedServers := []server.Entry{}
-		if error := viper.UnmarshalKey("servers", &savedServers); error != nil {
+		if err := viper.UnmarshalKey("servers", &savedServers); err != nil {
 			if !quiet {
 				fmt.Printf("\nFailed to parse current config file.\n\n")
 			}
@@ -90,13 +90,13 @@ var serverIngestCmd = &cobra.Command{
 			rows = append(rows, row)
 		}
 		if len(rows) > 1 {
-			if data, error := ioutil.ReadFile(viper.ConfigFileUsed()); error == nil {
+			if data, err := ioutil.ReadFile(viper.ConfigFileUsed()); err == nil {
 				var c interface{}
-				if error = yaml.Unmarshal([]byte(data), &c); error == nil {
+				if err = yaml.Unmarshal([]byte(data), &c); err == nil {
 					if _, ok := c.(map[string]interface{})["servers"].([]interface{}); ok {
 						c.(map[string]interface{})["servers"] = savedServers
-						if d, error := yaml.Marshal(&c); error == nil {
-							if file, error := os.OpenFile(viper.ConfigFileUsed(), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); error == nil {
+						if d, err := yaml.Marshal(&c); err == nil {
+							if file, err := os.OpenFile(viper.ConfigFileUsed(), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err == nil {
 								defer file.Close()
 								file.Write(d)
 								if !quiet {

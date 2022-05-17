@@ -32,13 +32,14 @@ var serverListCmd = &cobra.Command{
 			filter = []string{selector}
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
-		rows := [][]string{{"Server", "Token ID", "Identity", "Allowed Client IPs"}}
+		rows := [][]string{{"Server", "Type(s)", "Token ID", "Identity", "Allowed Client IPs"}}
 		runner := func(index, total int, context server.Context) {
 			response := server.TokenInfo(context)
 			var row []string
 			if response.Code != 200 {
 				row = []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
+					strings.Join(context.Types, ", "),
 					response.Messages[0],
 					"-",
 					"-",
@@ -52,6 +53,7 @@ var serverListCmd = &cobra.Command{
 				}
 				row = []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
+					strings.Join(context.Types, ", "),
 					response.Payload.TokenID,
 					response.Payload.Identity,
 					strings.Join(response.Payload.AllowedClientIPs, ", "),
@@ -62,7 +64,7 @@ var serverListCmd = &cobra.Command{
 		server.FilterForEach(filter, runner)
 		if quiet {
 			for _, row := range rows[1:] {
-				fmt.Printf("%s\n", row[1])
+				fmt.Printf("%s\n", row[2])
 			}
 		} else {
 			if selector != "" && len(rows) > 1 {

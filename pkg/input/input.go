@@ -22,8 +22,8 @@ func PromptYesNo(prompt string) bool {
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Printf("%s [y/n]: ", prompt)
-		response, error := reader.ReadString('\n')
-		if error != nil {
+		response, err := reader.ReadString('\n')
+		if err != nil {
 			return false
 		}
 		response = strings.ToLower(strings.TrimSpace(response))
@@ -36,7 +36,7 @@ func PromptYesNo(prompt string) bool {
 }
 
 func PromptContent(prompt string) string {
-	if value, error := getInputFromEditor(); error == nil {
+	if value, err := getInputFromEditor(); err == nil {
 		return value
 	}
 	saveScreen()
@@ -56,14 +56,14 @@ func PromptContent(prompt string) string {
 
 func openFileInEditor(filename string) error {
 	if editor := os.Getenv("EDITOR"); editor != "" {
-		if executable, error := exec.LookPath(editor); error == nil {
+		if executable, err := exec.LookPath(editor); err == nil {
 			cmd := exec.Command(executable, filename)
 			cmd.Stdin = os.Stdin
 			cmd.Stdout = os.Stdout
 			cmd.Stderr = os.Stderr
 			return cmd.Run()
 		} else {
-			return error
+			return err
 		}
 	} else {
 		return fmt.Errorf("EDITOR env variable not set to anything")
@@ -71,21 +71,21 @@ func openFileInEditor(filename string) error {
 }
 
 func getInputFromEditor() (string, error) {
-	file, error := ioutil.TempFile(os.TempDir(), "*")
-	if error != nil {
-		return "", error
+	file, err := ioutil.TempFile(os.TempDir(), "*")
+	if err != nil {
+		return "", err
 	}
 	filename := file.Name()
 	defer os.Remove(filename)
-	if error = file.Close(); error != nil {
-		return "", error
+	if err = file.Close(); err != nil {
+		return "", err
 	}
-	if error = openFileInEditor(filename); error != nil {
-		return "", error
+	if err = openFileInEditor(filename); err != nil {
+		return "", err
 	}
-	bytes, error := ioutil.ReadFile(filename)
-	if error != nil {
-		return "", error
+	bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return "", err
 	}
 	return string(bytes), nil
 }

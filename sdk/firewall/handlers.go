@@ -15,7 +15,7 @@ func List(context server.Context) ListResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(5*time.Second).
 		Get(fmt.Sprintf("https://%s/firewall", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -24,7 +24,7 @@ func List(context server.Context) ListResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return ListResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -44,7 +44,7 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(3*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/allow", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -52,7 +52,7 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return AllowResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -72,7 +72,7 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(3*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/allow", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -80,7 +80,7 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return UnAllowResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -100,7 +100,7 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(3*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/deny", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -108,7 +108,7 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return DenyResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -128,7 +128,7 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(3*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/deny", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -136,7 +136,7 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return UnDenyResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -156,7 +156,7 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(15*time.Second).
 		Put(fmt.Sprintf("https://%s/firewall/allow/cloudflare", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -165,7 +165,7 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return AllowCloudflareResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -189,7 +189,7 @@ func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(15*time.Second).
 		Delete(fmt.Sprintf("https://%s/firewall/allow/cloudflare", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -198,7 +198,7 @@ func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return UnAllowCloudflareResponse{
 			Status:   "Client Error",
 			Code:     1,

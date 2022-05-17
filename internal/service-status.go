@@ -74,7 +74,7 @@ var serviceStatusCmd = &cobra.Command{
 			}
 		}
 		server.FilterForEach(selectors, runner)
-		if len(responseRows) > 1 {
+		if len( selectors ) > 0 && len(responseRows) > 1 {
 			fmt.Printf("\nDisplaying results for %s server(s):\n", text.QuotedList(selectors))
 		}
 		fmt.Println()
@@ -88,6 +88,6 @@ var serviceStatusCmd = &cobra.Command{
 func init() {
 	serviceCmd.AddCommand(serviceStatusCmd)
 	serviceStatusCmd.Flags().SortFlags = true
-	serviceStatusCmd.Flags().StringSliceP("type", "t", []string{"localhost"}, "specify server type(s) selector")
+	serviceStatusCmd.Flags().StringSliceP("type", "t", []string{}, "specify server type(s) selector")
 	serviceStatusCmd.Flags().StringSliceP("service", "s", []string{}, "filter by service")
 }

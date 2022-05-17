@@ -15,7 +15,7 @@ func Audit(context server.Context) AuditResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(5*time.Second).
 		Get(fmt.Sprintf("https://%s/report/audit", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -24,7 +24,7 @@ func Audit(context server.Context) AuditResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return AuditResponse{
 			Status:   "Client Error",
 			Code:     1,

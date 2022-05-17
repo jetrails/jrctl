@@ -45,8 +45,8 @@ func CheckVersion(debug bool) (bool, string) {
 		End()
 	if response != nil && response.StatusCode == 200 {
 		var releases []ReleaseEntry
-		if error := json.Unmarshal([]byte(body), &releases); error == nil {
-			if newest, error := FindStable(releases); error == nil {
+		if err := json.Unmarshal([]byte(body), &releases); err == nil {
+			if newest, err := FindStable(releases); err == nil {
 				cache.Set("latest-version-"+VersionString, []byte(newest.TagName), 60*60)
 				targetVersionObj, _ := vercmp.NewVersion(newest.TagName)
 				return !versionObj.LessThan(targetVersionObj), newest.TagName

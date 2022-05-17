@@ -14,7 +14,7 @@ func Version(context Context) VersionResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(1*time.Second).
 		Get(fmt.Sprintf("https://%s/version", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -23,7 +23,7 @@ func Version(context Context) VersionResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return VersionResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -40,7 +40,7 @@ func TokenInfo(context Context) TokenResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(1*time.Second).
 		Get(fmt.Sprintf("https://%s/token", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -49,7 +49,7 @@ func TokenInfo(context Context) TokenResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return TokenResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -66,7 +66,7 @@ func ListServices(context Context) ListServicesResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(1*time.Second).
 		Get(fmt.Sprintf("https://%s/service", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -75,7 +75,7 @@ func ListServices(context Context) ListServicesResponse {
 		Type("text").
 		Send(`{}`).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return ListServicesResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -92,7 +92,7 @@ func Restart(context Context, data RestartRequest) RestartResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(30*time.Second).
 		Put(fmt.Sprintf("https://%s/service/restart", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -100,7 +100,7 @@ func Restart(context Context, data RestartRequest) RestartResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return RestartResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -117,7 +117,7 @@ func Reload(context Context, data ReloadRequest) ReloadResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(30*time.Second).
 		Put(fmt.Sprintf("https://%s/service/reload", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -125,7 +125,7 @@ func Reload(context Context, data ReloadRequest) ReloadResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return ReloadResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -142,7 +142,7 @@ func Enable(context Context, data EnableRequest) EnableResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(30*time.Second).
 		Put(fmt.Sprintf("https://%s/service/enable", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -150,7 +150,7 @@ func Enable(context Context, data EnableRequest) EnableResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return EnableResponse{
 			Status:   "Client Error",
 			Code:     1,
@@ -167,7 +167,7 @@ func Disable(context Context, data DisableRequest) DisableResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	_, body, errors := request.
+	_, body, errs := request.
 		Timeout(30*time.Second).
 		Put(fmt.Sprintf("https://%s/service/disable", context.Endpoint)).
 		Set("Content-Type", "application/json").
@@ -175,7 +175,7 @@ func Disable(context Context, data DisableRequest) DisableResponse {
 		Set("Authorization", "Bearer "+context.Token).
 		Send(data).
 		End()
-	if len(errors) > 0 {
+	if len(errs) > 0 {
 		return DisableResponse{
 			Status:   "Client Error",
 			Code:     1,

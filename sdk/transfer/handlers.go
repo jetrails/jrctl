@@ -16,15 +16,15 @@ func Send(context PublicApiContext, data SendRequest) (SendResponse, *ErrorRespo
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	response, body, errors := request.
+	response, body, errs := request.
 		Timeout(10*time.Minute).
 		Post(fmt.Sprintf("https://%s/%s", context.Endpoint, "transfer/upload")).
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Type("multipart").
 		SendFile(data.FilePath).
 		End()
-	if errors != nil {
-		return SendResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
+	if errs != nil {
+		return SendResponse{}, &ErrorResponse{Message: utils.CollectErrors(errs)[0]}
 	}
 	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
@@ -49,14 +49,14 @@ func Receive(context PublicApiContext, data ReceiveRequest) (ReceiveResponse, *E
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	response, body, errors := request.
+	response, body, errs := request.
 		Timeout(10*time.Minute).
 		Get(fmt.Sprintf("https://%s/%s", context.Endpoint, "transfer/download")).
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Query(data).
 		End()
-	if errors != nil {
-		return ReceiveResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
+	if errs != nil {
+		return ReceiveResponse{}, &ErrorResponse{Message: utils.CollectErrors(errs)[0]}
 	}
 	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
@@ -74,7 +74,7 @@ func Receive(context PublicApiContext, data ReceiveRequest) (ReceiveResponse, *E
 	}
 	disposition := response.Header.Get("Content-Disposition")
 	filename := data.Identifier + "-" + data.Password
-	if _, params, error := mime.ParseMediaType(disposition); error == nil {
+	if _, params, err := mime.ParseMediaType(disposition); err == nil {
 		if params["filename"] != "" {
 			filename = params["filename"]
 		}

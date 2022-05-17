@@ -41,8 +41,8 @@ var secretCreateCmd = &cobra.Command{
 		generate, _ := cmd.Flags().GetBool("auto-generate")
 		password, _ := cmd.Flags().GetString("password")
 		if filepath != "" {
-			fileContents, error := ioutil.ReadFile(filepath)
-			if error != nil {
+			fileContents, err := ioutil.ReadFile(filepath)
+			if err != nil {
 				if !quiet {
 					fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
 				}
@@ -51,7 +51,7 @@ var secretCreateCmd = &cobra.Command{
 			content = string(fileContents)
 		}
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
-			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
 				content = string(bytes)
 			}
 		}
@@ -69,10 +69,10 @@ var secretCreateCmd = &cobra.Command{
 			TTL:          ttl,
 			AutoGenerate: generate,
 		}
-		response, error := secret.SecretCreate(context, request)
-		if error != nil && error.Code != 200 {
+		response, err := secret.SecretCreate(context, request)
+		if err != nil && err.Code != 200 {
 			if !quiet {
-				fmt.Printf("\n%s\n\n", error.Message)
+				fmt.Printf("\n%s\n\n", err.Message)
 			}
 			os.Exit(1)
 		}

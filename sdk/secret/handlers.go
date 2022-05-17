@@ -15,15 +15,15 @@ func SecretCreate(context PublicApiContext, data SecretCreateRequest) (SecretCre
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	response, body, errors := request.
+	response, body, errs := request.
 		Timeout(10*time.Second).
 		Post(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Send(data).
 		End()
-	if errors != nil {
-		return SecretCreateResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
+	if errs != nil {
+		return SecretCreateResponse{}, &ErrorResponse{Message: utils.CollectErrors(errs)[0]}
 	}
 	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
@@ -48,15 +48,15 @@ func SecretDelete(context PublicApiContext, data SecretDeleteRequest) (SecretDel
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	response, body, errors := request.
+	response, body, errs := request.
 		Timeout(10*time.Second).
 		Delete(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Send(data).
 		End()
-	if errors != nil {
-		return SecretDeleteResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
+	if errs != nil {
+		return SecretDeleteResponse{}, &ErrorResponse{Message: utils.CollectErrors(errs)[0]}
 	}
 	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse
@@ -81,15 +81,15 @@ func SecretRead(context PublicApiContext, data SecretReadRequest) (SecretReadRes
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
-	response, body, errors := request.
+	response, body, errs := request.
 		Timeout(10*time.Second).
 		Get(fmt.Sprintf("https://%s/%s", context.Endpoint, "secret")).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
 		Query(data).
 		End()
-	if errors != nil {
-		return SecretReadResponse{}, &ErrorResponse{Message: utils.CollectErrors(errors)[0]}
+	if errs != nil {
+		return SecretReadResponse{}, &ErrorResponse{Message: utils.CollectErrors(errs)[0]}
 	}
 	if response != nil && response.StatusCode != 200 {
 		var errorResponse ErrorResponse

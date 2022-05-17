@@ -47,7 +47,7 @@ func initConfig() {
 			Types:    []string{"localhost"},
 		},
 	})
-	if usr, error := user.Current(); error == nil {
+	if usr, err := user.Current(); err == nil {
 		os.MkdirAll(path.Join(usr.HomeDir, ".jrctl"), 0755)
 		viper.SafeWriteConfig()
 	}

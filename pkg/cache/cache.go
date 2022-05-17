@@ -16,7 +16,7 @@ var ProgramName string
 
 func Clean() error {
 	if UserCacheDir != "" {
-		if info, error := ioutil.ReadDir(UserCacheDir); error == nil {
+		if info, err := ioutil.ReadDir(UserCacheDir); err == nil {
 			now := time.Now().Unix()
 			for _, file := range info {
 				filename := file.Name()
@@ -29,7 +29,7 @@ func Clean() error {
 				}
 			}
 		} else {
-			return error
+			return err
 		}
 	}
 	return nil
@@ -39,19 +39,19 @@ func Set(key string, value []byte, ttl int64) (string, error) {
 	expires := time.Now().Unix() + ttl
 	filename := fmt.Sprintf("%s-%d", key, expires)
 	filepath := path.Join(UserCacheDir, filename)
-	if file, error := os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); error == nil {
+	if file, err := os.OpenFile(filepath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err == nil {
 		defer file.Close()
 		file.Write(value)
 		return filepath, nil
 	} else {
-		return "", error
+		return "", err
 	}
 }
 
 func Get(key string) ([]byte, error) {
 	if UserCacheDir != "" {
-		if error := Clean(); error == nil {
-			if info, error := ioutil.ReadDir(UserCacheDir); error == nil {
+		if err := Clean(); err == nil {
+			if info, err := ioutil.ReadDir(UserCacheDir); err == nil {
 				files := []string{}
 				for _, file := range info {
 					files = append(files, file.Name())
@@ -65,10 +65,10 @@ func Get(key string) ([]byte, error) {
 				}
 				return []byte{}, fmt.Errorf("Could not find cache entry with key %q.", key)
 			} else {
-				return []byte{}, error
+				return []byte{}, err
 			}
 		} else {
-			return []byte{}, error
+			return []byte{}, err
 		}
 	}
 	return []byte{}, fmt.Errorf("Could not find cache entry with key %q.", key)
@@ -76,9 +76,9 @@ func Get(key string) ([]byte, error) {
 
 func init() {
 	ProgramName := path.Base(os.Args[0])
-	if dir, error := os.UserCacheDir(); error == nil {
+	if dir, err := os.UserCacheDir(); err == nil {
 		UserCacheDir = path.Join(dir, ProgramName)
-		if _, error := os.Stat(UserCacheDir); os.IsNotExist(error) {
+		if _, err := os.Stat(UserCacheDir); os.IsNotExist(err) {
 			os.Mkdir(UserCacheDir, 0700)
 		}
 	}

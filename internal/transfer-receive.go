@@ -35,8 +35,8 @@ var transferReceiveCmd = &cobra.Command{
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
 			return nil
 		}
-		if error := cobra.ExactArgs(1)(cmd, args); error != nil {
-			return error
+		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
+			return err
 		}
 		return nil
 	},
@@ -46,7 +46,7 @@ var transferReceiveCmd = &cobra.Command{
 		var identifier string
 		var argument string
 		if len(args) == 0 {
-			if bytes, error := ioutil.ReadAll(os.Stdin); error == nil {
+			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
 				argument = strings.TrimSpace(string(bytes))
 			}
 		} else {
@@ -62,10 +62,10 @@ var transferReceiveCmd = &cobra.Command{
 			Identifier: identifier,
 			Password:   password,
 		}
-		response, error := transfer.Receive(context, request)
-		if error != nil && error.Code != 200 {
+		response, err := transfer.Receive(context, request)
+		if err != nil && err.Code != 200 {
 			if !quiet {
-				fmt.Printf("\n%s\n\n", error.Message)
+				fmt.Printf("\n%s\n\n", err.Message)
 			}
 			os.Exit(1)
 		}
@@ -83,7 +83,7 @@ var transferReceiveCmd = &cobra.Command{
 		if !quiet {
 			fmt.Println()
 		}
-		if _, error := os.Stat(filepath); error == nil {
+		if _, err := os.Stat(filepath); err == nil {
 			if !force && (quiet || !input.PromptYesNo("File already exists, overwrite")) {
 				if !quiet {
 					fmt.Printf("Skipping, did not write file to disk\n\n")
@@ -91,7 +91,7 @@ var transferReceiveCmd = &cobra.Command{
 				os.Exit(1)
 			}
 		}
-		if error := ioutil.WriteFile(filepath, response.Bytes, 0644); error == nil && !quiet {
+		if err := ioutil.WriteFile(filepath, response.Bytes, 0644); err == nil && !quiet {
 			fmt.Printf("Downloaded file to %q\n\n", filepath)
 		} else if !quiet {
 			fmt.Printf("Failed to write data to %q\n\n", filepath)

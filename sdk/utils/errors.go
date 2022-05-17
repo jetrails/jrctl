@@ -1,9 +1,9 @@
 package utils
 
-func CollectErrors(errors []error) []string {
+func CollectErrors(errs []error) []string {
 	var messages []string
-	for _, error := range errors {
-		messages = append(messages, error.Error())
+	for _, err := range errs {
+		messages = append(messages, err.Error())
 	}
 	return messages
 }
