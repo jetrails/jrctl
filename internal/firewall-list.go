@@ -59,7 +59,7 @@ var firewallListCmd = &cobra.Command{
 			entryRows := [][]string{{"Hostname", "Type(s)", "Action", "IPV4/CIDR", "Port(s)", "Protocol(s)", "Comment"}}
 			response := firewall.List(context)
 			responseRow := []string{
-				response.Metadata["Hostname"],
+				response.Metadata["hostname"],
 				strings.TrimSuffix(context.Endpoint, ":27482"),
 				strings.Join(context.Types, ", "),
 				response.Messages[0],
@@ -71,7 +71,7 @@ var firewallListCmd = &cobra.Command{
 					commentEnd = len(entry.Comment)
 				}
 				entryRow := []string{
-					response.Metadata["Hostname"],
+					response.Metadata["hostname"],
 					strings.Join(context.Types, ", "),
 					entry.Action,
 					entry.Source,

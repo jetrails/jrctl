@@ -1,0 +1,51 @@
+.nh
+.TH "JetRails CLI" "1" "May 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-service\-status \- List services with their statuses and abilities.
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl service status [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+List services with their statuses and abilities.. Specifing a server type will
+only display results for servers of that type. Specifing the service will filter
+the list of services to include those services.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for status
+
+.PP
+\fB\-s\fP, \fB\-\-service\fP=[]
+	filter by service
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	specify server type(s) selector
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl service status
+jrctl service status \-t admin
+jrctl service status \-t localhost
+jrctl service status \-t www
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-service(1)\fP

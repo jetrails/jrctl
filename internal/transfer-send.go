@@ -25,7 +25,8 @@ var transferSendCmd = &cobra.Command{
 	Example: text.Examples([]string{
 		"jrctl transfer send private.png",
 	}),
-	Args: cobra.ExactArgs(1),
+	Aliases: []string{"upload"},
+	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		filepath := args[0]

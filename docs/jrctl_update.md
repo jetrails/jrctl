@@ -15,7 +15,8 @@ jrctl server update
 ### Options
 
 ```
-  -h, --help   help for update
+  -h, --help    help for update
+  -q, --quiet   output as little information as possible
 ```
 
 ### SEE ALSO

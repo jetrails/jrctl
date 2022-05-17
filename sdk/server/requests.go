@@ -2,5 +2,16 @@ package server
 
 type RestartRequest struct {
 	Service string `json:"service"`
-	Version string `json:"version"`
+}
+
+type ReloadRequest struct {
+	Service string `json:"service"`
+}
+
+type EnableRequest struct {
+	Service string `json:"service"`
+}
+
+type DisableRequest struct {
+	Service string `json:"service"`
 }

@@ -2,14 +2,6 @@
 
 Interact with one-time secret service
 
-### Examples
-
-```
-jrctl secret create -h
-jrctl secret delete -h
-jrctl secret read -h
-```
-
 ### Options
 
 ```

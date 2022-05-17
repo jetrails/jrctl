@@ -1,11 +1,10 @@
 ## jrctl server list
 
-List servers in configured deployment
+Displays token information for all configured servers
 
 ### Synopsis
 
-List servers in configured deployment. Specifing a server type will only display
-results for servers of that type.
+Displays token information for all configured servers.
 
 ```
 jrctl server list [flags]
@@ -14,21 +13,20 @@ jrctl server list [flags]
 ### Examples
 
 ```
-jrctl server list
-jrctl server list -t admin
-jrctl server list -t localhost
-jrctl server list -t www
+jrctl server token
 ```
 
 ### Options
 
 ```
-  -h, --help          help for list
-  -q, --quiet         output as little information as possible
-  -t, --type string   specify server type selector
+  -h, --help              help for list
+  -i, --identity string   filter with identity, optional
+  -q, --quiet             output as little information as possible
+  -I, --token-id string   filter with token id, optional
+  -t, --type string       specify server type selector, optional
 ```
 
 ### SEE ALSO
 
-* [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
+* [jrctl server](jrctl_server.md)	 - Manage servers in deployment
 

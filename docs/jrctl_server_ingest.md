@@ -30,5 +30,5 @@ echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f
 
 ### SEE ALSO
 
-* [jrctl server](jrctl_server.md)	 - Interact with servers in configured deployment
+* [jrctl server](jrctl_server.md)	 - Manage servers in deployment
 

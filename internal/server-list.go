@@ -2,7 +2,6 @@ package internal
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"github.com/jetrails/jrctl/pkg/text"
@@ -11,22 +10,21 @@ import (
 )
 
 var serverListCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List servers in configured deployment",
+	Use:     "list",
+	Aliases: []string{"token"},
+	Short:   "Displays token information for all configured servers",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
-			"List servers in configured deployment.",
-			"Specifing a server type will only display results for servers of that type.",
+			"Displays token information for all configured servers.",
 		}),
 	}),
 	Example: text.Examples([]string{
-		"jrctl server list",
-		"jrctl server list -t admin",
-		"jrctl server list -t localhost",
-		"jrctl server list -t www",
+		"jrctl server token",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		selector, _ := cmd.Flags().GetString("type")
+		identity, _ := cmd.Flags().GetString("identity")
+		tokenID, _ := cmd.Flags().GetString("token-id")
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		filter := []string{}
 		emptyMsg := "No configured servers found."
@@ -34,36 +32,37 @@ var serverListCmd = &cobra.Command{
 			filter = []string{selector}
 			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
 		}
-		rows := [][]string{{"Server", "Type(s)", "Service(s)"}}
+		rows := [][]string{{"Server", "Token ID", "Identity", "Allowed Client IPs"}}
 		runner := func(index, total int, context server.Context) {
-			sort.Strings(context.Types)
-			response := server.ListServices(context)
+			response := server.TokenInfo(context)
 			var row []string
 			if response.Code != 200 {
 				row = []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
-					strings.Join(context.Types, ", "),
 					response.Messages[0],
+					"-",
+					"-",
 				}
 			} else {
+				if identity != "" && identity != response.Payload.Identity {
+					return
+				}
+				if tokenID != "" && tokenID != response.Payload.TokenID {
+					return
+				}
 				row = []string{
 					strings.TrimSuffix(context.Endpoint, ":27482"),
-					strings.Join(context.Types, ", "),
-					strings.Join(response.Payload, ", "),
+					response.Payload.TokenID,
+					response.Payload.Identity,
+					strings.Join(response.Payload.AllowedClientIPs, ", "),
 				}
-			}
-			if row[1] == "" {
-				row[1] = "-"
-			}
-			if row[2] == "" {
-				row[2] = "-"
 			}
 			rows = append(rows, row)
 		}
 		server.FilterForEach(filter, runner)
 		if quiet {
 			for _, row := range rows[1:] {
-				fmt.Printf("%s\n", row[0])
+				fmt.Printf("%s\n", row[1])
 			}
 		} else {
 			if selector != "" && len(rows) > 1 {
@@ -78,5 +77,7 @@ func init() {
 	serverCmd.AddCommand(serverListCmd)
 	serverListCmd.Flags().SortFlags = true
 	serverListCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	serverListCmd.Flags().StringP("type", "t", "", "specify server type selector")
+	serverListCmd.Flags().StringP("type", "t", "", "specify server type selector, optional")
+	serverListCmd.Flags().StringP("identity", "i", "", "filter with identity, optional")
+	serverListCmd.Flags().StringP("token-id", "I", "", "filter with token id, optional")
 }

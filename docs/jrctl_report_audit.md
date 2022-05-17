@@ -28,5 +28,5 @@ jrctl report audit -o json
 
 ### SEE ALSO
 
-* [jrctl report](jrctl_report.md)	 - Generate server reports
+* [jrctl report](jrctl_report.md)	 - Generate reports for deployment
 

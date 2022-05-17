@@ -30,6 +30,7 @@ var transferReceiveCmd = &cobra.Command{
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -o ./private/ -n custom.name",
 		"echo 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo | jrctl transfer receive",
 	}),
+	Aliases: []string{"download"},
 	Args: func(cmd *cobra.Command, args []string) error {
 		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
 			return nil

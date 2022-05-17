@@ -91,3 +91,18 @@ func HeaderPrint(lines []string) {
 	}
 	fmt.Println("# ")
 }
+
+func QuotedList(items []string) string {
+	var result, separator string
+	length := len(items)
+	result = ""
+	separator = ""
+	for i, item := range items {
+		result += fmt.Sprintf("%s%q", separator, item)
+		separator = ", "
+		if length > 1 && i == length-2 {
+			separator = " and "
+		}
+	}
+	return result
+}

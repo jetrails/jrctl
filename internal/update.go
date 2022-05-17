@@ -18,28 +18,35 @@ var updateCmd = &cobra.Command{
 		"jrctl server update",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
 		updateToDate, latest := version.CheckVersion(env.GetBool("debug", false))
 		if latest != "" {
 			if updateToDate {
-				fmt.Printf("\nSoftware is up-to-date.\n\n")
-			} else {
+				if !quiet {
+					fmt.Printf("\nSoftware is up-to-date.\n\n")
+				}
+				os.Exit(0)
+			}
+			if !quiet {
 				fmt.Printf(
 					"\nSoftware is out-of-date.\nPlease update to the latest version: %s.\n\n",
 					color.GreenString(fmt.Sprintf(version.TagUrlTemplate, latest)),
 				)
-				os.Exit(1)
 			}
-		} else {
+			os.Exit(1)
+		}
+		if !quiet {
 			fmt.Printf(
 				"\nFailed to query latest version.\nPlease check manually: %s\n\n",
 				version.ReleasesUrl,
 			)
-			os.Exit(1)
 		}
+		os.Exit(2)
 	},
 }
 
 func init() {
 	RootCmd.AddCommand(updateCmd)
 	updateCmd.Flags().SortFlags = true
+	updateCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
 }

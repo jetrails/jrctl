@@ -1,0 +1,54 @@
+.nh
+.TH "JetRails CLI" "1" "May 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-service\-reload \- Reload specified service(s) running on configured server(s)
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl service reload SERVICE... [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Reload specified service(s) running on configured server(s). In order to
+successfully reload a service, the server first validates the respected
+service's config file. Once deemed valid, the service is reloaded. Is passed
+service does not support reloading, then a restart will happen instead. Services
+can be repeated and execution will happen in the order that is given. Specifing
+a server type will only display results for servers of that type.
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for reload
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	output as little information as possible
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	specify server type(s), useful for cluster
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl service reload nginx
+jrctl service reload nginx varnish
+jrctl service reload nginx varnish php\-fpm
+jrctl service reload nginx varnish php\-fpm\-7.2 nginx
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-service(1)\fP

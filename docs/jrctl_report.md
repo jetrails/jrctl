@@ -1,12 +1,6 @@
 ## jrctl report
 
-Generate server reports
-
-### Examples
-
-```
-jrctl report audit -h
-```
+Generate reports for deployment
 
 ### Options
 

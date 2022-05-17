@@ -30,7 +30,7 @@ func CollectServices() []string {
 	for _, context := range LoadServers() {
 		response := ListServices(context)
 		if response.Code == 200 {
-			for _, service := range response.Payload {
+			for service := range response.Payload {
 				if !array.ContainsString(services, service) {
 					services = append(services, service)
 				}
@@ -42,12 +42,20 @@ func CollectServices() []string {
 }
 
 func FilterWithService(selector, service string) []Context {
+	return FiltersWithService([]string{selector}, service)
+}
+
+func FiltersWithService(selectors []string, service string) []Context {
 	var filtered []Context
 	for _, context := range LoadServers() {
-		if array.ContainsString(context.Types, selector) {
-			response := ListServices(context)
-			if response.Code == 200 && array.ContainsString(response.Payload, service) {
-				filtered = append(filtered, context)
+		for _, selector := range selectors {
+			if array.ContainsString(context.Types, selector) {
+				response := ListServices(context)
+				if response.Code == 200 {
+					if _, found := response.Payload[service]; found {
+						filtered = append(filtered, context)
+					}
+				}
 			}
 		}
 	}
@@ -124,7 +132,11 @@ func FilterForEach(filters []string, Runner func(int, int, Context)) int {
 }
 
 func FilterWithServiceForEach(selector, service string, Runner func(int, int, Context)) int {
-	contexts := FilterWithService(selector, service)
+	return FiltersWithServiceForEach([]string{selector}, service, Runner)
+}
+
+func FiltersWithServiceForEach(selectors []string, service string, Runner func(int, int, Context)) int {
+	contexts := FiltersWithService(selectors, service)
 	total := len(contexts)
 	for index, context := range contexts {
 		Runner(index, total, context)
