@@ -1,0 +1,63 @@
+.nh
+.TH "JetRails CLI" "1" "May 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-utility\-mkpass \- Generate random passwords
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl utility mkpass [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Generate random passwords. If count is greater than 1, then each password will
+be new\-line separated.
+
+
+.SH OPTIONS
+.PP
+\fB\-c\fP, \fB\-\-count\fP=1
+	number of passwords to generate
+
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for mkpass
+
+.PP
+\fB\-l\fP, \fB\-\-length\fP=32
+	length of password
+
+.PP
+\fB\-L\fP, \fB\-\-no\-lowercase\fP[=false]
+	do not include lowercase chars in password
+
+.PP
+\fB\-N\fP, \fB\-\-no\-numbers\fP[=false]
+	do not include numbers in password
+
+.PP
+\fB\-S\fP, \fB\-\-no\-symbols\fP[=false]
+	do not include symbols in password
+
+.PP
+\fB\-U\fP, \fB\-\-no\-uppercase\fP[=false]
+	do not include uppercase chars in password
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl utility mkpass
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-utility(1)\fP

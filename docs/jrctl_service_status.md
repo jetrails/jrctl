@@ -26,7 +26,7 @@ jrctl service status -t www
 ```
   -h, --help              help for status
   -s, --service strings   filter by service
-  -t, --type strings      specify server type(s) selector (default [localhost])
+  -t, --type strings      specify server type(s) selector
 ```
 
 ### SEE ALSO

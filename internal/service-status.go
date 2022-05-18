@@ -74,7 +74,7 @@ var serviceStatusCmd = &cobra.Command{
 			}
 		}
 		server.FilterForEach(selectors, runner)
-		if len( selectors ) > 0 && len(responseRows) > 1 {
+		if len(selectors) > 0 && len(responseRows) > 1 {
 			fmt.Printf("\nDisplaying results for %s server(s):\n", text.QuotedList(selectors))
 		}
 		fmt.Println()

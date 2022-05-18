@@ -23,4 +23,5 @@ our Github repository.
 * [jrctl service](jrctl_service.md)	 - Interact with services in configured deployment
 * [jrctl transfer](jrctl_transfer.md)	 - Securely transfer files from one machine to another
 * [jrctl update](jrctl_update.md)	 - Check to see if there is an update available
+* [jrctl utility](jrctl_utility.md)	 - Auxiliary command-line tools
 
