@@ -5,6 +5,8 @@ import (
 	"sort"
 	"strings"
 
+	"crypto/sha256"
+
 	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/spf13/viper"
@@ -142,4 +144,10 @@ func FiltersWithServiceForEach(selectors []string, service string, Runner func(i
 		Runner(index, total, context)
 	}
 	return total
+}
+
+func (c Context) Hash() string {
+	hash := sha256.New()
+	hash.Write([]byte(fmt.Sprintf("%v", c)))
+	return fmt.Sprintf("%x", hash.Sum(nil))[0:8]
 }

@@ -5,6 +5,11 @@ import (
 	"math/big"
 )
 
+var AlphabetSymbols = "!@#$%^&*"
+var AlphabetNumbers = "1234567890"
+var AlphabetLowerCase = "abcdefghijklmnopqrstuvwxyz"
+var AlphabetUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 func GeneratePassword(alphabet string, length int) string {
 	password := ""
 	alphaLen := int64(len(alphabet))

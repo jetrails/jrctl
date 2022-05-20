@@ -48,16 +48,16 @@ var utilityVersionCmd = &cobra.Command{
 		noUppercase, _ := cmd.Flags().GetBool("no-uppercase")
 		alphabet := ""
 		if !noSymbols {
-			alphabet += "!@#$%^&*"
+			alphabet += utils.AlphabetSymbols
 		}
 		if !noNumbers {
-			alphabet += "1234567890"
+			alphabet += utils.AlphabetNumbers
 		}
 		if !noLowercase {
-			alphabet += "abcdefghijklmnopqrstuvwxyz"
+			alphabet += utils.AlphabetLowerCase
 		}
 		if !noUppercase {
-			alphabet += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+			alphabet += utils.AlphabetUpperCase
 		}
 		for i := 0; i < count; i++ {
 			fmt.Println(utils.GeneratePassword(alphabet, length))
