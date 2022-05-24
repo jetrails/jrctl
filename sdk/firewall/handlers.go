@@ -34,9 +34,6 @@ func List(context server.Context) ListResponse {
 	}
 	var response ListResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -62,9 +59,6 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 	}
 	var response AllowResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -90,9 +84,6 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 	}
 	var response UnAllowResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -118,9 +109,6 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 	}
 	var response DenyResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -146,9 +134,6 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 	}
 	var response UnDenyResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -179,9 +164,6 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 	}
 	var response AllowCloudflareResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -212,8 +194,5 @@ func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
 	}
 	var response UnAllowCloudflareResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }

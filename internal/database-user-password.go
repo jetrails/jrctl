@@ -12,7 +12,7 @@ import (
 )
 
 var databaseUserPasswordCmd = &cobra.Command{
-	Use:   "user-password USER_NAME",
+	Use:   "password USER@HOST",
 	Short: "",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
@@ -23,7 +23,7 @@ var databaseUserPasswordCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		selectors, _ := cmd.Flags().GetStringSlice("type")
-		databaseName, _ := cmd.Flags().GetString("database")
+		name, from := splitUserAndHost(args[0])
 		runner := func(index, total int, context server.Context) {
 			if total > 1 {
 				fmt.Println("\nError: multiple servers match, must narrow down to one server using type selectors\n")
@@ -31,8 +31,8 @@ var databaseUserPasswordCmd = &cobra.Command{
 			}
 			hash := context.Hash()
 			request := database.UserPasswordRequest{
-				Database: databaseName,
-				Name:     args[0],
+				Name: name,
+				From: from,
 			}
 			response := database.UserPassword(context, request)
 			if response.Code == 200 {
@@ -42,10 +42,10 @@ var databaseUserPasswordCmd = &cobra.Command{
 					fmt.Println("like to continue, you will need to send a confirmation to the server to")
 					fmt.Printf("execute this destructive command (%s).", strings.Join(response.Messages, ", "))
 					fmt.Println("\n")
-					fmt.Printf("Run the following command: jrctl confirm %s-%s\n", hash, response.Payload)
+					fmt.Printf("Run the following command: jrctl confirm %s-%s\n", hash, response.Payload.Identifier)
 					fmt.Println("")
 				} else {
-					fmt.Printf("%s-%s\n", hash, response.Payload)
+					fmt.Printf("%s-%s\n", hash, response.Payload.Identifier)
 				}
 				os.Exit(0)
 			} else {
@@ -63,8 +63,8 @@ var databaseUserPasswordCmd = &cobra.Command{
 }
 
 func init() {
-	databaseCmd.AddCommand(databaseUserPasswordCmd)
+	databaseUserCmd.AddCommand(databaseUserPasswordCmd)
 	databaseUserPasswordCmd.Flags().SortFlags = true
 	databaseUserPasswordCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	databaseUserPasswordCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
+	databaseUserPasswordCmd.Flags().StringSliceP("type", "t", []string{"localhost"}, "specify server type, useful for cluster")
 }

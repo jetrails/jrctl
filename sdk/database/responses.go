@@ -1,11 +1,19 @@
 package database
 
-type ListResponse struct {
+type ListDatabasesResponse struct {
 	Status   string                 `json:"status"`
 	Code     int                    `json:"code"`
 	Messages []string               `json:"messages"`
 	Metadata map[string]interface{} `json:"metadata"`
-	Payload  []Database             `json:"payload"`
+	Payload  []DatabaseWithUsers    `json:"payload"`
+}
+
+type ListUsersResponse struct {
+	Status   string                 `json:"status"`
+	Code     int                    `json:"code"`
+	Messages []string               `json:"messages"`
+	Metadata map[string]interface{} `json:"metadata"`
+	Payload  []UserWithDatabases    `json:"payload"`
 }
 
 type CreateResponse struct {
@@ -21,10 +29,10 @@ type DeleteResponse struct {
 	Code     int                    `json:"code"`
 	Messages []string               `json:"messages"`
 	Metadata map[string]interface{} `json:"metadata"`
-	Payload  string                 `json:"payload"`
+	Payload  ConfirmPayload         `json:"payload"`
 }
 
-type UserAddResponse struct {
+type UserCreateResponse struct {
 	Status   string                 `json:"status"`
 	Code     int                    `json:"code"`
 	Messages []string               `json:"messages"`
@@ -32,12 +40,12 @@ type UserAddResponse struct {
 	Payload  interface{}            `json:"payload"`
 }
 
-type UserRemoveResponse struct {
+type UserDeleteResponse struct {
 	Status   string                 `json:"status"`
 	Code     int                    `json:"code"`
 	Messages []string               `json:"messages"`
 	Metadata map[string]interface{} `json:"metadata"`
-	Payload  string                 `json:"payload"`
+	Payload  ConfirmPayload         `json:"payload"`
 }
 
 type UserPasswordResponse struct {
@@ -45,5 +53,21 @@ type UserPasswordResponse struct {
 	Code     int                    `json:"code"`
 	Messages []string               `json:"messages"`
 	Metadata map[string]interface{} `json:"metadata"`
-	Payload  string                 `json:"payload"`
+	Payload  ConfirmPayload         `json:"payload"`
+}
+
+type LinkResponse struct {
+	Status   string                 `json:"status"`
+	Code     int                    `json:"code"`
+	Messages []string               `json:"messages"`
+	Metadata map[string]interface{} `json:"metadata"`
+	Payload  interface{}            `json:"payload"`
+}
+
+type UnlinkResponse struct {
+	Status   string                 `json:"status"`
+	Code     int                    `json:"code"`
+	Messages []string               `json:"messages"`
+	Metadata map[string]interface{} `json:"metadata"`
+	Payload  ConfirmPayload         `json:"payload"`
 }

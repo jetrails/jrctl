@@ -11,7 +11,7 @@ import (
 	"github.com/parnurzeal/gorequest"
 )
 
-func List(context server.Context) ListResponse {
+func ListDatabases(context server.Context) ListDatabasesResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -25,18 +25,41 @@ func List(context server.Context) ListResponse {
 		Send("{}").
 		End()
 	if len(errs) > 0 {
-		return ListResponse{
+		return ListDatabasesResponse{
 			Status:   "Client Error",
 			Code:     1,
 			Messages: []string{"Failed to connect to server."},
-			Payload:  []Database{},
+			Payload:  []DatabaseWithUsers{},
 		}
 	}
-	var response ListResponse
+	var response ListDatabasesResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
+	return response
+}
+
+func ListUsers(context server.Context) ListUsersResponse {
+	var request = gorequest.New()
+	request.SetDebug(context.Debug)
+	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
+	_, body, errs := request.
+		Timeout(10*time.Second).
+		Get(fmt.Sprintf("https://%s/database/user", context.Endpoint)).
+		Set("Content-Type", "application/json").
+		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
+		Set("Authorization", "Bearer "+context.Token).
+		Type("text").
+		Send("{}").
+		End()
+	if len(errs) > 0 {
+		return ListUsersResponse{
+			Status:   "Client Error",
+			Code:     1,
+			Messages: []string{"Failed to connect to server."},
+			Payload:  []UserWithDatabases{},
+		}
 	}
+	var response ListUsersResponse
+	json.Unmarshal([]byte(body), &response)
 	return response
 }
 
@@ -62,9 +85,6 @@ func Create(context server.Context, data CreateRequest) CreateResponse {
 	}
 	var response CreateResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -85,18 +105,15 @@ func Delete(context server.Context, data DeleteRequest) DeleteResponse {
 			Status:   "Client Error",
 			Code:     1,
 			Messages: []string{"Failed to connect to server."},
-			Payload:  "",
+			Payload:  ConfirmPayload{},
 		}
 	}
 	var response DeleteResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
-func UserAdd(context server.Context, data UserAddRequest) UserAddResponse {
+func UserCreate(context server.Context, data UserCreateRequest) UserCreateResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -109,22 +126,19 @@ func UserAdd(context server.Context, data UserAddRequest) UserAddResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
-		return UserAddResponse{
+		return UserCreateResponse{
 			Status:   "Client Error",
 			Code:     1,
 			Messages: []string{"Failed to connect to server."},
 			Payload:  "",
 		}
 	}
-	var response UserAddResponse
+	var response UserCreateResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
-func UserRemove(context server.Context, data UserRemoveRequest) UserRemoveResponse {
+func UserDelete(context server.Context, data UserDeleteRequest) UserDeleteResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -137,18 +151,15 @@ func UserRemove(context server.Context, data UserRemoveRequest) UserRemoveRespon
 		Send(data).
 		End()
 	if len(errs) > 0 {
-		return UserRemoveResponse{
+		return UserDeleteResponse{
 			Status:   "Client Error",
 			Code:     1,
 			Messages: []string{"Failed to connect to server."},
-			Payload:  "",
+			Payload:  ConfirmPayload{},
 		}
 	}
-	var response UserRemoveResponse
+	var response UserDeleteResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
 
@@ -169,13 +180,60 @@ func UserPassword(context server.Context, data UserPasswordRequest) UserPassword
 			Status:   "Client Error",
 			Code:     1,
 			Messages: []string{"Failed to connect to server."},
-			Payload:  "",
+			Payload:  ConfirmPayload{},
 		}
 	}
 	var response UserPasswordResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
+	return response
+}
+
+func Link(context server.Context, data LinkRequest) LinkResponse {
+	var request = gorequest.New()
+	request.SetDebug(context.Debug)
+	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
+	_, body, errs := request.
+		Timeout(10*time.Second).
+		Put(fmt.Sprintf("https://%s/database/link", context.Endpoint)).
+		Set("Content-Type", "application/json").
+		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
+		Set("Authorization", "Bearer "+context.Token).
+		Send(data).
+		End()
+	if len(errs) > 0 {
+		return LinkResponse{
+			Status:   "Client Error",
+			Code:     1,
+			Messages: []string{"Failed to connect to server."},
+			Payload:  ConfirmPayload{},
+		}
 	}
+	var response LinkResponse
+	json.Unmarshal([]byte(body), &response)
+	return response
+}
+
+func Unlink(context server.Context, data UnlinkRequest) UnlinkResponse {
+	var request = gorequest.New()
+	request.SetDebug(context.Debug)
+	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
+	_, body, errs := request.
+		Timeout(10*time.Second).
+		Delete(fmt.Sprintf("https://%s/database/link", context.Endpoint)).
+		Set("Content-Type", "application/json").
+		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
+		Set("Authorization", "Bearer "+context.Token).
+		Send(data).
+		End()
+	if len(errs) > 0 {
+		return UnlinkResponse{
+			Status:   "Client Error",
+			Code:     1,
+			Messages: []string{"Failed to connect to server."},
+			Payload:  ConfirmPayload{},
+		}
+	}
+	var response UnlinkResponse
+	json.Unmarshal([]byte(body), &response)
 	return response
 }

@@ -11,10 +11,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var databaseDeleteCmd = &cobra.Command{
-	Use:   "delete DB_NAME",
+var databaseUnlinkCmd = &cobra.Command{
+	Use:   "unlink USER@FROM DB_NAME",
 	Short: "",
-	Args:  cobra.ExactArgs(1),
+	Args:  cobra.ExactArgs(2),
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
 			".",
@@ -24,16 +24,20 @@ var databaseDeleteCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		selectors, _ := cmd.Flags().GetStringSlice("type")
+		user, from := splitUserAndHost(args[0])
+		dbName := args[1]
 		runner := func(index, total int, context server.Context) {
 			if total > 1 {
 				fmt.Println("\nError: multiple servers match, must narrow down to one server using type selectors\n")
 				os.Exit(1)
 			}
 			hash := context.Hash()
-			request := database.DeleteRequest{
-				Name: args[0],
+			request := database.UnlinkRequest{
+				Database: dbName,
+				Name:     user,
+				From:     from,
 			}
-			response := database.Delete(context, request)
+			response := database.Unlink(context, request)
 			if response.Code == 200 {
 				if !quiet {
 					fmt.Println("")
@@ -62,8 +66,8 @@ var databaseDeleteCmd = &cobra.Command{
 }
 
 func init() {
-	databaseCmd.AddCommand(databaseDeleteCmd)
-	databaseDeleteCmd.Flags().SortFlags = true
-	databaseDeleteCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	databaseDeleteCmd.Flags().StringSliceP("type", "t", []string{"localhost"}, "specify server type, useful for cluster")
+	databaseCmd.AddCommand(databaseUnlinkCmd)
+	databaseUnlinkCmd.Flags().SortFlags = true
+	databaseUnlinkCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
+	databaseUnlinkCmd.Flags().StringSliceP("type", "t", []string{"localhost"}, "specify server type, useful for cluster")
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var databaseListCmd = &cobra.Command{
+var databaseUserListCmd = &cobra.Command{
 	Use:   "list",
 	Short: "",
 	Long: text.Combine([]string{
@@ -22,27 +22,26 @@ var databaseListCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		selector, _ := cmd.Flags().GetString("type")
-		rows := [][]string{{"Server", "Database", "User(s)"}}
+		rows := [][]string{{"Server", "User", "Database(s)"}}
 		runner := func(index, total int, context server.Context) {
-			response := database.ListDatabases(context)
+			response := database.ListUsers(context)
 			if response.Code == 200 {
 				for _, entry := range response.Payload {
-					if len(entry.Users) == 0 {
+					if len(entry.Databases) == 0 {
 						rows = append(rows, []string{
 							strings.TrimSuffix(context.Endpoint, ":27482"),
-							entry.Name,
+							entry.Name + "@" + entry.From,
 							"-",
 						})
 					} else {
-						usersWithHost := []string{}
-						for _, user := range entry.Users {
-							userWithHost := fmt.Sprintf("%s@%s", user.Name, strings.ReplaceAll(user.From, "%", "anywhere"))
-							usersWithHost = append(usersWithHost, userWithHost)
+						dbsWithHost := []string{}
+						for _, db := range entry.Databases {
+							dbsWithHost = append(dbsWithHost, db.Name)
 						}
 						rows = append(rows, []string{
 							strings.TrimSuffix(context.Endpoint, ":27482"),
-							entry.Name,
-							strings.Join(usersWithHost, ", "),
+							entry.Name + "@" + entry.From,
+							strings.Join(dbsWithHost, ", "),
 						})
 					}
 				}
@@ -62,8 +61,8 @@ var databaseListCmd = &cobra.Command{
 }
 
 func init() {
-	databaseCmd.AddCommand(databaseListCmd)
-	databaseListCmd.Flags().SortFlags = true
-	databaseListCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	databaseListCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
+	databaseUserCmd.AddCommand(databaseUserListCmd)
+	databaseUserListCmd.Flags().SortFlags = true
+	databaseUserListCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
+	databaseUserListCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
 }

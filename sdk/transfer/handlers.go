@@ -32,7 +32,7 @@ func Send(context PublicApiContext, data SendRequest) (SendResponse, *ErrorRespo
 		if errorResponse.Code == 0 {
 			errorResponse = ErrorResponse{
 				Name:    response.Status,
-				Message: fmt.Sprintf("Endpoint: %s", response.Status),
+				Message: "",
 				Code:    response.StatusCode,
 				Type:    response.Status,
 				Data:    nil,
@@ -64,7 +64,7 @@ func Receive(context PublicApiContext, data ReceiveRequest) (ReceiveResponse, *E
 		if errorResponse.Code == 0 {
 			errorResponse = ErrorResponse{
 				Name:    response.Status,
-				Message: fmt.Sprintf("Endpoint: %s", response.Status),
+				Message: "",
 				Code:    response.StatusCode,
 				Type:    response.Status,
 				Data:    nil,

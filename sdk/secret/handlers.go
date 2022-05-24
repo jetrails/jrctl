@@ -31,7 +31,7 @@ func SecretCreate(context PublicApiContext, data SecretCreateRequest) (SecretCre
 		if errorResponse.Code == 0 {
 			errorResponse = ErrorResponse{
 				Name:    response.Status,
-				Message: fmt.Sprintf("Endpoint: %s", response.Status),
+				Message: "",
 				Code:    response.StatusCode,
 				Type:    response.Status,
 				Data:    nil,
@@ -64,7 +64,7 @@ func SecretDelete(context PublicApiContext, data SecretDeleteRequest) (SecretDel
 		if errorResponse.Code == 0 {
 			errorResponse = ErrorResponse{
 				Name:    response.Status,
-				Message: fmt.Sprintf("Endpoint: %s", response.Status),
+				Message: "",
 				Code:    response.StatusCode,
 				Type:    response.Status,
 				Data:    nil,
@@ -97,7 +97,7 @@ func SecretRead(context PublicApiContext, data SecretReadRequest) (SecretReadRes
 		if errorResponse.Code == 0 {
 			errorResponse = ErrorResponse{
 				Name:    response.Status,
-				Message: fmt.Sprintf("Endpoint: %s", response.Status),
+				Message: "",
 				Code:    response.StatusCode,
 				Type:    response.Status,
 				Data:    nil,

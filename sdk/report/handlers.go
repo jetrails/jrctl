@@ -34,8 +34,5 @@ func Audit(context server.Context) AuditResponse {
 	}
 	var response AuditResponse
 	json.Unmarshal([]byte(body), &response)
-	if len(response.Messages) == 0 {
-		response.Messages = append(response.Messages, "Endpoint: "+response.Status)
-	}
 	return response
 }
