@@ -38,8 +38,16 @@ var databaseUserCreateCmd = &cobra.Command{
 		response := database.UserCreate(contexts[0], request)
 		generic := response.GetGeneric()
 
-		output.PrintResponse(generic)
-		output.PrintDivider()
+		if response.IsOkay () {
+			tbl := NewTable (Columns {"User", "Password"})
+			tbl.Quiet = quiet
+			tbl.AddRow (Columns{ name + "@" + from, response.Payload })
+			tbl.PrintTable ()
+			output.PrintDivider()
+		} else {
+			output.PrintResponse(generic)
+			output.PrintDivider()
+		}
 
 		if quiet && response.IsOkay() {
 			fmt.Println(response.Payload)

@@ -26,7 +26,7 @@ type DeleteResponse struct {
 
 type UserCreateResponse struct {
 	api.GenericResponse
-	Payload interface{} `json:"payload"`
+	Payload string `json:"payload"`
 }
 
 type UserDeleteResponse struct {
