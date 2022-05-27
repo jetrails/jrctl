@@ -19,6 +19,7 @@ var databaseUserPasswordCmd = &cobra.Command{
 		}),
 	}),
 	Example: text.Examples([]string{}),
+	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tags, _ := cmd.Flags().GetStringArray("type")

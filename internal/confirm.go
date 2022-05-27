@@ -2,6 +2,7 @@ package internal
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
@@ -65,6 +66,23 @@ var confirmCmd = &cobra.Command{
 
 		output.PrintResponse(generic)
 		output.PrintDivider()
+
+		columns := response.Metadata["columns"]
+		values := response.Metadata["values"]
+		quietValues := response.Metadata["quiet"]
+		if columns != "" && values != "" {
+			tbl := NewTable(strings.Split(columns, ","))
+			tbl.Quiet = quiet
+			if quietValues != "" {
+				tbl.QuietCollection = strings.Split(quietValues, ",")
+			}
+			for _, row := range strings.Split(values, ";") {
+				tbl.AddRow(strings.Split(row, ","))
+			}
+			tbl.PrintTable()
+			output.PrintDivider()
+		}
+
 		output.ExitCodeFromResponse(generic)
 	},
 }
@@ -72,6 +90,6 @@ var confirmCmd = &cobra.Command{
 func init() {
 	RootCmd.AddCommand(confirmCmd)
 	confirmCmd.Flags().SortFlags = true
-	confirmCmd.Flags().BoolP("quiet", "q", false, "display no output")
+	confirmCmd.Flags().BoolP("quiet", "q", false, "display minimal output, if any")
 	confirmCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
 }
