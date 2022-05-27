@@ -1,12 +1,12 @@
 ## jrctl service disable
 
-Disable specified service(s) running on configured server(s)
+Disable specified services in deployment
 
 ### Synopsis
 
-Disable specified service(s) running on configured server(s). Services can be
-repeated and execution will happen in the order that is given. Specifing a
-server type will only display results for servers of that type.
+Disable specified services in deployment. Services can be repeated and execution
+will happen in the order that is given. Specifing a server type will only
+display results for servers of that type.
 
 ```
 jrctl service disable SERVICE... [flags]
@@ -24,12 +24,12 @@ jrctl service disable nginx varnish php-fpm-7.2 nginx
 ### Options
 
 ```
-  -h, --help           help for disable
-  -q, --quiet          output as little information as possible
-  -t, --type strings   specify server type(s), useful for cluster (default [localhost])
+  -h, --help               help for disable
+  -q, --quiet              display no output
+  -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```
 
 ### SEE ALSO
 
-* [jrctl service](jrctl_service.md)	 - Interact with services in configured deployment
+* [jrctl service](jrctl_service.md)	 - Interact with services in deployment
 

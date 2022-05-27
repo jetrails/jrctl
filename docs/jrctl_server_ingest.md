@@ -2,10 +2,6 @@
 
 Ingest server token and save it to config
 
-### Synopsis
-
-Ingest server token and save it to config.
-
 ```
 jrctl server ingest [flags]
 ```
@@ -25,7 +21,7 @@ echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f
   -f, --force             create new entry even if matching entries exist
   -h, --help              help for ingest
   -q, --quiet             output as little information as possible
-  -t, --type strings      type selector(s), all must be present to match entry
+  -t, --type strings      filter servers using type selectors, all must match
 ```
 
 ### SEE ALSO

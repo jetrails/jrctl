@@ -1,24 +1,28 @@
 ## jrctl database list
 
-
-
-### Synopsis
-
-.
+Display databases in deployment
 
 ```
 jrctl database list [flags]
 ```
 
+### Examples
+
+```
+jrctl database list
+jrctl database list -q
+jrctl database list -t db
+```
+
 ### Options
 
 ```
-  -h, --help          help for list
-  -q, --quiet         output as little information as possible
-  -t, --type string   specify server type, useful for cluster (default "localhost")
+  -h, --help               help for list
+  -q, --quiet              only display database names
+  -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```
 
 ### SEE ALSO
 
-* [jrctl database](jrctl_database.md)	 - Manage databases and database users in deployment
+* [jrctl database](jrctl_database.md)	 - Manage databases in deployment
 

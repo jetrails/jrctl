@@ -2,10 +2,6 @@
 
 Month-to-date security audit to ensure access is properly limited
 
-### Synopsis
-
-Month-to-date security audit to ensure access is properly limited.
-
 ```
 jrctl report audit [flags]
 ```
@@ -21,9 +17,9 @@ jrctl report audit -o json
 ### Options
 
 ```
-  -h, --help            help for audit
-  -o, --output string   specify 'table' or 'json' (default "table")
-  -t, --type string     specify server type selector
+  -f, --format string      specify 'table' or 'json' (default "table")
+  -h, --help               help for audit
+  -t, --type stringArray   filter servers using type selectors
 ```
 
 ### SEE ALSO

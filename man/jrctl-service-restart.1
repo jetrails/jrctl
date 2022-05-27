@@ -3,7 +3,7 @@
 
 .SH NAME
 .PP
-jrctl\-service\-restart \- Restart specified service(s) running on configured server(s)
+jrctl\-service\-restart \- Restart specified services in deployment
 
 
 .SH SYNOPSIS
@@ -13,11 +13,11 @@ jrctl\-service\-restart \- Restart specified service(s) running on configured se
 
 .SH DESCRIPTION
 .PP
-Restart specified service(s) running on configured server(s). In order to
-successfully restart a service, the server first validates the respected
-service's config file. Once deemed valid, the service is restarted. Services can
-be repeated and execution will happen in the order that is given. Specifing a
-server type will only display results for servers of that type.
+Restart specified services in deployment. In order to successfully restart a
+service, the server first validates the respected service's config file. Once
+deemed valid, the service is restarted. Services can be repeated and execution
+will happen in the order that is given. Specifing a server type will only
+display results for servers of that type.
 
 
 .SH OPTIONS
@@ -27,11 +27,11 @@ server type will only display results for servers of that type.
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
-	output as little information as possible
+	display no output
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=[localhost]
-	specify server type(s), useful for cluster
+	filter servers using type selectors
 
 
 .SH EXAMPLE

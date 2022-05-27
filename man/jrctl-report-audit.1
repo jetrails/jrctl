@@ -13,21 +13,21 @@ jrctl\-report\-audit \- Month\-to\-date security audit to ensure access is prope
 
 .SH DESCRIPTION
 .PP
-Month\-to\-date security audit to ensure access is properly limited.
+Month\-to\-date security audit to ensure access is properly limited
 
 
 .SH OPTIONS
+.PP
+\fB\-f\fP, \fB\-\-format\fP="table"
+	specify 'table' or 'json'
+
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
 	help for audit
 
 .PP
-\fB\-o\fP, \fB\-\-output\fP="table"
-	specify 'table' or 'json'
-
-.PP
-\fB\-t\fP, \fB\-\-type\fP=""
-	specify server type selector
+\fB\-t\fP, \fB\-\-type\fP=[]
+	filter servers using type selectors
 
 
 .SH EXAMPLE

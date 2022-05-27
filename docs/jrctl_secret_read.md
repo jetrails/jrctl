@@ -28,6 +28,7 @@ echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret read
   -c, --clipboard         copy contents to clipboard
   -h, --help              help for read
   -p, --password string   password to access secret
+  -q, --quiet             do not show error messages
 ```
 
 ### SEE ALSO

@@ -25,16 +25,16 @@ jrctl firewall undeny -t admin -a 1.1.1.1 -p 22
 ### Options
 
 ```
-  -a, --address string    ip address
-  -f, --file string       use text file with line separated ips
-  -h, --help              help for undeny
-  -p, --port int          port to undeny
-      --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
-  -q, --quiet             output as little information as possible
-  -t, --type string       specify server type, useful for cluster (default "localhost")
+  -a, --address string     ip address
+  -f, --file string        use text file with line separated ips
+  -h, --help               help for undeny
+  -p, --port int           port to undeny
+      --protocol string    specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
+  -q, --quiet              display no input
+  -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```
 
 ### SEE ALSO
 
-* [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
+* [jrctl firewall](jrctl_firewall.md)	 - Interact with server firewall
 

@@ -1,6 +1,6 @@
 ## jrctl update
 
-Check to see if there is an update available
+Check for available updates
 
 ```
 jrctl update [flags]
@@ -9,14 +9,14 @@ jrctl update [flags]
 ### Examples
 
 ```
-jrctl server update
+jrctl update
 ```
 
 ### Options
 
 ```
   -h, --help    help for update
-  -q, --quiet   output as little information as possible
+  -q, --quiet   display no output
 ```
 
 ### SEE ALSO

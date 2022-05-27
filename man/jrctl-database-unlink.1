@@ -3,44 +3,31 @@
 
 .SH NAME
 .PP
-jrctl\-database\-list \- Display databases in deployment
+jrctl\-database\-unlink \- Remove database user to specific database
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl database list [flags]\fP
+\fBjrctl database unlink USER@FROM DB\_NAME [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-Display databases in deployment
+Remove database user to specific database
 
 
 .SH OPTIONS
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for list
+	help for unlink
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
-	only display database names
+	only display confirmation code
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=[localhost]
 	filter servers using type selectors
-
-
-.SH EXAMPLE
-.PP
-.RS
-
-.nf
-jrctl database list
-jrctl database list \-q
-jrctl database list \-t db
-
-.fi
-.RE
 
 
 .SH SEE ALSO

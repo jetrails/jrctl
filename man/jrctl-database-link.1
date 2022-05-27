@@ -3,31 +3,31 @@
 
 .SH NAME
 .PP
-jrctl\-database\-user\-remove \-
+jrctl\-database\-link \- Add database user to specific database
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl database user\-remove USER\_NAME [flags]\fP
+\fBjrctl database link USER@FROM DB\_NAME [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-\&.
+Add database user to specific database
 
 
 .SH OPTIONS
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for user\-remove
+	help for link
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
-	output as little information as possible
+	display no output
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP="localhost"
-	specify server type, useful for cluster
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	filter servers using type selectors
 
 
 .SH SEE ALSO

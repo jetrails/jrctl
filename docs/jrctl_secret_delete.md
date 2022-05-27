@@ -23,7 +23,7 @@ echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret delete
 
 ```
   -h, --help    help for delete
-  -q, --quiet   output as little information as possible
+  -q, --quiet   display no output
 ```
 
 ### SEE ALSO

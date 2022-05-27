@@ -1,15 +1,15 @@
-## jrctl database delete
+## jrctl database unlink
 
-Delete a database
+Remove database user to specific database
 
 ```
-jrctl database delete DB_NAME [flags]
+jrctl database unlink USER@FROM DB_NAME [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help               help for delete
+  -h, --help               help for unlink
   -q, --quiet              only display confirmation code
   -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```

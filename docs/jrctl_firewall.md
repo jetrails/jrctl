@@ -1,6 +1,6 @@
 ## jrctl firewall
 
-Interact with firewall to whitelist IP addresses/ports
+Interact with server firewall
 
 ### Options
 

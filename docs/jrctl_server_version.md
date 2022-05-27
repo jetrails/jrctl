@@ -20,8 +20,9 @@ jrctl server version
 ### Options
 
 ```
-  -h, --help          help for version
-  -t, --type string   specify server type selector
+  -h, --help               help for version
+  -q, --quiet              only display versions
+  -t, --type stringArray   filter servers using type selectors
 ```
 
 ### SEE ALSO

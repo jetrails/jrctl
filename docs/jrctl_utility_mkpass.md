@@ -27,6 +27,7 @@ jrctl utility mkpass
   -N, --no-numbers     do not include numbers in password
   -S, --no-symbols     do not include symbols in password
   -U, --no-uppercase   do not include uppercase chars in password
+  -q, --quiet          display only passwords
 ```
 
 ### SEE ALSO

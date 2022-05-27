@@ -23,11 +23,12 @@ jrctl firewall list -t www
 ### Options
 
 ```
-  -h, --help          help for list
-  -t, --type string   specify server type selector
+  -h, --help               help for list
+  -q, --quiet              display number of entries found for each matching server
+  -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```
 
 ### SEE ALSO
 
-* [jrctl firewall](jrctl_firewall.md)	 - Interact with firewall to whitelist IP addresses/ports
+* [jrctl firewall](jrctl_firewall.md)	 - Interact with server firewall
 

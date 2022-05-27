@@ -3,33 +3,33 @@
 
 .SH NAME
 .PP
-jrctl\-database\-create \- Create a database
+jrctl\-database\-user\-list \- Display database users in deployment
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl database create DB\_NAME [flags]\fP
+\fBjrctl database user list [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-Create a database
+Display database users in deployment
 
 
 .SH OPTIONS
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for create
+	help for list
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
-	display no output
+	only display database user names
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=[localhost]
-	filter servers using type selectors
+	specify server type, useful for cluster
 
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-database(1)\fP
+\fBjrctl\-database\-user(1)\fP

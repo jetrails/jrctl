@@ -19,11 +19,11 @@ jrctl server token
 ### Options
 
 ```
-  -h, --help              help for list
-  -i, --identity string   filter with identity, optional
-  -q, --quiet             output as little information as possible
-  -I, --token-id string   filter with token id, optional
-  -t, --type string       specify server type selector, optional
+  -h, --help               help for list
+  -i, --identity strings   filter with identity
+  -q, --quiet              only display versions
+  -I, --token-id strings   filter with token id
+  -t, --type stringArray   filter servers using type selectors
 ```
 
 ### SEE ALSO

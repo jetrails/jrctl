@@ -1,15 +1,15 @@
-## jrctl database create
+## jrctl database link
 
-Create a database
+Add database user to specific database
 
 ```
-jrctl database create DB_NAME [flags]
+jrctl database link USER@FROM DB_NAME [flags]
 ```
 
 ### Options
 
 ```
-  -h, --help               help for create
+  -h, --help               help for link
   -q, --quiet              display no output
   -t, --type stringArray   filter servers using type selectors (default [localhost])
 ```

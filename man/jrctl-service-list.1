@@ -3,12 +3,12 @@
 
 .SH NAME
 .PP
-jrctl\-service\-status \- List services with their statuses and abilities.
+jrctl\-service\-list \- List services with their statuses and abilities.
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl service status [flags]\fP
+\fBjrctl service list [flags]\fP
 
 
 .SH DESCRIPTION
@@ -21,15 +21,19 @@ the list of services to include those services.
 .SH OPTIONS
 .PP
 \fB\-h\fP, \fB\-\-help\fP[=false]
-	help for status
+	help for list
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	display unique list of found services
 
 .PP
 \fB\-s\fP, \fB\-\-service\fP=[]
 	filter by service
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP=[]
-	specify server type(s) selector
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	filter servers using type selectors
 
 
 .SH EXAMPLE
@@ -37,10 +41,10 @@ the list of services to include those services.
 .RS
 
 .nf
-jrctl service status
-jrctl service status \-t admin
-jrctl service status \-t localhost
-jrctl service status \-t www
+jrctl service list
+jrctl service list \-t admin
+jrctl service list \-t localhost
+jrctl service list \-t www
 
 .fi
 .RE

@@ -3,7 +3,7 @@
 
 .SH NAME
 .PP
-jrctl\-service\-enable \- Enable specified service(s) running on configured server(s)
+jrctl\-service\-enable \- Enable specified services in deployment
 
 
 .SH SYNOPSIS
@@ -13,9 +13,9 @@ jrctl\-service\-enable \- Enable specified service(s) running on configured serv
 
 .SH DESCRIPTION
 .PP
-Enable specified service(s) running on configured server(s). Services can be
-repeated and execution will happen in the order that is given. Specifing a
-server type will only display results for servers of that type.
+Enable specified services in deployment. Services can be repeated and execution
+will happen in the order that is given. Specifing a server type will only
+display results for servers of that type.
 
 
 .SH OPTIONS
@@ -25,11 +25,11 @@ server type will only display results for servers of that type.
 
 .PP
 \fB\-q\fP, \fB\-\-quiet\fP[=false]
-	output as little information as possible
+	display no output
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=[localhost]
-	specify server type(s), useful for cluster
+	filter servers using type selectors
 
 
 .SH EXAMPLE

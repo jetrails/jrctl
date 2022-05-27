@@ -1,9 +1,9 @@
-## jrctl database delete
+## jrctl database user delete
 
-Delete a database
+Delete database user
 
 ```
-jrctl database delete DB_NAME [flags]
+jrctl database user delete USER@HOST [flags]
 ```
 
 ### Options
@@ -16,5 +16,5 @@ jrctl database delete DB_NAME [flags]
 
 ### SEE ALSO
 
-* [jrctl database](jrctl_database.md)	 - Manage databases in deployment
+* [jrctl database user](jrctl_database_user.md)	 - Manage database users in deployment
 
