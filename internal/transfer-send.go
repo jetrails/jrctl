@@ -3,12 +3,13 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
 	"strconv"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/transfer"
 	"github.com/spf13/cobra"
 )
@@ -29,12 +30,16 @@ var transferSendCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		filepath := args[0]
 		copy, _ := cmd.Flags().GetBool("clipboard")
+		filepath := args[0]
+
+		tbl := NewTable(Columns{"TTL", "Identifier"})
+		tbl.Quiet = quiet
+
 		if _, err := ioutil.ReadFile(filepath); err != nil {
-			fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
-			return
+			tbl.ExitWithMessage(3, "\ncould not read contents of file %q.\n", filepath)
 		}
+
 		context := transfer.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
@@ -42,24 +47,29 @@ var transferSendCmd = &cobra.Command{
 		}
 		request := transfer.SendRequest{FilePath: filepath}
 		response, err := transfer.Send(context, request)
+
 		if err != nil && err.Code != 200 {
-			if !quiet {
-				fmt.Printf("\n%s\n\n", err.Message)
+			generic := api.GenericResponse{
+				Code:     err.Code,
+				Status:   err.Type,
+				Messages: []string{err.Message},
 			}
-			os.Exit(1)
+			tbl.PrintDivider()
+			tbl.PrintResponse(&generic)
+			tbl.PrintDivider()
+			tbl.ExitCodeFromResponse(&generic)
 		}
+
 		identifier := fmt.Sprintf("%s-%s", response.Identifier, response.Password)
+
+		tbl.AddQuietEntry(identifier)
+		tbl.AddRow(Columns{strconv.Itoa(response.TTL) + "s", identifier})
+		tbl.PrintDivider()
+		tbl.PrintTable()
+		tbl.PrintDivider()
+
 		if copy {
 			clipboard.WriteAll(identifier)
-		}
-		rows := [][]string{
-			{"TTL", "Identifier"},
-			{strconv.Itoa(response.TTL) + "s", identifier},
-		}
-		if !quiet {
-			text.TablePrint("Could not send file.", rows, 1)
-		} else {
-			fmt.Println(identifier)
 		}
 	},
 }
@@ -67,6 +77,6 @@ var transferSendCmd = &cobra.Command{
 func init() {
 	transferCmd.AddCommand(transferSendCmd)
 	transferSendCmd.Flags().SortFlags = true
-	transferSendCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
+	transferSendCmd.Flags().BoolP("quiet", "q", false, "only display the identifier")
 	transferSendCmd.Flags().BoolP("clipboard", "c", false, "copy file identifier to clipboard")
 }

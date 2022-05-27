@@ -19,11 +19,3 @@ type TokenData struct {
 	TokenID          string   `json:"token_id"`
 	AllowedClientIPs []string `json:"allowed_client_ips"`
 }
-
-type ServiceProperties struct {
-	Status  string `json:"status"`
-	Restart bool   `json:"restart"`
-	Reload  bool   `json:"reload"`
-	Enable  bool   `json:"enable"`
-	Disable bool   `json:"disable"`
-}

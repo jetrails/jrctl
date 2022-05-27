@@ -6,7 +6,7 @@ import (
 
 var serviceCmd = &cobra.Command{
 	Use:   "service",
-	Short: "Interact with services in configured deployment",
+	Short: "Interact with services in deployment",
 }
 
 func init() {

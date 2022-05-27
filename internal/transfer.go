@@ -6,8 +6,9 @@ import (
 
 var transferCmd = &cobra.Command{
 	Use:     "transfer",
-	Aliases: []string{"trans"},
+	Aliases: []string{"trans", "file"},
 	Short:   "Securely transfer files from one machine to another",
+	Hidden:  true,
 }
 
 func init() {

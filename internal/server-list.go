@@ -1,9 +1,10 @@
 package internal
 
 import (
-	"fmt"
 	"strings"
 
+	"github.com/jetrails/jrctl/pkg/array"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
@@ -22,64 +23,68 @@ var serverListCmd = &cobra.Command{
 		"jrctl server token",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
-		selector, _ := cmd.Flags().GetString("type")
-		identity, _ := cmd.Flags().GetString("identity")
-		tokenID, _ := cmd.Flags().GetString("token-id")
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		filter := []string{}
-		emptyMsg := "No configured servers found."
-		if selector != "" {
-			filter = []string{selector}
-			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
-		}
-		rows := [][]string{{"Server", "Type(s)", "Token ID", "Identity", "Allowed Client IPs"}}
-		runner := func(index, total int, context server.Context) {
+		tags, _ := cmd.Flags().GetStringArray("type")
+		identityFilters, _ := cmd.Flags().GetStringSlice("identity")
+		tokenIDFilters, _ := cmd.Flags().GetStringSlice("token-id")
+
+		output := NewOutput(quiet, tags)
+		output.DisplayServers = false
+		output.FailOnNoServers = true
+		output.FailOnNoResults = true
+		output.ExitCodeNoServers = 1
+		output.ExitCodeNoResults = 2
+
+		tbl := output.CreateTable(Columns{
+			"Hostname",
+			"Server",
+			"Type(s)",
+			"Token ID",
+			"Identity",
+			"Allowed Client IPs",
+		})
+
+		for _, context := range server.GetContexts(tags) {
 			response := server.TokenInfo(context)
-			var row []string
-			if response.Code != 200 {
-				row = []string{
-					strings.TrimSuffix(context.Endpoint, ":27482"),
-					strings.Join(context.Types, ", "),
-					response.Messages[0],
-					"-",
-					"-",
+			output.AddServer(
+				context,
+				response.GetGeneric(),
+				response.Status,
+			)
+			if response.IsOkay() {
+				if len(identityFilters) > 0 && !array.ContainsString(identityFilters, response.Payload.Identity) {
+					continue
 				}
-			} else {
-				if identity != "" && identity != response.Payload.Identity {
-					return
+				if len(tokenIDFilters) > 0 && !array.ContainsString(tokenIDFilters, response.Payload.TokenID) {
+					continue
 				}
-				if tokenID != "" && tokenID != response.Payload.TokenID {
-					return
-				}
-				row = []string{
+				tbl.AddQuietEntry(response.Payload.TokenID)
+				tbl.AddRow(Columns{
+					response.Metadata["hostname"],
 					strings.TrimSuffix(context.Endpoint, ":27482"),
 					strings.Join(context.Types, ", "),
 					response.Payload.TokenID,
 					response.Payload.Identity,
 					strings.Join(response.Payload.AllowedClientIPs, ", "),
-				}
+				})
+			} else if len(identityFilters) == 0 && len(tokenIDFilters) == 0 {
+				tbl.AddRow(Columns{
+					response.Metadata["hostname"],
+					strings.TrimSuffix(context.Endpoint, ":27482"),
+					strings.Join(context.Types, ", "),
+				})
 			}
-			rows = append(rows, row)
 		}
-		server.FilterForEach(filter, runner)
-		if quiet {
-			for _, row := range rows[1:] {
-				fmt.Printf("%s\n", row[2])
-			}
-		} else {
-			if selector != "" && len(rows) > 1 {
-				fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
-			}
-			text.TablePrint(emptyMsg, rows, 1)
-		}
+
+		output.Print()
 	},
 }
 
 func init() {
 	serverCmd.AddCommand(serverListCmd)
 	serverListCmd.Flags().SortFlags = true
-	serverListCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	serverListCmd.Flags().StringP("type", "t", "", "specify server type selector, optional")
-	serverListCmd.Flags().StringP("identity", "i", "", "filter with identity, optional")
-	serverListCmd.Flags().StringP("token-id", "I", "", "filter with token id, optional")
+	serverListCmd.Flags().BoolP("quiet", "q", false, "only display versions")
+	serverListCmd.Flags().StringArrayP("type", "t", []string{}, "filter servers using type selectors")
+	serverListCmd.Flags().StringSliceP("identity", "i", []string{}, "filter with identity")
+	serverListCmd.Flags().StringSliceP("token-id", "I", []string{}, "filter with token id")
 }

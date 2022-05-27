@@ -2,13 +2,14 @@ package internal
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 	"strings"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"
+	"github.com/jetrails/jrctl/pkg/input"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/secret"
 	"github.com/spf13/cobra"
 )
@@ -31,28 +32,30 @@ var secretReadCmd = &cobra.Command{
 		"echo 89ea32e9-e8a5-435d-97ce-78804be250b7-IUQhHYRq | jrctl secret read",
 	}),
 	Args: func(cmd *cobra.Command, args []string) error {
-		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
+		if input.HasDataInPipe() && len(args) == 0 {
 			return nil
 		}
-		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		return nil
+		return cobra.ExactArgs(1)(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		identifier := ""
-		if len(args) == 0 {
-			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
-				identifier = strings.TrimSpace(string(bytes))
-			}
-		} else {
-			identifier = args[0]
-		}
-		identifier = strings.TrimPrefix(identifier, fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.com")))
-		identifier = strings.Trim(identifier, "/")
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		password, _ := cmd.Flags().GetString("password")
+
+		tbl := NewTable(Columns{})
+		tbl.Quiet = quiet
+
+		identifier := ""
+		if len(args) == 0 {
+			identifier = input.GetPipeData()
+		} else {
+			identifier = args[0]
+		}
+
+		prefix := fmt.Sprintf("https://%s/secret/", env.GetString("secret_endpoint", "secret.jetrails.com"))
+		identifier = strings.TrimPrefix(identifier, prefix)
+		identifier = strings.Trim(identifier, "/")
+
 		context := secret.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
@@ -63,14 +66,21 @@ var secretReadCmd = &cobra.Command{
 			Password:   password,
 		}
 		response, err := secret.SecretRead(context, request)
+
 		if err != nil && err.Code != 200 {
-			if !quiet {
-				fmt.Printf("\n%s\n\n", err.Message)
+			generic := api.GenericResponse{
+				Code:     err.Code,
+				Status:   err.Type,
+				Messages: []string{err.Message},
 			}
-			os.Exit(1)
+			tbl.PrintDivider()
+			tbl.PrintResponse(&generic)
+			tbl.PrintDivider()
+			tbl.ExitCodeFromResponse(&generic)
 		} else {
 			fmt.Printf("\n%s\n\n", response.Data)
 		}
+
 		if copy {
 			clipboard.WriteAll(strings.TrimSpace(response.Data))
 		}
@@ -80,6 +90,7 @@ var secretReadCmd = &cobra.Command{
 func init() {
 	secretCmd.AddCommand(secretReadCmd)
 	secretReadCmd.Flags().SortFlags = true
+	secretReadCmd.Flags().BoolP("quiet", "q", false, "do not show error messages")
 	secretReadCmd.Flags().StringP("password", "p", "", "password to access secret")
 	secretReadCmd.Flags().BoolP("clipboard", "c", false, "copy contents to clipboard")
 }

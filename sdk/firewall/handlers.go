@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
@@ -26,10 +27,8 @@ func List(context server.Context) ListResponse {
 		End()
 	if len(errs) > 0 {
 		return ListResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  nil,
+			GenericResponse: api.NewClientError(),
+			Payload:         nil,
 		}
 	}
 	var response ListResponse
@@ -51,10 +50,8 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 		End()
 	if len(errs) > 0 {
 		return AllowResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  data,
+			GenericResponse: api.NewClientError(),
+			Payload:         data,
 		}
 	}
 	var response AllowResponse
@@ -76,10 +73,8 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 		End()
 	if len(errs) > 0 {
 		return UnAllowResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  data,
+			GenericResponse: api.NewClientError(),
+			Payload:         data,
 		}
 	}
 	var response UnAllowResponse
@@ -101,10 +96,8 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 		End()
 	if len(errs) > 0 {
 		return DenyResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  data,
+			GenericResponse: api.NewClientError(),
+			Payload:         data,
 		}
 	}
 	var response DenyResponse
@@ -126,10 +119,8 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 		End()
 	if len(errs) > 0 {
 		return UnDenyResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  data,
+			GenericResponse: api.NewClientError(),
+			Payload:         data,
 		}
 	}
 	var response UnDenyResponse
@@ -152,9 +143,7 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 		End()
 	if len(errs) > 0 {
 		return AllowCloudflareResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
+			GenericResponse: api.NewClientError(),
 			Payload: CloudflareEntries{
 				Skipped:   []string{},
 				Succeeded: []string{},
@@ -182,9 +171,7 @@ func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
 		End()
 	if len(errs) > 0 {
 		return UnAllowCloudflareResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
+			GenericResponse: api.NewClientError(),
 			Payload: CloudflareEntries{
 				Skipped:   []string{},
 				Succeeded: []string{},

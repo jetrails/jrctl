@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
@@ -25,10 +26,8 @@ func Confirm(context server.Context, data ConfirmRequest) ConfirmResponse {
 		End()
 	if len(errs) > 0 {
 		return ConfirmResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  nil,
+			GenericResponse: api.NewClientError(),
+			Payload:         nil,
 		}
 	}
 	var response ConfirmResponse

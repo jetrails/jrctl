@@ -89,3 +89,26 @@ func getInputFromEditor() (string, error) {
 	}
 	return string(bytes), nil
 }
+
+func HasDataInPipe() bool {
+	if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
+		return true
+	}
+	return false
+}
+
+func GetPipeData() string {
+	if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
+		return strings.TrimSpace(string(bytes))
+	}
+	return ""
+}
+
+func GetFirstArgumentOrPipe(args []string) string {
+	if len(args) == 0 {
+		return GetPipeData()
+	} else {
+		return args[0]
+	}
+	return ""
+}

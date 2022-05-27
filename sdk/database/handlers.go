@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
@@ -26,10 +27,8 @@ func ListDatabases(context server.Context) ListDatabasesResponse {
 		End()
 	if len(errs) > 0 {
 		return ListDatabasesResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  []DatabaseWithUsers{},
+			GenericResponse: api.NewClientError(),
+			Payload:         []DatabaseWithUsers{},
 		}
 	}
 	var response ListDatabasesResponse
@@ -52,10 +51,8 @@ func ListUsers(context server.Context) ListUsersResponse {
 		End()
 	if len(errs) > 0 {
 		return ListUsersResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  []UserWithDatabases{},
+			GenericResponse: api.NewClientError(),
+			Payload:         []UserWithDatabases{},
 		}
 	}
 	var response ListUsersResponse
@@ -77,10 +74,8 @@ func Create(context server.Context, data CreateRequest) CreateResponse {
 		End()
 	if len(errs) > 0 {
 		return CreateResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  "",
+			GenericResponse: api.NewClientError(),
+			Payload:         "",
 		}
 	}
 	var response CreateResponse
@@ -102,10 +97,8 @@ func Delete(context server.Context, data DeleteRequest) DeleteResponse {
 		End()
 	if len(errs) > 0 {
 		return DeleteResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  ConfirmPayload{},
+			GenericResponse: api.NewClientError(),
+			Payload:         ConfirmPayload{},
 		}
 	}
 	var response DeleteResponse
@@ -127,10 +120,8 @@ func UserCreate(context server.Context, data UserCreateRequest) UserCreateRespon
 		End()
 	if len(errs) > 0 {
 		return UserCreateResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  "",
+			GenericResponse: api.NewClientError(),
+			Payload:         "",
 		}
 	}
 	var response UserCreateResponse
@@ -152,10 +143,8 @@ func UserDelete(context server.Context, data UserDeleteRequest) UserDeleteRespon
 		End()
 	if len(errs) > 0 {
 		return UserDeleteResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  ConfirmPayload{},
+			GenericResponse: api.NewClientError(),
+			Payload:         ConfirmPayload{},
 		}
 	}
 	var response UserDeleteResponse
@@ -177,10 +166,8 @@ func UserPassword(context server.Context, data UserPasswordRequest) UserPassword
 		End()
 	if len(errs) > 0 {
 		return UserPasswordResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  ConfirmPayload{},
+			GenericResponse: api.NewClientError(),
+			Payload:         ConfirmPayload{},
 		}
 	}
 	var response UserPasswordResponse
@@ -202,10 +189,8 @@ func Link(context server.Context, data LinkRequest) LinkResponse {
 		End()
 	if len(errs) > 0 {
 		return LinkResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  ConfirmPayload{},
+			GenericResponse: api.NewClientError(),
+			Payload:         ConfirmPayload{},
 		}
 	}
 	var response LinkResponse
@@ -227,10 +212,8 @@ func Unlink(context server.Context, data UnlinkRequest) UnlinkResponse {
 		End()
 	if len(errs) > 0 {
 		return UnlinkResponse{
-			Status:   "Client Error",
-			Code:     1,
-			Messages: []string{"Failed to connect to server."},
-			Payload:  ConfirmPayload{},
+			GenericResponse: api.NewClientError(),
+			Payload:         ConfirmPayload{},
 		}
 	}
 	var response UnlinkResponse

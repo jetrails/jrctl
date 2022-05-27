@@ -1,39 +1,32 @@
 package firewall
 
+import (
+	"github.com/jetrails/jrctl/sdk/api"
+)
+
 type ListResponse struct {
-	Status   string            `json:"status"`
-	Code     int               `json:"code"`
-	Messages []string          `json:"messages"`
-	Metadata map[string]string `json:"metadata"`
-	Payload  []Entry           `json:"payload"`
+	api.GenericResponse
+	Payload []Entry `json:"payload"`
 }
 
 type AllowResponse struct {
-	Status   string       `json:"status"`
-	Code     int          `json:"code"`
-	Messages []string     `json:"messages"`
-	Payload  AllowRequest `json:"payload"`
+	api.GenericResponse
+	Payload AllowRequest `json:"payload"`
 }
 
 type UnAllowResponse struct {
-	Status   string         `json:"status"`
-	Code     int            `json:"code"`
-	Messages []string       `json:"messages"`
-	Payload  UnAllowRequest `json:"payload"`
+	api.GenericResponse
+	Payload UnAllowRequest `json:"payload"`
 }
 
 type DenyResponse struct {
-	Status   string      `json:"status"`
-	Code     int         `json:"code"`
-	Messages []string    `json:"messages"`
-	Payload  DenyRequest `json:"payload"`
+	api.GenericResponse
+	Payload DenyRequest `json:"payload"`
 }
 
 type UnDenyResponse struct {
-	Status   string        `json:"status"`
-	Code     int           `json:"code"`
-	Messages []string      `json:"messages"`
-	Payload  UnDenyRequest `json:"payload"`
+	api.GenericResponse
+	Payload UnDenyRequest `json:"payload"`
 }
 
 type CloudflareEntry struct {
@@ -48,15 +41,11 @@ type CloudflareEntries struct {
 }
 
 type AllowCloudflareResponse struct {
-	Status   string            `json:"status"`
-	Code     int               `json:"code"`
-	Messages []string          `json:"messages"`
-	Payload  CloudflareEntries `json:"payload"`
+	api.GenericResponse
+	Payload CloudflareEntries `json:"payload"`
 }
 
 type UnAllowCloudflareResponse struct {
-	Status   string            `json:"status"`
-	Code     int               `json:"code"`
-	Messages []string          `json:"messages"`
-	Payload  CloudflareEntries `json:"payload"`
+	api.GenericResponse
+	Payload CloudflareEntries `json:"payload"`
 }

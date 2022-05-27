@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/database"
 	"github.com/jetrails/jrctl/sdk/server"
@@ -12,58 +13,64 @@ import (
 
 var databaseListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "",
-	Long: text.Combine([]string{
-		text.Paragraph([]string{
-			".",
-		}),
+	Short: "Display databases in deployment",
+	Example: text.Examples([]string{
+		"jrctl database list",
+		"jrctl database list -q",
+		"jrctl database list -t db",
 	}),
-	Example: text.Examples([]string{}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		selector, _ := cmd.Flags().GetString("type")
-		rows := [][]string{{"Server", "Database", "User(s)"}}
-		runner := func(index, total int, context server.Context) {
+		tags, _ := cmd.Flags().GetStringArray("type")
+
+		output := NewOutput(quiet, tags)
+		output.DisplayServers = false
+		output.FailOnNoServers = true
+		output.FailOnNoResults = true
+		output.ExitCodeNoServers = 1
+		output.ExitCodeNoResults = 2
+
+		tbl := output.CreateTable(Columns{
+			"Server",
+			"Database",
+			"User(s)",
+		})
+
+		for _, context := range server.GetContexts(tags) {
 			response := database.ListDatabases(context)
-			if response.Code == 200 {
-				for _, entry := range response.Payload {
-					if len(entry.Users) == 0 {
-						rows = append(rows, []string{
-							strings.TrimSuffix(context.Endpoint, ":27482"),
-							entry.Name,
-							"-",
-						})
-					} else {
-						usersWithHost := []string{}
-						for _, user := range entry.Users {
-							userWithHost := fmt.Sprintf("%s@%s", user.Name, strings.ReplaceAll(user.From, "%", "anywhere"))
-							usersWithHost = append(usersWithHost, userWithHost)
-						}
-						rows = append(rows, []string{
-							strings.TrimSuffix(context.Endpoint, ":27482"),
-							entry.Name,
-							strings.Join(usersWithHost, ", "),
-						})
+			output.AddServer(
+				context,
+				response.GetGeneric(),
+				response.Status,
+			)
+			for _, entry := range response.Payload {
+				tbl.AddQuietEntry(entry.Name)
+				if len(entry.Users) == 0 {
+					tbl.AddRow(Columns{
+						strings.TrimSuffix(context.Endpoint, ":27482"),
+						entry.Name,
+					})
+				} else {
+					formattedUsers := []string{}
+					for _, user := range entry.Users {
+						formattedUsers = append(formattedUsers, fmt.Sprintf("%s@%s", user.Name, user.From))
 					}
+					tbl.AddRow(Columns{
+						strings.TrimSuffix(context.Endpoint, ":27482"),
+						entry.Name,
+						strings.Join(formattedUsers, ", "),
+					})
 				}
-			} else {
-				fmt.Printf("\n%s [%d]\n\n", response.Status, response.Code)
 			}
 		}
-		server.FilterForEach([]string{selector}, runner)
-		if quiet {
-			for _, row := range rows[1:] {
-				fmt.Println (row[1])
-			}
-		} else {
-			text.TablePrint("No entries found", rows, 1)
-		}
+
+		output.Print()
 	},
 }
 
 func init() {
 	databaseCmd.AddCommand(databaseListCmd)
 	databaseListCmd.Flags().SortFlags = true
-	databaseListCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	databaseListCmd.Flags().StringP("type", "t", "localhost", "specify server type, useful for cluster")
+	databaseListCmd.Flags().BoolP("quiet", "q", false, "only display database names")
+	databaseListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
 }

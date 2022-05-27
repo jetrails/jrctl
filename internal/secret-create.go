@@ -3,13 +3,13 @@ package internal
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
-	"strconv"
 
 	"github.com/atotto/clipboard"
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/jetrails/jrctl/pkg/input"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/secret"
 	"github.com/spf13/cobra"
 )
@@ -33,31 +33,34 @@ var secretCreateCmd = &cobra.Command{
 		"echo 'Hello World' | jrctl secret create",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
-		var content string = ""
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		filepath, _ := cmd.Flags().GetString("file")
 		copy, _ := cmd.Flags().GetBool("clipboard")
 		ttl, _ := cmd.Flags().GetInt("ttl")
 		generate, _ := cmd.Flags().GetBool("auto-generate")
 		password, _ := cmd.Flags().GetString("password")
+
+		tbl := NewTable(Columns{
+			"TTL",
+			"Password",
+			"Secret URL",
+		})
+
+		var content string = ""
 		if filepath != "" {
-			fileContents, err := ioutil.ReadFile(filepath)
-			if err != nil {
-				if !quiet {
-					fmt.Printf("\nCould not read contents of file %q.\n\n", filepath)
-				}
-				os.Exit(1)
-			}
-			content = string(fileContents)
-		}
-		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 {
-			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
+			if bytes, err := ioutil.ReadFile(filepath); err != nil {
+				tbl.ExitWithMessage(1, "\ncould not read contents of file %q\n\n", filepath)
+			} else {
 				content = string(bytes)
 			}
+		}
+		if input.HasDataInPipe() {
+			content = input.GetPipeData()
 		}
 		if content == "" {
 			content = input.PromptContent("Secret")
 		}
+
 		context := secret.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
@@ -70,32 +73,33 @@ var secretCreateCmd = &cobra.Command{
 			AutoGenerate: generate,
 		}
 		response, err := secret.SecretCreate(context, request)
+
 		if err != nil && err.Code != 200 {
-			if !quiet {
-				fmt.Printf("\n%s\n\n", err.Message)
+			generic := api.GenericResponse{
+				Code:     err.Code,
+				Status:   err.Type,
+				Messages: []string{err.Message},
 			}
-			os.Exit(1)
+			tbl.PrintDivider()
+			tbl.PrintResponse(&generic)
+			tbl.PrintDivider()
+			tbl.ExitCodeFromResponse(&generic)
 		}
 		url := fmt.Sprintf(
 			"https://%s/secret/%s",
 			env.GetString("secret_endpoint", "secret.jetrails.com"),
 			response.Identifier,
 		)
-		displayPassword := "None"
-		if response.Password != "" {
-			displayPassword = response.Password
-		}
+
+		tbl.AddQuietEntry(url)
+		tbl.AddRow(Columns{fmt.Sprintf("%ds", ttl), response.Password, url})
+		tbl.Quiet = quiet
+		tbl.PrintDivider()
+		tbl.PrintTable()
+		tbl.PrintDivider()
+
 		if copy {
 			clipboard.WriteAll(url)
-		}
-		rows := [][]string{
-			{"TTL", "Password", "Secret URL"},
-			{strconv.Itoa(ttl) + "s", displayPassword, url},
-		}
-		if !quiet {
-			text.TablePrint("Could not create secret.", rows, 1)
-		} else {
-			fmt.Println(url)
 		}
 	},
 }

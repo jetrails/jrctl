@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"sort"
 	"strings"
 
 	"crypto/sha256"
@@ -11,71 +10,6 @@ import (
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/spf13/viper"
 )
-
-func CollectTypes() []string {
-	var types []string
-	var contexts []Context
-	viper.UnmarshalKey("servers", &contexts)
-	for _, context := range contexts {
-		for _, t := range context.Types {
-			if !array.ContainsString(types, t) {
-				types = append(types, t)
-			}
-		}
-	}
-	sort.Strings(types)
-	return types
-}
-
-func CollectServices() []string {
-	var services []string
-	for _, context := range LoadServers() {
-		response := ListServices(context)
-		if response.Code == 200 {
-			for service := range response.Payload {
-				if !array.ContainsString(services, service) {
-					services = append(services, service)
-				}
-			}
-		}
-	}
-	sort.Strings(services)
-	return services
-}
-
-func FilterWithService(selector, service string) []Context {
-	return FiltersWithService([]string{selector}, service)
-}
-
-func FiltersWithService(selectors []string, service string) []Context {
-	var filtered []Context
-	for _, context := range LoadServers() {
-		for _, selector := range selectors {
-			if array.ContainsString(context.Types, selector) {
-				response := ListServices(context)
-				if response.Code == 200 {
-					if _, found := response.Payload[service]; found {
-						filtered = append(filtered, context)
-					}
-				}
-			}
-		}
-	}
-	return filtered
-}
-
-func IsValidType(t string) bool {
-	types := CollectTypes()
-	return array.ContainsString(types, t)
-}
-
-func IsValidTypeError(t string) error {
-	if IsValidType(t) {
-		return nil
-	}
-	list := strings.Join(CollectTypes(), ", ")
-	return fmt.Errorf("%q must be one of: %v", "type", list)
-}
 
 func Filter(contexts []Context, filters []string) []Context {
 	var filtered []Context
@@ -93,7 +27,7 @@ func Filter(contexts []Context, filters []string) []Context {
 	return filtered
 }
 
-func LoadServers() []Context {
+func LoadContexts() []Context {
 	var contexts []Context
 	debug := env.GetBool("debug", false)
 	insecure := env.GetBool("insecure", true)
@@ -115,8 +49,31 @@ func LoadServers() []Context {
 	return contexts
 }
 
+func GetContexts(filters []string) []Context {
+	results := []Context{}
+	contexts := LoadContexts()
+	if len(filters) == 0 {
+		return contexts
+	}
+	for _, context := range contexts {
+		for _, filter := range filters {
+			qualifies := true
+			targets := strings.Split(filter, ",")
+			for _, target := range targets {
+				target = strings.TrimSpace(target)
+				qualifies = qualifies && (target == "" || array.ContainsString(context.Types, target))
+			}
+			if qualifies {
+				results = append(results, context)
+				break
+			}
+		}
+	}
+	return results
+}
+
 func ForEach(Runner func(int, int, Context)) int {
-	contexts := LoadServers()
+	contexts := LoadContexts()
 	total := len(contexts)
 	for index, context := range contexts {
 		Runner(index, total, context)
@@ -125,20 +82,7 @@ func ForEach(Runner func(int, int, Context)) int {
 }
 
 func FilterForEach(filters []string, Runner func(int, int, Context)) int {
-	contexts := Filter(LoadServers(), filters)
-	total := len(contexts)
-	for index, context := range contexts {
-		Runner(index, total, context)
-	}
-	return total
-}
-
-func FilterWithServiceForEach(selector, service string, Runner func(int, int, Context)) int {
-	return FiltersWithServiceForEach([]string{selector}, service, Runner)
-}
-
-func FiltersWithServiceForEach(selectors []string, service string, Runner func(int, int, Context)) int {
-	contexts := FiltersWithService(selectors, service)
+	contexts := Filter(LoadContexts(), filters)
 	total := len(contexts)
 	for index, context := range contexts {
 		Runner(index, total, context)

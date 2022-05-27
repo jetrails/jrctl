@@ -1,9 +1,9 @@
 package internal
 
 import (
-	"fmt"
 	"strings"
 
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
@@ -22,40 +22,51 @@ var serverVersionCmd = &cobra.Command{
 		"jrctl server version",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
-		selector, _ := cmd.Flags().GetString("type")
-		filter := []string{}
-		emptyMsg := "No configured servers found."
-		if selector != "" {
-			filter = []string{selector}
-			emptyMsg = fmt.Sprintf("No configured %q server(s) found.", selector)
-		}
-		rows := [][]string{{"Server", "Version"}}
-		runner := func(index, total int, context server.Context) {
+		quiet, _ := cmd.Flags().GetBool("quiet")
+		tags, _ := cmd.Flags().GetStringArray("type")
+
+		output := NewOutput(quiet, tags)
+		output.DisplayServers = false
+		output.FailOnNoServers = true
+		output.FailOnNoResults = true
+		output.ExitCodeNoServers = 1
+		output.ExitCodeNoResults = 2
+
+		tbl := output.CreateTable(Columns{
+			"Hostname",
+			"Server",
+			"Version",
+		})
+
+		for _, context := range server.GetContexts(tags) {
 			response := server.Version(context)
-			var row []string
-			if response.Code != 200 {
-				row = []string{
-					strings.TrimSuffix(context.Endpoint, ":27482"),
-					response.Messages[0],
-				}
-			} else {
-				row = []string{
+			output.AddServer(
+				context,
+				response.GetGeneric(),
+				response.Status,
+			)
+			if response.IsOkay() {
+				tbl.AddQuietEntry(response.Payload)
+				tbl.AddRow(Columns{
+					response.Metadata["hostname"],
 					strings.TrimSuffix(context.Endpoint, ":27482"),
 					response.Payload,
-				}
+				})
+			} else {
+				tbl.AddRow(Columns{
+					response.Metadata["hostname"],
+					strings.TrimSuffix(context.Endpoint, ":27482"),
+				})
 			}
-			rows = append(rows, row)
 		}
-		server.FilterForEach(filter, runner)
-		if selector != "" && len(rows) > 1 {
-			fmt.Printf("\nDisplaying results for %q server(s):\n", selector)
-		}
-		text.TablePrint(emptyMsg, rows, 1)
+
+		output.Print()
 	},
 }
 
 func init() {
 	serverCmd.AddCommand(serverVersionCmd)
 	serverVersionCmd.Flags().SortFlags = true
-	serverVersionCmd.Flags().StringP("type", "t", "", "specify server type selector")
+	serverVersionCmd.Flags().BoolP("quiet", "q", false, "only display versions")
+	serverVersionCmd.Flags().StringArrayP("type", "t", []string{}, "filter servers using type selectors")
 }

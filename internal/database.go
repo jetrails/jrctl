@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func splitUserAndHost(input string) (string, string) {
+func SplitUserAndHost(input string) (string, string) {
 	from := "localhost"
 	parts := strings.Split(input, "@")
 	user := parts[0]

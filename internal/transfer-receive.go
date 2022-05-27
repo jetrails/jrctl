@@ -9,19 +9,17 @@ import (
 
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/jetrails/jrctl/pkg/input"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/api"
 	"github.com/jetrails/jrctl/sdk/transfer"
 	"github.com/spf13/cobra"
 )
 
 var transferReceiveCmd = &cobra.Command{
-	Use:   "receive",
-	Short: "Download file from secure server",
-	Long: text.Combine([]string{
-		text.Paragraph([]string{
-			"Download file from secure server.",
-		}),
-	}),
+	Use:     "receive",
+	Aliases: []string{"download"},
+	Short:   "Download file from secure server",
 	Example: text.Examples([]string{
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo",
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -f",
@@ -30,29 +28,26 @@ var transferReceiveCmd = &cobra.Command{
 		"jrctl transfer receive 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo -o ./private/ -n custom.name",
 		"echo 7c6acde6-639c-47fe-8ebb-a4ac877ef72b-XPlEYzcsgnNbxwcFqKiWUoJil6MlFXGo | jrctl transfer receive",
 	}),
-	Aliases: []string{"download"},
 	Args: func(cmd *cobra.Command, args []string) error {
-		if stat, _ := os.Stdin.Stat(); stat.Mode()&os.ModeCharDevice == 0 && len(args) == 0 {
+		if input.HasDataInPipe() && len(args) == 0 {
 			return nil
 		}
-		if err := cobra.ExactArgs(1)(cmd, args); err != nil {
-			return err
-		}
-		return nil
+		return cobra.ExactArgs(1)(cmd, args)
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
+		force, _ := cmd.Flags().GetBool("force")
+		outDir, _ := cmd.Flags().GetString("out-dir")
+		name, _ := cmd.Flags().GetString("name")
+		argument := input.GetFirstArgumentOrPipe(args)
+
 		var password string
 		var identifier string
-		var argument string
-		if len(args) == 0 {
-			if bytes, err := ioutil.ReadAll(os.Stdin); err == nil {
-				argument = strings.TrimSpace(string(bytes))
-			}
-		} else {
-			argument = args[0]
-		}
 		fmt.Sscanf(argument, "%36s-%32s", &identifier, &password)
+
+		tbl := NewTable(Columns{})
+		tbl.Quiet = quiet
+
 		context := transfer.PublicApiContext{
 			Endpoint: env.GetString("public_api_endpoint", "api-public.jetrails.com"),
 			Debug:    env.GetBool("debug", false),
@@ -63,15 +58,19 @@ var transferReceiveCmd = &cobra.Command{
 			Password:   password,
 		}
 		response, err := transfer.Receive(context, request)
+
 		if err != nil && err.Code != 200 {
-			if !quiet {
-				fmt.Printf("\n%s\n\n", err.Message)
+			generic := api.GenericResponse{
+				Code:     err.Code,
+				Status:   err.Type,
+				Messages: []string{err.Message},
 			}
-			os.Exit(1)
+			tbl.PrintDivider()
+			tbl.PrintResponse(&generic)
+			tbl.PrintDivider()
+			tbl.ExitCodeFromResponse(&generic)
 		}
-		force, _ := cmd.Flags().GetBool("force")
-		outDir, _ := cmd.Flags().GetString("out-dir")
-		name, _ := cmd.Flags().GetString("name")
+
 		if strings.TrimSpace(outDir) == "" {
 			outDir = "."
 		}
@@ -80,22 +79,16 @@ var transferReceiveCmd = &cobra.Command{
 		}
 		filepath := path.Join(outDir, name)
 		os.MkdirAll(outDir, 0755)
-		if !quiet {
-			fmt.Println()
-		}
+
 		if _, err := os.Stat(filepath); err == nil {
-			if !force && (quiet || !input.PromptYesNo("File already exists, overwrite")) {
-				if !quiet {
-					fmt.Printf("Skipping, did not write file to disk\n\n")
-				}
-				os.Exit(1)
+			if !force && (quiet || !input.PromptYesNo("\nfile already exists, overwrite")) {
+				tbl.ExitWithMessage(3, "\nskipping, did not write file to disk\n")
 			}
 		}
 		if err := ioutil.WriteFile(filepath, response.Bytes, 0644); err == nil && !quiet {
-			fmt.Printf("Downloaded file to %q\n\n", filepath)
+			tbl.ExitWithMessage(0, "\ndownloaded file to %q\n", filepath)
 		} else if !quiet {
-			fmt.Printf("Failed to write data to %q\n\n", filepath)
-			os.Exit(1)
+			tbl.ExitWithMessage(4, "\nfailed to write data to %q\n", filepath)
 		}
 	},
 }

@@ -1,22 +1,22 @@
 package internal
 
 import (
-	"fmt"
 	"strings"
 
-	"github.com/jetrails/jrctl/pkg/array"
+	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/service"
 	"github.com/spf13/cobra"
 )
 
 var serviceRestartCmd = &cobra.Command{
 	Use:   "restart SERVICE...",
 	Args:  cobra.MinimumNArgs(1),
-	Short: "Restart specified service(s) running on configured server(s)",
+	Short: "Restart specified services in deployment",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
-			"Restart specified service(s) running on configured server(s).",
+			"Restart specified services in deployment.",
 			"In order to successfully restart a service, the server first validates the respected service's config file.",
 			"Once deemed valid, the service is restarted.",
 			"Services can be repeated and execution will happen in the order that is given.",
@@ -29,48 +29,51 @@ var serviceRestartCmd = &cobra.Command{
 		"jrctl service restart nginx varnish php-fpm",
 		"jrctl service restart nginx varnish php-fpm-7.2 nginx",
 	}),
-	RunE: func(cmd *cobra.Command, args []string) error {
-		validServices := server.CollectServices()
-		for _, arg := range args {
-			if !array.ContainsString(validServices, arg) {
-				return fmt.Errorf(
-					"%q is not found, available services include: %v",
-					arg, "\""+strings.Join(validServices, "\", \"")+"\"",
-				)
-			}
-		}
-		cmd.Run(cmd, args)
-		return nil
-	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		rows := [][]string{{"Server", "Service", "Response"}}
-		selectors, _ := cmd.Flags().GetStringSlice("type")
+		tags, _ := cmd.Flags().GetStringArray("type")
+
+		output := NewOutput(quiet, tags)
+		output.DisplayServers = false
+		output.FailOnNoServers = true
+		output.FailOnNoResults = true
+		output.ExitCodeNoServers = 1
+		output.ExitCodeNoResults = 2
+
+		tbl := NewTable(Columns{
+			"Server",
+			"Service",
+			"Response",
+		})
+
 		for _, arg := range args {
-			runner := func(index, total int, context server.Context) {
-				data := server.RestartRequest{Service: arg}
-				response := server.Restart(context, data)
-				row := []string{
-					strings.TrimSuffix(context.Endpoint, ":27482"),
-					arg,
-					response.Messages[0],
+			for _, context := range server.GetContexts(tags) {
+				listResponse := service.ListServices(context)
+				if _, hasService := listResponse.Payload[arg]; hasService {
+					request := service.RestartRequest{Service: arg}
+					response := service.Restart(context, request)
+					output.AddUniqueServer(
+						context,
+						listResponse.GetGeneric(),
+						listResponse.Messages[0],
+					)
+					tbl.AddRow(Columns{
+						strings.TrimSuffix(context.Endpoint, ":27482"),
+						arg,
+						response.Messages[0],
+					})
 				}
-				rows = append(rows, row)
 			}
-			server.FiltersWithServiceForEach(selectors, arg, runner)
 		}
-		if !quiet {
-			if len(rows) > 1 {
-				fmt.Printf("\nExecuted only on %q server(s):\n", text.QuotedList(selectors))
-			}
-			text.TablePrint(fmt.Sprintf("Specified service(s) not running on %q server(s).", text.QuotedList(selectors)), rows, 1)
-		}
+
+		output.AddTable(tbl)
+		output.Print()
 	},
 }
 
 func init() {
 	serviceCmd.AddCommand(serviceRestartCmd)
 	serviceRestartCmd.Flags().SortFlags = true
-	serviceRestartCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
-	serviceRestartCmd.Flags().StringSliceP("type", "t", []string{"localhost"}, "specify server type(s), useful for cluster")
+	serviceRestartCmd.Flags().BoolP("quiet", "q", false, "display no output")
+	serviceRestartCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
 }
