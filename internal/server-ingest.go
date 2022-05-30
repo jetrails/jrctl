@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -24,11 +25,18 @@ var serverIngestCmd = &cobra.Command{
 		"echo -n TOKEN | jrctl server ingest -t jump -e 10.10.10.7",
 		"echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f",
 	}),
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		if !input.HasDataInPipe() {
+			return errors.New("must pipe token to stdin")
+		}
+		return nil
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tags, _ := cmd.Flags().GetStringSlice("type")
 		force, _ := cmd.Flags().GetBool("force")
 		endpoint, _ := cmd.Flags().GetString("endpoint")
+		tokenValue := input.GetPipeData()
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = false
@@ -38,13 +46,6 @@ var serverIngestCmd = &cobra.Command{
 			"Type(s)",
 			"Action",
 		})
-
-		var tokenValue string = ""
-		if input.HasDataInPipe() {
-			tokenValue = input.GetPipeData()
-		} else {
-			output.ExitWithMessage(3, "\nmust pipe token to stdin, see help for an example\n")
-		}
 
 		savedServers := []server.Entry{}
 		if err := viper.UnmarshalKey("servers", &savedServers); err != nil {
@@ -74,7 +75,7 @@ var serverIngestCmd = &cobra.Command{
 			})
 		}
 
-		if len(tbl.Rows) > 0 {
+		if !tbl.IsEmpty() {
 			if data, err := ioutil.ReadFile(viper.ConfigFileUsed()); err == nil {
 				var c interface{}
 				if err = yaml.Unmarshal([]byte(data), &c); err == nil {
@@ -106,7 +107,7 @@ var serverIngestCmd = &cobra.Command{
 func init() {
 	serverCmd.AddCommand(serverIngestCmd)
 	serverIngestCmd.Flags().SortFlags = true
-	serverIngestCmd.Flags().BoolP("quiet", "q", false, "output as little information as possible")
+	serverIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")
 	serverIngestCmd.Flags().StringSliceP("type", "t", []string{}, "filter servers using type selectors, all must match")
 	serverIngestCmd.Flags().BoolP("force", "f", false, "create new entry even if matching entries exist")
 	serverIngestCmd.Flags().StringP("endpoint", "e", "127.0.0.1:27482", "server endpoint used for new entries only")

@@ -17,6 +17,7 @@ type Output struct {
 	Responses         []*Table
 	Tags              []string
 	Quiet             bool
+	DisplayTags       bool
 	DisplayServers    bool
 	FailOnNoServers   bool
 	FailOnNoResults   bool
@@ -39,6 +40,7 @@ func NewOutput(quiet bool, tags []string) *Output {
 		Responses:         []*Table{},
 		Tags:              tags,
 		Quiet:             quiet,
+		DisplayTags:       true,
 		DisplayServers:    false,
 		FailOnNoServers:   false,
 		FailOnNoResults:   false,
@@ -139,7 +141,7 @@ func (o *Output) GetTagsString() string {
 }
 
 func (o *Output) PrintTags() {
-	if !o.Quiet {
+	if !o.Quiet && o.DisplayTags {
 		fmt.Print(o.GetDivider())
 		fmt.Printf("Filtering servers that match the following type(s): ")
 		fmt.Printf(o.GetTagsString())

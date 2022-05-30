@@ -1,30 +1,34 @@
 package server
 
 import (
-	"fmt"
 	"strings"
-
-	"crypto/sha256"
 
 	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/spf13/viper"
 )
 
-func Filter(contexts []Context, filters []string) []Context {
-	var filtered []Context
+func ContextsHaveSameToken(contexts []Context) bool {
+	seen := ""
 	for _, context := range contexts {
-		found := 0
-		for _, filter := range filters {
-			if array.ContainsString(context.Types, filter) {
-				found++
+		if seen == "" {
+			seen = context.Token
+		} else {
+			if context.Token != seen {
+				return false
 			}
 		}
-		if found == len(filters) {
-			filtered = append(filtered, context)
+	}
+	return true
+}
+
+func ContextsHaveSomeEndpoint(contexts []Context, endpoints []string) bool {
+	for _, context := range contexts {
+		if array.ContainsString(endpoints, context.Endpoint) {
+			return true
 		}
 	}
-	return filtered
+	return false
 }
 
 func LoadContexts() []Context {
@@ -70,28 +74,4 @@ func GetContexts(filters []string) []Context {
 		}
 	}
 	return results
-}
-
-func ForEach(Runner func(int, int, Context)) int {
-	contexts := LoadContexts()
-	total := len(contexts)
-	for index, context := range contexts {
-		Runner(index, total, context)
-	}
-	return total
-}
-
-func FilterForEach(filters []string, Runner func(int, int, Context)) int {
-	contexts := Filter(LoadContexts(), filters)
-	total := len(contexts)
-	for index, context := range contexts {
-		Runner(index, total, context)
-	}
-	return total
-}
-
-func (c Context) Hash() string {
-	hash := sha256.New()
-	hash.Write([]byte(fmt.Sprintf("%v", c)))
-	return fmt.Sprintf("%x", hash.Sum(nil))[0:8]
 }
