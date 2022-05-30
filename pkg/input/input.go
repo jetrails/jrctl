@@ -36,7 +36,7 @@ func PromptYesNo(prompt string) bool {
 }
 
 func PromptContent(prompt string) string {
-	if value, err := getInputFromEditor(); err == nil {
+	if value, err := GetInputFromEditor(); err == nil {
 		return value
 	}
 	saveScreen()
@@ -54,7 +54,7 @@ func PromptContent(prompt string) string {
 	return strings.TrimSpace(input)
 }
 
-func openFileInEditor(filename string) error {
+func OpenFileInEditor(filename string) error {
 	if editor := os.Getenv("EDITOR"); editor != "" {
 		if executable, err := exec.LookPath(editor); err == nil {
 			cmd := exec.Command(executable, filename)
@@ -70,7 +70,7 @@ func openFileInEditor(filename string) error {
 	}
 }
 
-func getInputFromEditor() (string, error) {
+func GetInputFromEditor() (string, error) {
 	file, err := ioutil.TempFile(os.TempDir(), "*")
 	if err != nil {
 		return "", err
@@ -80,7 +80,7 @@ func getInputFromEditor() (string, error) {
 	if err = file.Close(); err != nil {
 		return "", err
 	}
-	if err = openFileInEditor(filename); err != nil {
+	if err = OpenFileInEditor(filename); err != nil {
 		return "", err
 	}
 	bytes, err := ioutil.ReadFile(filename)
