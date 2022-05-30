@@ -7,11 +7,12 @@ import (
 	"time"
 
 	"github.com/jetrails/jrctl/sdk/api"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
-func Version(context Context) VersionResponse {
+func Version(context config.Context) VersionResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -35,7 +36,7 @@ func Version(context Context) VersionResponse {
 	return response
 }
 
-func TokenInfo(context Context) TokenResponse {
+func TokenInfo(context config.Context) TokenResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})

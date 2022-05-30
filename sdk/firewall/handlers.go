@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/jetrails/jrctl/sdk/api"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
-func List(context server.Context) ListResponse {
+func List(context config.Context) ListResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -36,7 +36,7 @@ func List(context server.Context) ListResponse {
 	return response
 }
 
-func Allow(context server.Context, data AllowRequest) AllowResponse {
+func Allow(context config.Context, data AllowRequest) AllowResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -59,7 +59,7 @@ func Allow(context server.Context, data AllowRequest) AllowResponse {
 	return response
 }
 
-func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
+func UnAllow(context config.Context, data UnAllowRequest) UnAllowResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -82,7 +82,7 @@ func UnAllow(context server.Context, data UnAllowRequest) UnAllowResponse {
 	return response
 }
 
-func Deny(context server.Context, data DenyRequest) DenyResponse {
+func Deny(context config.Context, data DenyRequest) DenyResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -105,7 +105,7 @@ func Deny(context server.Context, data DenyRequest) DenyResponse {
 	return response
 }
 
-func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
+func UnDeny(context config.Context, data UnDenyRequest) UnDenyResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -128,7 +128,7 @@ func UnDeny(context server.Context, data UnDenyRequest) UnDenyResponse {
 	return response
 }
 
-func AllowCloudflare(context server.Context) AllowCloudflareResponse {
+func AllowCloudflare(context config.Context) AllowCloudflareResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -156,7 +156,7 @@ func AllowCloudflare(context server.Context) AllowCloudflareResponse {
 	return response
 }
 
-func UnAllowCloudflare(context server.Context) UnAllowCloudflareResponse {
+func UnAllowCloudflare(context config.Context) UnAllowCloudflareResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})

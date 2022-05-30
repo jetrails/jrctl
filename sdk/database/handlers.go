@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/jetrails/jrctl/sdk/api"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
-func ListDatabases(context server.Context) ListDatabasesResponse {
+func ListDatabases(context config.Context) ListDatabasesResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -36,7 +36,7 @@ func ListDatabases(context server.Context) ListDatabasesResponse {
 	return response
 }
 
-func ListUsers(context server.Context) ListUsersResponse {
+func ListUsers(context config.Context) ListUsersResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -60,7 +60,7 @@ func ListUsers(context server.Context) ListUsersResponse {
 	return response
 }
 
-func Create(context server.Context, data CreateRequest) CreateResponse {
+func Create(context config.Context, data CreateRequest) CreateResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -83,7 +83,7 @@ func Create(context server.Context, data CreateRequest) CreateResponse {
 	return response
 }
 
-func Delete(context server.Context, data DeleteRequest) DeleteResponse {
+func Delete(context config.Context, data DeleteRequest) DeleteResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -106,7 +106,7 @@ func Delete(context server.Context, data DeleteRequest) DeleteResponse {
 	return response
 }
 
-func UserCreate(context server.Context, data UserCreateRequest) UserCreateResponse {
+func UserCreate(context config.Context, data UserCreateRequest) UserCreateResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -129,7 +129,7 @@ func UserCreate(context server.Context, data UserCreateRequest) UserCreateRespon
 	return response
 }
 
-func UserDelete(context server.Context, data UserDeleteRequest) UserDeleteResponse {
+func UserDelete(context config.Context, data UserDeleteRequest) UserDeleteResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -152,7 +152,7 @@ func UserDelete(context server.Context, data UserDeleteRequest) UserDeleteRespon
 	return response
 }
 
-func UserPassword(context server.Context, data UserPasswordRequest) UserPasswordResponse {
+func UserPassword(context config.Context, data UserPasswordRequest) UserPasswordResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -175,7 +175,7 @@ func UserPassword(context server.Context, data UserPasswordRequest) UserPassword
 	return response
 }
 
-func Link(context server.Context, data LinkRequest) LinkResponse {
+func Link(context config.Context, data LinkRequest) LinkResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -198,7 +198,7 @@ func Link(context server.Context, data LinkRequest) LinkResponse {
 	return response
 }
 
-func Unlink(context server.Context, data UnlinkRequest) UnlinkResponse {
+func Unlink(context config.Context, data UnlinkRequest) UnlinkResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})

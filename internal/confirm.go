@@ -7,8 +7,8 @@ import (
 	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/confirm"
-	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
 )
 
@@ -47,7 +47,7 @@ var confirmCmd = &cobra.Command{
 		identifier := input.GetFirstArgumentOrPipe(args)
 
 		output := NewOutput(quiet, tags)
-		contexts := server.GetContexts(tags)
+		contexts := config.GetContexts(tags)
 
 		output.PrintTags()
 		output.PrintDivider()

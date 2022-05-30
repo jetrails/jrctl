@@ -9,7 +9,7 @@ import (
 	"github.com/jetrails/jrctl/pkg/color"
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/jetrails/jrctl/pkg/text"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -40,7 +40,7 @@ func initConfig() {
 	viper.AddConfigPath("$HOME/.jrctl")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.SetDefault("servers", []server.Entry{
+	viper.SetDefault("servers", []config.Entry{
 		{
 			Endpoint: "127.0.0.1:27482",
 			Token:    "REPLACE_WITH_AUTH_TOKEN",

@@ -6,8 +6,8 @@ import (
 
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/firewall"
-	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
 )
 
@@ -45,7 +45,7 @@ var firewallListCmd = &cobra.Command{
 		output.ExitCodeNoServers = 1
 		output.ExitCodeNoResults = 2
 
-		for _, context := range server.GetContexts(tags) {
+		for _, context := range config.GetContexts(tags) {
 			response := firewall.List(context)
 			output.Servers.AddQuietEntry(
 				fmt.Sprintf("%d", len(response.Payload)),

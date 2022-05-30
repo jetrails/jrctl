@@ -20,7 +20,7 @@ echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f
   -e, --endpoint string   server endpoint used for new entries only (default "127.0.0.1:27482")
   -f, --force             create new entry even if matching entries exist
   -h, --help              help for ingest
-  -q, --quiet             output as little information as possible
+  -q, --quiet             output only errors
   -t, --type strings      filter servers using type selectors, all must match
 ```
 

@@ -5,8 +5,8 @@ import (
 
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/firewall"
-	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
 )
 
@@ -52,7 +52,7 @@ var firewallAllowCmd = &cobra.Command{
 		output.FailOnNoServers = true
 		output.ExitCodeNoServers = 1
 
-		for _, context := range server.GetContexts(tags) {
+		for _, context := range config.GetContexts(tags) {
 			for _, address := range addresses {
 				request := firewall.AllowRequest{
 					Address:  address,

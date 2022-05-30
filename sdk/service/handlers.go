@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/jetrails/jrctl/sdk/api"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
-func ListServices(context server.Context) ListServicesResponse {
+func ListServices(context config.Context) ListServicesResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -36,7 +36,7 @@ func ListServices(context server.Context) ListServicesResponse {
 	return response
 }
 
-func Restart(context server.Context, data RestartRequest) RestartResponse {
+func Restart(context config.Context, data RestartRequest) RestartResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -59,7 +59,7 @@ func Restart(context server.Context, data RestartRequest) RestartResponse {
 	return response
 }
 
-func Reload(context server.Context, data ReloadRequest) ReloadResponse {
+func Reload(context config.Context, data ReloadRequest) ReloadResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -82,7 +82,7 @@ func Reload(context server.Context, data ReloadRequest) ReloadResponse {
 	return response
 }
 
-func Enable(context server.Context, data EnableRequest) EnableResponse {
+func Enable(context config.Context, data EnableRequest) EnableResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
@@ -105,7 +105,7 @@ func Enable(context server.Context, data EnableRequest) EnableResponse {
 	return response
 }
 
-func Disable(context server.Context, data DisableRequest) DisableResponse {
+func Disable(context config.Context, data DisableRequest) DisableResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})

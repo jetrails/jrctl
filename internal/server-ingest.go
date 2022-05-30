@@ -2,19 +2,15 @@ package internal
 
 import (
 	"errors"
-	"fmt"
-	"io/ioutil"
-	"os"
 	"strings"
 
 	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"gopkg.in/yaml.v3"
 )
 
 var serverIngestCmd = &cobra.Command{
@@ -47,7 +43,7 @@ var serverIngestCmd = &cobra.Command{
 			"Action",
 		})
 
-		savedServers := []server.Entry{}
+		savedServers := []config.Entry{}
 		if err := viper.UnmarshalKey("servers", &savedServers); err != nil {
 			output.ExitWithMessage(4, "\nfailed to parse current config file\n")
 		}
@@ -62,7 +58,7 @@ var serverIngestCmd = &cobra.Command{
 			}
 		}
 		if force {
-			createdEntry := server.Entry{
+			createdEntry := config.Entry{
 				Endpoint: endpoint,
 				Token:    tokenValue,
 				Types:    tags,
@@ -76,31 +72,13 @@ var serverIngestCmd = &cobra.Command{
 		}
 
 		if !tbl.IsEmpty() {
-			if data, err := ioutil.ReadFile(viper.ConfigFileUsed()); err == nil {
-				var c interface{}
-				if err = yaml.Unmarshal([]byte(data), &c); err == nil {
-					if _, ok := c.(map[string]interface{})["servers"].([]interface{}); ok {
-						c.(map[string]interface{})["servers"] = savedServers
-						if d, err := yaml.Marshal(&c); err == nil {
-							if file, err := os.OpenFile(viper.ConfigFileUsed(), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0600); err == nil {
-								defer file.Close()
-								file.Write(d)
-								if !quiet {
-									fmt.Printf("\nIngested token for server(s) with type(s) \"%s\"\n", strings.Join(tags, "\", \""))
-								}
-								output.AddTable(tbl)
-								output.Print()
-								os.Exit(0)
-							}
-						}
-					}
-				}
-			}
+			viper.Set("servers", savedServers)
+			viper.WriteConfig()
+			output.AddTable(tbl)
+			output.Print()
 		} else {
 			output.ExitWithMessage(1, "\ncould not find any matching servers\n")
 		}
-
-		output.ExitWithMessage(6, "\ncould not altered config file\n")
 	},
 }
 

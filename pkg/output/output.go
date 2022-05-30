@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/jetrails/jrctl/sdk/api"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 )
 
 var ErrMsgNoServers = "No matching servers"
@@ -51,7 +51,7 @@ func NewOutput(quiet bool, tags []string) *Output {
 	}
 }
 
-func (o *Output) AddServer(context server.Context, response *api.GenericResponse, message string) {
+func (o *Output) AddServer(context config.Context, response *api.GenericResponse, message string) {
 	o.Servers.AddRow(Columns{
 		response.Metadata["hostname"],
 		strings.TrimSuffix(context.Endpoint, ":27482"),
@@ -60,7 +60,7 @@ func (o *Output) AddServer(context server.Context, response *api.GenericResponse
 	})
 }
 
-func (o *Output) AddUniqueServer(context server.Context, response *api.GenericResponse, message string) {
+func (o *Output) AddUniqueServer(context config.Context, response *api.GenericResponse, message string) {
 	for _, server := range o.Servers.Rows {
 		if server[1] == strings.TrimSuffix(context.Endpoint, ":27482") {
 			return

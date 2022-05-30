@@ -6,8 +6,8 @@ import (
 
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/database"
-	"github.com/jetrails/jrctl/sdk/server"
 	"github.com/spf13/cobra"
 )
 
@@ -36,7 +36,7 @@ var databaseListCmd = &cobra.Command{
 			"User(s)",
 		})
 
-		for _, context := range server.GetContexts(tags) {
+		for _, context := range config.GetContexts(tags) {
 			response := database.ListDatabases(context)
 			output.AddServer(
 				context,

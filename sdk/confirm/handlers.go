@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/jetrails/jrctl/sdk/api"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
 	"github.com/parnurzeal/gorequest"
 )
 
-func Confirm(context server.Context, data ConfirmRequest) ConfirmResponse {
+func Confirm(context config.Context, data ConfirmRequest) ConfirmResponse {
 	var request = gorequest.New()
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})

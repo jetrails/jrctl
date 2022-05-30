@@ -9,7 +9,7 @@ import (
 	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -51,16 +51,16 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 			output.ExitWithMessage(3, "\nmust pass at least one endpoint\n")
 		}
 
-		contexts := server.GetContexts(tags)
-		servers := []server.Entry{}
+		contexts := config.GetContexts(tags)
+		servers := []config.Entry{}
 		viper.UnmarshalKey("servers", &servers)
 
-		if !server.ContextsHaveSameToken(contexts) {
+		if !config.ContextsHaveSameToken(contexts) {
 			output.PrintTags()
 			output.ExitWithMessage(4, "\nfound differing tokens, autoscale requires same tokens\n")
 		}
 
-		if !server.ContextsHaveSomeEndpoint(contexts, endpoints) {
+		if !config.ContextsHaveSomeEndpoint(contexts, endpoints) {
 			output.PrintTags()
 			output.ExitWithMessage(4, "\nmatched servers do not have any of the passed endpoints\n")
 		}
@@ -77,7 +77,7 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 				action = "Skipped"
 			} else {
 				action = "Deleted"
-				filtered := []server.Entry{}
+				filtered := []config.Entry{}
 				for _, s := range servers {
 					if s.Endpoint != context.Endpoint {
 						filtered = append(filtered, s)
@@ -93,13 +93,13 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 		}
 
 		for _, endpoint := range endpoints {
-			if !server.ContextsHaveSomeEndpoint(contexts, []string{endpoint}) {
+			if !config.ContextsHaveSomeEndpoint(contexts, []string{endpoint}) {
 				tbl.AddRow(Columns{
 					endpoint,
 					"Created",
 					strings.Join(tags, ", "),
 				})
-				entry := server.Entry{
+				entry := config.Entry{
 					Endpoint: endpoint,
 					Token:    contexts[0].Token,
 					Types:    tags,

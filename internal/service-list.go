@@ -4,7 +4,7 @@ import (
 	"github.com/jetrails/jrctl/pkg/array"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
-	"github.com/jetrails/jrctl/sdk/server"
+	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/service"
 	"github.com/spf13/cobra"
 )
@@ -53,7 +53,7 @@ var serviceListCmd = &cobra.Command{
 			false: " ",
 		}
 
-		for _, context := range server.GetContexts(tags) {
+		for _, context := range config.GetContexts(tags) {
 			response := service.ListServices(context)
 			output.AddServer(
 				context,
