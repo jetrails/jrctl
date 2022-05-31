@@ -64,7 +64,7 @@ var firewallDenyCmd = &cobra.Command{
 				output.AddServer(
 					context,
 					response.GetGeneric(),
-					response.Messages[0],
+					response.GetFirstMessage(),
 				)
 			}
 		}

@@ -19,7 +19,7 @@ var databaseUserListCmd = &cobra.Command{
 		tags, _ := cmd.Flags().GetStringArray("type")
 
 		output := NewOutput(quiet, tags)
-		output.DisplayServers = false
+		output.DisplayServers = true
 		output.FailOnNoServers = true
 		output.FailOnNoResults = true
 		output.ExitCodeNoServers = 1
@@ -36,7 +36,7 @@ var databaseUserListCmd = &cobra.Command{
 			output.AddServer(
 				context,
 				response.GetGeneric(),
-				response.Status,
+				response.GetFirstMessage(),
 			)
 			for _, entry := range response.Payload {
 				tbl.AddQuietEntry(entry.Name + "@" + entry.From)

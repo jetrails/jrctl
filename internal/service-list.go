@@ -58,7 +58,7 @@ var serviceListCmd = &cobra.Command{
 			output.AddServer(
 				context,
 				response.GetGeneric(),
-				response.Messages[0],
+				response.GetFirstMessage(),
 			)
 			for serviceName, properties := range response.Payload {
 				if len(serviceSelectors) == 0 || array.ContainsString(serviceSelectors, serviceName) {

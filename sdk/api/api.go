@@ -20,6 +20,13 @@ func (res *GenericResponse) IsOkay() bool {
 	return res.Code == 200
 }
 
+func (res *GenericResponse) GetFirstMessage() string {
+	if len(res.Messages) > 0 {
+		return res.Messages[0]
+	}
+	return ""
+}
+
 func NewClientError() GenericResponse {
 	return GenericResponse{
 		Status:   "Client-Side Error",

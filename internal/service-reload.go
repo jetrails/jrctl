@@ -56,12 +56,12 @@ var serviceReloadCmd = &cobra.Command{
 					output.AddUniqueServer(
 						context,
 						listResponse.GetGeneric(),
-						listResponse.Messages[0],
+						listResponse.GetFirstMessage(),
 					)
 					tbl.AddRow(Columns{
 						strings.TrimSuffix(context.Endpoint, ":27482"),
 						arg,
-						response.Messages[0],
+						response.GetFirstMessage(),
 					})
 				}
 			}
