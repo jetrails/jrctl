@@ -58,6 +58,7 @@ var databaseUserCreateCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnNonAWS(databaseUserCreateCmd)
 	databaseUserCmd.AddCommand(databaseUserCreateCmd)
 	databaseUserCreateCmd.Flags().SortFlags = true
 	databaseUserCreateCmd.Flags().BoolP("quiet", "q", false, "only display password")

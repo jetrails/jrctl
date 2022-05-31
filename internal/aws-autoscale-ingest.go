@@ -116,6 +116,7 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnAWS(awsAutoscaleIngestCmd)
 	awsCmd.AddCommand(awsAutoscaleIngestCmd)
 	awsAutoscaleIngestCmd.Flags().SortFlags = true
 	awsAutoscaleIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")

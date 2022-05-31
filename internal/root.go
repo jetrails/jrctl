@@ -1,19 +1,25 @@
 package internal
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/user"
 	"path"
+	"time"
 
+	"github.com/jetrails/jrctl/pkg/cache"
 	"github.com/jetrails/jrctl/pkg/color"
 	"github.com/jetrails/jrctl/pkg/env"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/config"
 	"github.com/jetrails/jrctl/sdk/version"
+	"github.com/parnurzeal/gorequest"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
+
+var IsAWS = determineIfRunningOnAWS()
 
 var RootCmd = &cobra.Command{
 	Use:     "jrctl",
@@ -27,13 +33,48 @@ var RootCmd = &cobra.Command{
 	DisableAutoGenTag: true,
 }
 
-func init() {
-	RootCmd.SetHelpCommand(&cobra.Command{
-		Use:    "no-help",
-		Hidden: true,
-	})
-	RootCmd.Flags().SortFlags = true
-	cobra.OnInitialize(initConfig)
+func determineIfRunningOnAWS() bool {
+	if bytes, err := cache.Get("is-aws"); err == nil {
+		return string(bytes) == "yes"
+	}
+	ttl := int64(60 * 60 * 24 * 365)
+	var request = gorequest.New()
+	response, _, errs := request.
+		Timeout(time.Second).
+		Head("http://169.254.169.254").
+		End()
+	if len(errs) > 0 || response == nil || response.StatusCode != 200 {
+		cache.Set("is-aws", []byte("no"), ttl)
+		return false
+	}
+	cache.Set("is-aws", []byte("yes"), ttl)
+	return true
+}
+
+func OnlyRunOnAWS(cmd *cobra.Command) {
+	if !env.GetBool("platform_restrictions", true) {
+		return
+	}
+	if !IsAWS {
+		cmd.Hidden = true
+		cmd.Run = func(cmd *cobra.Command, args []string) {}
+		cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
+			return errors.New("can only run this command in an AWS environment")
+		}
+	}
+}
+
+func OnlyRunOnNonAWS(cmd *cobra.Command) {
+	if !env.GetBool("platform_restrictions", true) {
+		return
+	}
+	if IsAWS {
+		cmd.Hidden = true
+		cmd.Run = func(cmd *cobra.Command, args []string) {}
+		cmd.PreRunE = func(cmd *cobra.Command, args []string) error {
+			return errors.New("cannot run this command in an AWS environment")
+		}
+	}
 }
 
 func initConfig() {
@@ -54,11 +95,20 @@ func initConfig() {
 	viper.ReadInConfig()
 	if env.GetBool("debug", false) {
 		fmt.Println("---")
-		fmt.Printf("%s: %v\n", color.CyanString("config"), viper.ConfigFileUsed())
 		fmt.Printf("%s: %v\n", color.CyanString("debug"), env.GetBool("debug", false))
 		fmt.Printf("%s: %v\n", color.CyanString("insecure"), env.GetBool("insecure", false))
 		fmt.Printf("%s: %v\n", color.CyanString("public_api_endpoint"), env.GetString("public_api_endpoint", "api-public.jetrails.com"))
 		fmt.Printf("%s: %v\n", color.CyanString("secret_endpoint"), env.GetString("secret_endpoint", "secret.jetrails.com"))
+		fmt.Printf("%s: %v\n", color.CyanString("platform_restrictions"), env.GetBool("platform_restrictions", true))
 		fmt.Println("---")
 	}
+}
+
+func init() {
+	RootCmd.SetHelpCommand(&cobra.Command{
+		Use:    "no-help",
+		Hidden: true,
+	})
+	RootCmd.Flags().SortFlags = true
+	cobra.OnInitialize(initConfig)
 }

@@ -65,6 +65,7 @@ var databaseUserListCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnNonAWS(databaseUserListCmd)
 	databaseUserCmd.AddCommand(databaseUserListCmd)
 	databaseUserListCmd.Flags().SortFlags = true
 	databaseUserListCmd.Flags().BoolP("quiet", "q", false, "only display database user names")

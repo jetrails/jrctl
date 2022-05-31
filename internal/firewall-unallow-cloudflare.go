@@ -45,6 +45,7 @@ var firewallUnAllowCloudflareCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnNonAWS(firewallUnAllowCloudflareCmd)
 	firewallUnAllowCmd.AddCommand(firewallUnAllowCloudflareCmd)
 	firewallUnAllowCloudflareCmd.Flags().SortFlags = true
 	firewallUnAllowCloudflareCmd.Flags().BoolP("quiet", "q", false, "display no output")

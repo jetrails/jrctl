@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-var EnvPrefix = ""
+var EnvPrefix = "JR_"
 
 func normalizeKey(key string) string {
 	return EnvPrefix + strings.TrimSpace(strings.ToUpper(key))

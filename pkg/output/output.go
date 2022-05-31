@@ -158,7 +158,7 @@ func (o *Output) Print() {
 	}
 	fmt.Print(o.GetString())
 	if o.FailOnNoResults && o.IsResultsEmpty() && len(o.ErrMsgNoResults) > 0 {
-		if o.Servers.IsEmpty() {
+		if o.Servers.IsEmpty() && o.DisplayServers {
 			fmt.Print(divider)
 		}
 		o.ExitWithMessage(o.ExitCodeNoResults, strings.Join(o.ErrMsgNoResults, divider)+divider)

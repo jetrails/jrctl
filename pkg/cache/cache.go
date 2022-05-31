@@ -79,7 +79,7 @@ func init() {
 	if dir, err := os.UserCacheDir(); err == nil {
 		UserCacheDir = path.Join(dir, ProgramName)
 		if _, err := os.Stat(UserCacheDir); os.IsNotExist(err) {
-			os.Mkdir(UserCacheDir, 0700)
+			os.MkdirAll(UserCacheDir, 0700)
 		}
 	}
 }

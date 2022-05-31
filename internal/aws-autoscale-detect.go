@@ -51,7 +51,7 @@ var awsAutoscaleDetectCmd = &cobra.Command{
 		output.DisplayServers = false
 		output.FailOnNoResults = true
 		output.ExitCodeNoResults = 2
-		output.ErrMsgNoResults = Lines{"could not file autoscaling group with that name"}
+		output.ErrMsgNoResults = Lines{"could not find autoscaling group with that name"}
 
 		tbl := output.CreateTable(Columns{
 			"Instance ID",
@@ -116,6 +116,7 @@ var awsAutoscaleDetectCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnAWS(awsAutoscaleDetectCmd)
 	awsCmd.AddCommand(awsAutoscaleDetectCmd)
 	awsAutoscaleDetectCmd.Flags().SortFlags = true
 	awsAutoscaleDetectCmd.Flags().BoolP("quiet", "q", false, "display only private ip address")

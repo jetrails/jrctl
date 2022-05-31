@@ -82,6 +82,7 @@ var firewallListCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnNonAWS(firewallListCmd)
 	firewallCmd.AddCommand(firewallListCmd)
 	firewallListCmd.Flags().SortFlags = true
 	firewallListCmd.Flags().BoolP("quiet", "q", false, "display number of entries found for each matching server")

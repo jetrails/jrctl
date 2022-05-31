@@ -74,6 +74,7 @@ var firewallAllowCmd = &cobra.Command{
 }
 
 func init() {
+	OnlyRunOnNonAWS(firewallAllowCmd)
 	firewallCmd.AddCommand(firewallAllowCmd)
 	firewallAllowCmd.Flags().SortFlags = true
 	firewallAllowCmd.Flags().BoolP("quiet", "q", false, "display no input")

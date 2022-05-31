@@ -30,6 +30,7 @@ func ResolveAddressInput(file, address string, addressChanged bool) []string {
 }
 
 func init() {
+	OnlyRunOnNonAWS(firewallCmd)
 	RootCmd.AddCommand(firewallCmd)
 	firewallCmd.Flags().SortFlags = true
 }
