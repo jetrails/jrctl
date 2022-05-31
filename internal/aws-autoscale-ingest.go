@@ -60,11 +60,6 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 			output.ExitWithMessage(4, "\nfound differing tokens, autoscale requires same tokens\n")
 		}
 
-		if !config.ContextsHaveSomeEndpoint(contexts, endpoints) {
-			output.PrintTags()
-			output.ExitWithMessage(4, "\nmatched servers do not have any of the passed endpoints\n")
-		}
-
 		tbl := output.CreateTable(Columns{
 			"Endpoint",
 			"Action",
