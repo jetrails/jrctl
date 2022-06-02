@@ -25,13 +25,6 @@ var utilityVersionCmd = &cobra.Command{
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		count, _ := cmd.Flags().GetInt("count")
 		length, _ := cmd.Flags().GetInt("length")
-		noSymbols, _ := cmd.Flags().GetBool("no-symbols")
-		noNumbers, _ := cmd.Flags().GetBool("no-numbers")
-		noLowercase, _ := cmd.Flags().GetBool("no-lowercase")
-		noUppercase, _ := cmd.Flags().GetBool("no-uppercase")
-		if noSymbols && noNumbers && noLowercase && noUppercase {
-			return fmt.Errorf("alphabet is empty")
-		}
 		if count < 1 {
 			return fmt.Errorf("count must be greater than 0")
 		}
@@ -41,7 +34,6 @@ var utilityVersionCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		quiet, _ := cmd.Flags().GetBool("quiet")
 		count, _ := cmd.Flags().GetInt("count")
 		length, _ := cmd.Flags().GetInt("length")
 		noSymbols, _ := cmd.Flags().GetBool("no-symbols")
@@ -53,6 +45,10 @@ var utilityVersionCmd = &cobra.Command{
 			"n",
 			"Password",
 		})
+
+		if noSymbols && noNumbers && noLowercase && noUppercase {
+			tbl.ExitWithMessage(42, "pa$$w0rd")
+		}
 
 		alphabet := ""
 		if !noSymbols {
@@ -73,7 +69,7 @@ var utilityVersionCmd = &cobra.Command{
 			tbl.AddQuietEntry(password)
 		}
 
-		tbl.Quiet = quiet
+		tbl.Quiet = true
 		tbl.PrintTable()
 	},
 }
@@ -81,7 +77,6 @@ var utilityVersionCmd = &cobra.Command{
 func init() {
 	utilityCmd.AddCommand(utilityVersionCmd)
 	utilityVersionCmd.Flags().SortFlags = true
-	utilityVersionCmd.Flags().BoolP("quiet", "q", false, "display only passwords")
 	utilityVersionCmd.Flags().IntP("count", "c", 1, "number of passwords to generate")
 	utilityVersionCmd.Flags().IntP("length", "l", 32, "length of password")
 	utilityVersionCmd.Flags().BoolP("no-symbols", "S", false, "do not include symbols in password")
