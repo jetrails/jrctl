@@ -24,4 +24,5 @@ our Github repository.
 * [jrctl service](jrctl_service.md)	 - Interact with services in deployment
 * [jrctl update](jrctl_update.md)	 - Check for available updates
 * [jrctl utility](jrctl_utility.md)	 - Auxiliary command-line tools
+* [jrctl version](jrctl_version.md)	 - Display current version
 
