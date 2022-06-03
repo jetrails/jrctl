@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var utilityVersionCmd = &cobra.Command{
+var utilityMkpassCmd = &cobra.Command{
 	Use:     "mkpass",
 	Aliases: []string{"password", "pass", "genpass"},
 	Short:   "Generate random passwords",
@@ -75,12 +75,12 @@ var utilityVersionCmd = &cobra.Command{
 }
 
 func init() {
-	utilityCmd.AddCommand(utilityVersionCmd)
-	utilityVersionCmd.Flags().SortFlags = true
-	utilityVersionCmd.Flags().IntP("count", "c", 1, "number of passwords to generate")
-	utilityVersionCmd.Flags().IntP("length", "l", 32, "length of password")
-	utilityVersionCmd.Flags().BoolP("no-symbols", "S", false, "do not include symbols in password")
-	utilityVersionCmd.Flags().BoolP("no-numbers", "N", false, "do not include numbers in password")
-	utilityVersionCmd.Flags().BoolP("no-lowercase", "L", false, "do not include lowercase chars in password")
-	utilityVersionCmd.Flags().BoolP("no-uppercase", "U", false, "do not include uppercase chars in password")
+	utilityCmd.AddCommand(utilityMkpassCmd)
+	utilityMkpassCmd.Flags().SortFlags = true
+	utilityMkpassCmd.Flags().IntP("count", "c", 1, "number of passwords to generate")
+	utilityMkpassCmd.Flags().IntP("length", "l", 32, "length of password")
+	utilityMkpassCmd.Flags().BoolP("no-symbols", "S", false, "do not include symbols in password")
+	utilityMkpassCmd.Flags().BoolP("no-numbers", "N", false, "do not include numbers in password")
+	utilityMkpassCmd.Flags().BoolP("no-lowercase", "L", false, "do not include lowercase chars in password")
+	utilityMkpassCmd.Flags().BoolP("no-uppercase", "U", false, "do not include uppercase chars in password")
 }

@@ -1,0 +1,47 @@
+.nh
+.TH "JetRails CLI" "1" "Jun 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-website\-switch\-php \- Switch php\-fpm version for website
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl website switch\-php WEBSITE\_NAME PHP\_VERSION [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Switch php\-fpm version for website
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for switch\-php
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	display no output
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	filter servers using type selectors
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl website switch\-php example.com php\-fpm\-7.4
+jrctl website switch\-php example.com php\-fpm\-7.4 \-q
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-website(1)\fP

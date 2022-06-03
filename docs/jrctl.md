@@ -25,4 +25,5 @@ our Github repository.
 * [jrctl update](jrctl_update.md)	 - Check for available updates
 * [jrctl utility](jrctl_utility.md)	 - Auxiliary command-line tools
 * [jrctl version](jrctl_version.md)	 - Display current version
+* [jrctl website](jrctl_website.md)	 - Manage websites in deployment
 

@@ -1,0 +1,47 @@
+.nh
+.TH "JetRails CLI" "1" "Jun 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-website\-list \- Display configured websites
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl website list [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Display configured websites
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for list
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	only display site names
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	filter servers using type selectors
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl website list
+jrctl website list \-q
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-website(1)\fP
