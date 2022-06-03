@@ -1,12 +1,11 @@
 package internal
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/jetrails/jrctl/pkg/array"
-	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/config"
@@ -29,35 +28,58 @@ func NormalizeEndpoints(endpoints []string) []string {
 }
 
 var awsAutoscaleIngestCmd = &cobra.Command{
-	Use:     "autoscale-ingest",
-	Short:   "Display databases in deployment",
-	Example: text.Examples([]string{}),
-	Args:    cobra.ExactArgs(0),
-	PreRunE: func(cmd *cobra.Command, args []string) error {
-		if !input.HasDataInPipe() {
-			return errors.New("must pipe endpoints to stdin")
-		}
-		return nil
-	},
+	Use:   "autoscale-ingest AUTOSCALING_GROUP_NAME",
+	Short: "Display databases in deployment",
+	Example: text.Examples([]string{
+		"jrctl aws autoscale-ingest example-asg",
+		"jrctl aws autoscale-ingest example-asg -t www",
+		"jrctl aws autoscale-ingest example-asg -q",
+	}),
+	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tag, _ := cmd.Flags().GetString("type")
-		endpoints := NormalizeEndpoints(strings.Fields(input.GetPipeData()))
 		tags := []string{tag}
+		asgName := args[0]
 
 		output := NewOutput(quiet, tags)
+		privateIps := []string{}
 
+		cfg, err := GetAWSConfig()
+		if err != nil {
+			output.ExitWithMessage(3, "\n"+ErrAwsImdsCredsMissing.Error()+"\n")
+		}
+		if instances, err := GetAutoScalingGroupInstances(cfg, asgName); err == nil {
+			for _, instance := range instances {
+				privateIps = append(privateIps, aws.ToString(instance.PrivateIpAddress))
+			}
+		} else {
+			switch err {
+			case ErrAwsAutoScalingGroupNotFound:
+				output.ExitWithMessage(4, "\n"+err.Error()+"\n")
+			case ErrAwsInstanceDetails:
+				output.ExitWithMessage(5, "\n"+err.Error()+"\n")
+			default:
+				output.ExitWithMessage(6, "\nunknown error\n")
+			}
+		}
+		endpoints := NormalizeEndpoints(privateIps)
 		if len(endpoints) < 1 {
-			output.ExitWithMessage(3, "\nmust pass at least one endpoint\n")
+			output.ExitWithMessage(7, "\nmust pass at least one endpoint\n")
 		}
 
 		contexts := config.GetContexts(tags)
 		servers := []config.Entry{}
 		viper.UnmarshalKey("servers", &servers)
 
+		if len(contexts) < 1 {
+			output.PrintTags()
+			output.ExitWithMessage(8, "\nno servers found with given type selector\n")
+		}
+
 		if !config.ContextsHaveSameToken(contexts) {
 			output.PrintTags()
-			output.ExitWithMessage(4, "\nfound differing tokens, autoscale requires same tokens\n")
+			output.ExitWithMessage(9, "\nfound differing tokens, autoscale requires same tokens\n")
 		}
 
 		tbl := output.CreateTable(Columns{
@@ -114,6 +136,6 @@ func init() {
 	OnlyRunOnAWS(awsAutoscaleIngestCmd)
 	awsCmd.AddCommand(awsAutoscaleIngestCmd)
 	awsAutoscaleIngestCmd.Flags().SortFlags = true
-	awsAutoscaleIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")
+	awsAutoscaleIngestCmd.Flags().BoolP("quiet", "q", false, "display no output")
 	awsAutoscaleIngestCmd.Flags().StringP("type", "t", "www", "filter servers using type selectors, only one selector allowed")
 }

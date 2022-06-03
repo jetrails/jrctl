@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -13,6 +14,12 @@ import (
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/spf13/cobra"
+)
+
+var (
+	ErrAwsImdsCredsMissing         = errors.New("failed to extract credentials from IMDS service")
+	ErrAwsAutoScalingGroupNotFound = errors.New("failed to find autoscaling group with that name")
+	ErrAwsInstanceDetails          = errors.New("failed to query instance details")
 )
 
 func GetAWSConfig() (aws.Config, error) {
@@ -32,6 +39,47 @@ func GetInstanceIdentityDocument(cfg aws.Config) *imds.InstanceIdentityDocument 
 		return &document.InstanceIdentityDocument
 	}
 	return nil
+}
+
+func GetAutoScalingGroupInstances(cfg aws.Config, asgName string) ([]types.Instance, error) {
+	entries := []types.Instance{}
+	autoscalingClient := autoscaling.NewFromConfig(cfg)
+	ec2Client := ec2.NewFromConfig(cfg)
+
+	asgs, err := autoscalingClient.DescribeAutoScalingGroups(
+		context.TODO(),
+		&autoscaling.DescribeAutoScalingGroupsInput{AutoScalingGroupNames: []string{asgName}},
+	)
+
+	if err != nil {
+		return entries, ErrAwsAutoScalingGroupNotFound
+	}
+
+	for _, asg := range asgs.AutoScalingGroups {
+		instanceIds := []string{}
+		for _, instance := range asg.Instances {
+			instanceIds = append(instanceIds, aws.ToString(instance.InstanceId))
+		}
+		infos, err := ec2Client.DescribeInstances(context.TODO(), &ec2.DescribeInstancesInput{
+			InstanceIds: instanceIds,
+			Filters: []types.Filter{
+				{
+					Name:   aws.String("instance-state-name"),
+					Values: []string{"running"},
+				},
+			},
+		})
+		if err != nil {
+			return []types.Instance{}, ErrAwsInstanceDetails
+		}
+		for _, reservation := range infos.Reservations {
+			for _, instance := range reservation.Instances {
+				entries = append(entries, instance)
+			}
+		}
+	}
+
+	return entries, nil
 }
 
 var awsAutoscaleDetectCmd = &cobra.Command{
@@ -64,51 +112,30 @@ var awsAutoscaleDetectCmd = &cobra.Command{
 
 		cfg, err := GetAWSConfig()
 		if err != nil {
-			output.ExitWithMessage(3, "\nfailed to extract credentials from IMDS service\n")
-		}
-		autoscalingClient := autoscaling.NewFromConfig(cfg)
-		ec2Client := ec2.NewFromConfig(cfg)
-
-		asgs, err := autoscalingClient.DescribeAutoScalingGroups(
-			context.TODO(),
-			&autoscaling.DescribeAutoScalingGroupsInput{AutoScalingGroupNames: []string{asgName}},
-		)
-
-		if err != nil {
-			output.ExitWithMessage(3, "\nfailed to extract credentials from IMDS service\n")
+			output.ExitWithMessage(3, "\n"+ErrAwsImdsCredsMissing.Error()+"\n")
 		}
 
-		for _, asg := range asgs.AutoScalingGroups {
-			instanceIds := []string{}
-			for _, instance := range asg.Instances {
-				instanceIds = append(instanceIds, aws.ToString(instance.InstanceId))
+		if instances, err := GetAutoScalingGroupInstances(cfg, asgName); err == nil {
+			for _, instance := range instances {
+				tbl.AddQuietEntry(aws.ToString(instance.PrivateIpAddress))
+				tbl.AddRow(Columns{
+					aws.ToString(instance.InstanceId),
+					aws.ToString(instance.ImageId),
+					"Running",
+					aws.ToString(instance.PrivateIpAddress),
+					aws.ToString(instance.PublicIpAddress),
+					instance.LaunchTime.String(),
+				})
 			}
-			infos, err := ec2Client.DescribeInstances(context.TODO(), &ec2.DescribeInstancesInput{
-				InstanceIds: instanceIds,
-				Filters: []types.Filter{
-					{
-						Name:   aws.String("instance-state-name"),
-						Values: []string{"running"},
-					},
-				},
-			})
-			if err != nil {
-				output.ExitWithMessage(4, "\nfailed to query instance details\n")
+		} else {
+			switch err {
+			case ErrAwsAutoScalingGroupNotFound:
+				output.ExitWithMessage(4, "\n"+err.Error()+"\n")
+			case ErrAwsInstanceDetails:
+				output.ExitWithMessage(5, "\n"+err.Error()+"\n")
+			default:
+				output.ExitWithMessage(6, "\nunknown error\n")
 			}
-			for _, reservation := range infos.Reservations {
-				for _, instance := range reservation.Instances {
-					tbl.AddQuietEntry(aws.ToString(instance.PrivateIpAddress))
-					tbl.AddRow(Columns{
-						aws.ToString(instance.InstanceId),
-						aws.ToString(instance.ImageId),
-						"Running",
-						aws.ToString(instance.PrivateIpAddress),
-						aws.ToString(instance.PublicIpAddress),
-						instance.LaunchTime.String(),
-					})
-				}
-			}
-
 		}
 
 		output.Print()
