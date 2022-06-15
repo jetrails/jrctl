@@ -4,11 +4,11 @@
 name: jrctl
 arch: ${GOARCH}
 platform: linux
-version: 2.5.0
+version: 3.0.0
 section: default
 priority: extra
 maintainer: Rafael Grigorian <development@jetrails.com>
-description: Command line tool to help interact with our API
+description: CLI tool for interacting with JetRails infrastructure and API
 vendor: JetRails
 homepage: https://github.com/jetrails/jrctl
 license: The JetRails License
