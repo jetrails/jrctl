@@ -12,5 +12,6 @@ Manage websites in deployment
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
 * [jrctl website list](jrctl_website_list.md)	 - Display configured websites
-* [jrctl website switch-php](jrctl_website_switch-php.md)	 - Switch php-fpm version for website
+* [jrctl website php-available](jrctl_website_php-available.md)	 - List available php-fpm versions that are available for websites to use
+* [jrctl website php-switch](jrctl_website_php-switch.md)	 - Switch php-fpm version for website
 

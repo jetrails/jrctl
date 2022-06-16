@@ -1,0 +1,47 @@
+.nh
+.TH "JetRails CLI" "1" "Jun 2022" "Copyright 2022 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-website\-php\-available \- List available php\-fpm versions that are available for websites to use
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl website php\-available [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+List available php\-fpm versions that are available for websites to use
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for php\-available
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	display only available php\-fpm versions
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[localhost]
+	filter servers using type selectors
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl website php\-available
+jrctl website php\-available \-q
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-website(1)\fP

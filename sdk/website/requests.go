@@ -1,10 +1,6 @@
 package website
 
-type ListRequest struct {
-	// Empty
-}
-
-type SwitchPHPRequest struct {
+type PhpSwitchRequest struct {
 	Name    string `json:"name"`
 	Version string `json:"version"`
 }

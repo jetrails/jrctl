@@ -9,7 +9,12 @@ type ListResponse struct {
 	Payload []Properties `json:"payload"`
 }
 
-type SwitchPHPResponse struct {
+type PhpSwitchResponse struct {
 	api.GenericResponse
 	Payload interface{} `json:"payload"`
+}
+
+type PhpAvailableResponse struct {
+	api.GenericResponse
+	Payload []Availablity `json:"payload"`
 }

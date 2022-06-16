@@ -8,13 +8,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var websiteSwitchPhpCmd = &cobra.Command{
-	Use:   "switch-php WEBSITE_NAME PHP_VERSION",
-	Short: "Switch php-fpm version for website",
-	Args:  cobra.ExactArgs(2),
+var websitePhpSwitchCmd = &cobra.Command{
+	Use:     "php-switch WEBSITE_NAME PHP_VERSION",
+	Aliases: []string{"switch-php"},
+	Short:   "Switch php-fpm version for website",
+	Args:    cobra.ExactArgs(2),
 	Example: text.Examples([]string{
-		"jrctl website switch-php example.com php-fpm-7.4",
-		"jrctl website switch-php example.com php-fpm-7.4 -q",
+		"jrctl website php-switch example.com php-fpm-7.4",
+		"jrctl website php-switch example.com php-fpm-7.4 -q",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
@@ -36,7 +37,7 @@ var websiteSwitchPhpCmd = &cobra.Command{
 			output.ExitWithMessage(5, ErrMsgRequiresOneServer+"\n")
 		}
 
-		request := website.SwitchPHPRequest{Name: name, Version: version}
+		request := website.PhpSwitchRequest{Name: name, Version: version}
 		response := website.SwitchPHP(contexts[0], request)
 		generic := response.GetGeneric()
 
@@ -47,8 +48,8 @@ var websiteSwitchPhpCmd = &cobra.Command{
 }
 
 func init() {
-	websiteCmd.AddCommand(websiteSwitchPhpCmd)
-	websiteSwitchPhpCmd.Flags().SortFlags = true
-	websiteSwitchPhpCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	websiteSwitchPhpCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	websiteCmd.AddCommand(websitePhpSwitchCmd)
+	websitePhpSwitchCmd.Flags().SortFlags = true
+	websitePhpSwitchCmd.Flags().BoolP("quiet", "q", false, "display no output")
+	websitePhpSwitchCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
 }
