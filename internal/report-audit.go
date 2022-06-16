@@ -62,6 +62,16 @@ var reportAuditCmd = &cobra.Command{
 			"Password",
 			"SSH Key",
 		})
+		tblDatabases := NewTable(Columns{
+			"Hostname",
+			"Database",
+			"User(s)",
+		})
+		tblDatabaseUsers := NewTable(Columns{
+			"Hostname",
+			"User",
+			"Database(s)",
+		})
 
 		for _, context := range config.GetContexts(tags) {
 			response := report.Audit(context)
@@ -100,6 +110,32 @@ var reportAuditCmd = &cobra.Command{
 						checkMap[array.ContainsString(response.Payload.KeyAccess, user)],
 					})
 				}
+				for _, db := range response.Payload.Databases {
+					users := ""
+					del := ""
+					for _, user := range db.Users {
+						users += del + user.Name + "@" + user.From
+						del = ", "
+					}
+					tblDatabases.AddRow(Columns{
+						response.Metadata["hostname"],
+						db.Name,
+						users,
+					})
+				}
+				for _, user := range response.Payload.DatabaseUsers {
+					dbs := ""
+					del := ""
+					for _, db := range user.Databases {
+						dbs += del + db.Name
+						del = ", "
+					}
+					tblDatabaseUsers.AddRow(Columns{
+						response.Metadata["hostname"],
+						user.Name + "@" + user.From,
+						dbs,
+					})
+				}
 			}
 		}
 
@@ -125,6 +161,12 @@ var reportAuditCmd = &cobra.Command{
 		tblAccess.Title = Lines{
 			"Current SSH User List",
 		}
+		tblDatabases.Title = Lines{
+			"Current Databases",
+		}
+		tblDatabaseUsers.Title = Lines{
+			"Current Database Users",
+		}
 
 		tblWhitelist.SquashOnPivot(2)
 		tblActivity.Sort(1)
@@ -132,10 +174,14 @@ var reportAuditCmd = &cobra.Command{
 		output.AddTable(tblActivity)
 		output.AddTable(tblWhitelist)
 		output.AddTable(tblAccess)
+		output.AddTable(tblDatabases)
+		output.AddTable(tblDatabaseUsers)
 
 		tblActivity.EmptyMessage = Lines{"No entries found"}
 		tblWhitelist.EmptyMessage = Lines{"No entries found"}
 		tblAccess.EmptyMessage = Lines{"No entries found"}
+		tblDatabases.EmptyMessage = Lines{"No entries found"}
+		tblDatabaseUsers.EmptyMessage = Lines{"No entries found"}
 		output.ErrMsgNoResults = Lines{}
 
 		output.Print()
