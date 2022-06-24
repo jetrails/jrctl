@@ -18,6 +18,7 @@ var databaseUserCreateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tags, _ := cmd.Flags().GetStringArray("type")
+		mnp, _ := cmd.Flags().GetBool("mysql-native-password")
 		name, from := SplitUserAndHost(args[0])
 
 		output := NewOutput(quiet, tags)
@@ -34,7 +35,7 @@ var databaseUserCreateCmd = &cobra.Command{
 			output.ExitWithMessage(5, ErrMsgRequiresOneServer+"\n")
 		}
 
-		request := database.UserCreateRequest{Name: name, From: from}
+		request := database.UserCreateRequest{Name: name, From: from, Native: mnp}
 		response := database.UserCreate(contexts[0], request)
 		generic := response.GetGeneric()
 
@@ -63,4 +64,5 @@ func init() {
 	databaseUserCreateCmd.Flags().SortFlags = true
 	databaseUserCreateCmd.Flags().BoolP("quiet", "q", false, "only display password")
 	databaseUserCreateCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseUserCreateCmd.Flags().BoolP("mysql-native-password", "m", false, "use mysql_native_password auth plugin")
 }

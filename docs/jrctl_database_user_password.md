@@ -13,9 +13,10 @@ jrctl database user password USER@HOST [flags]
 ### Options
 
 ```
-  -h, --help               help for password
-  -q, --quiet              only display confirmation code
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help                    help for password
+  -m, --mysql-native-password   use mysql_native_password auth plugin
+  -q, --quiet                   only display confirmation code
+  -t, --type stringArray        filter servers using type selectors (default [localhost])
 ```
 
 ### SEE ALSO
