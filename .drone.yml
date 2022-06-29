@@ -21,7 +21,7 @@ steps:
     commands:
     -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.14.0/nfpm_amd64.deb --output nfpm.deb
     -   dpkg -i nfpm.deb && rm nfpm.deb
-    -   apt update && apt install -y gettext-base
+    -   apt update && apt install -y gettext-base upx-ucl
     -   go get golang.org/x/tools/cmd/goimports
     -   go mod download
     -   make VERSION=${DRONE_TAG} package
