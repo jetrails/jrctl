@@ -20,10 +20,20 @@ var databaseUserPasswordCmd = &cobra.Command{
 	}),
 	Example: text.Examples([]string{}),
 	Args:    cobra.ExactArgs(1),
+	PreRunE: func(cmd *cobra.Command, args []string) error {
+		validPlugins := []string{"mysql_native_password", "caching_sha2_password"}
+		plugin, _ := cmd.Flags().GetString("plugin")
+		for _, entry := range validPlugins {
+			if entry == plugin {
+				return nil
+			}
+		}
+		return fmt.Errorf("invalid plugin, valid options include: %v", validPlugins)
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tags, _ := cmd.Flags().GetStringArray("type")
-		mnp, _ := cmd.Flags().GetBool("mysql-native-password")
+		plugin, _ := cmd.Flags().GetString("plugin")
 		name, from := SplitUserAndHost(args[0])
 
 		output := NewOutput(quiet, tags)
@@ -39,7 +49,7 @@ var databaseUserPasswordCmd = &cobra.Command{
 			output.ExitWithMessage(5, ErrMsgRequiresOneServer+"\n")
 		}
 
-		request := database.UserPasswordRequest{Name: name, From: from, Native: mnp}
+		request := database.UserPasswordRequest{Name: name, From: from, Plugin: plugin}
 		response := database.UserPassword(contexts[0], request)
 		generic := response.GetGeneric()
 
@@ -63,5 +73,5 @@ func init() {
 	databaseUserPasswordCmd.Flags().SortFlags = true
 	databaseUserPasswordCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
 	databaseUserPasswordCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
-	databaseUserPasswordCmd.Flags().BoolP("mysql-native-password", "m", false, "use mysql_native_password auth plugin")
+	databaseUserPasswordCmd.Flags().StringP("plugin", "p", "mysql_native_password", "specify auth plugin")
 }

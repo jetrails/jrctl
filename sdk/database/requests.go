@@ -19,7 +19,7 @@ type DeleteRequest struct {
 type UserCreateRequest struct {
 	Name   string `json:"name"`
 	From   string `json:"from"`
-	Native bool   `json:"native"`
+	Plugin string `json:"plugin"`
 }
 
 type UserDeleteRequest struct {
@@ -30,7 +30,7 @@ type UserDeleteRequest struct {
 type UserPasswordRequest struct {
 	Name   string `json:"name"`
 	From   string `json:"from"`
-	Native bool   `json:"native"`
+	Plugin string `json:"plugin"`
 }
 
 type LinkRequest struct {
