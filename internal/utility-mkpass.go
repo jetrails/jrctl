@@ -2,8 +2,8 @@ package internal
 
 import (
 	"fmt"
+	"os"
 
-	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/pkg/utils"
 	"github.com/spf13/cobra"
@@ -41,13 +41,9 @@ var utilityMkpassCmd = &cobra.Command{
 		noLowercase, _ := cmd.Flags().GetBool("no-lowercase")
 		noUppercase, _ := cmd.Flags().GetBool("no-uppercase")
 
-		tbl := NewTable(Columns{
-			"n",
-			"Password",
-		})
-
 		if noSymbols && noNumbers && noLowercase && noUppercase {
-			tbl.ExitWithMessage(42, "pa$$w0rd")
+			fmt.Println("pa$$w0rd")
+			os.Exit(42)
 		}
 
 		alphabet := ""
@@ -63,14 +59,12 @@ var utilityMkpassCmd = &cobra.Command{
 		if !noUppercase {
 			alphabet += utils.AlphabetUpperCase
 		}
+
 		for i := 0; i < count; i++ {
 			password := utils.GeneratePassword(alphabet, length)
-			tbl.AddRow(Columns{fmt.Sprintf("%d", i+1), password})
-			tbl.AddQuietEntry(password)
+			fmt.Println(password)
 		}
 
-		tbl.Quiet = true
-		tbl.PrintTable()
 	},
 }
 
