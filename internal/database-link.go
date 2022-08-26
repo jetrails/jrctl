@@ -48,7 +48,7 @@ var databaseLinkCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseLinkCmd)
+	// OnlyRunOnNonAWS(databaseLinkCmd)
 	databaseCmd.AddCommand(databaseLinkCmd)
 	databaseLinkCmd.Flags().SortFlags = true
 	databaseLinkCmd.Flags().BoolP("quiet", "q", false, "display no output")

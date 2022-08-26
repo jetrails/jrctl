@@ -69,7 +69,7 @@ var databaseListCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseListCmd)
+	// OnlyRunOnNonAWS(databaseListCmd)
 	databaseCmd.AddCommand(databaseListCmd)
 	databaseListCmd.Flags().SortFlags = true
 	databaseListCmd.Flags().BoolP("quiet", "q", false, "only display database names")

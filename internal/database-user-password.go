@@ -68,7 +68,7 @@ var databaseUserPasswordCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseUserPasswordCmd)
+	// OnlyRunOnNonAWS(databaseUserPasswordCmd)
 	databaseUserCmd.AddCommand(databaseUserPasswordCmd)
 	databaseUserPasswordCmd.Flags().SortFlags = true
 	databaseUserPasswordCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")

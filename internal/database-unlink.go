@@ -57,7 +57,7 @@ var databaseUnlinkCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseUnlinkCmd)
+	// OnlyRunOnNonAWS(databaseUnlinkCmd)
 	databaseCmd.AddCommand(databaseUnlinkCmd)
 	databaseUnlinkCmd.Flags().SortFlags = true
 	databaseUnlinkCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")

@@ -43,7 +43,7 @@ var databaseCreateCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseCreateCmd)
+	// OnlyRunOnNonAWS(databaseCreateCmd)
 	databaseCmd.AddCommand(databaseCreateCmd)
 	databaseCreateCmd.Flags().SortFlags = true
 	databaseCreateCmd.Flags().BoolP("quiet", "q", false, "display no output")

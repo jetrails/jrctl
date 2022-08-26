@@ -52,7 +52,7 @@ var databaseUserDeleteCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseUserDeleteCmd)
+	// OnlyRunOnNonAWS(databaseUserDeleteCmd)
 	databaseUserCmd.AddCommand(databaseUserDeleteCmd)
 	databaseUserDeleteCmd.Flags().SortFlags = true
 	databaseUserDeleteCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")

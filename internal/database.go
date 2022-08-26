@@ -23,7 +23,7 @@ var databaseCmd = &cobra.Command{
 }
 
 func init() {
-	OnlyRunOnNonAWS(databaseCmd)
+	// OnlyRunOnNonAWS(databaseCmd)
 	RootCmd.AddCommand(databaseCmd)
 	databaseCmd.Flags().SortFlags = true
 }
