@@ -3,51 +3,68 @@ type: kubernetes
 name: release-to-github
 
 steps:
--   name: change-log
+  - name: change-log
     image: alpine/git
     volumes:
-    -   name: build-volume
+      - name: build-volume
         path: /usr/src
     commands:
-    -   git fetch --tags
-    -   echo -e "### Change-Log:\n" > ./CHANGELOG.md
-    -   git log "$(git tag --sort=-creatordate | grep -v latest | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | grep -v latest | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
-    -   cp ./CHANGELOG.md /usr/src/CHANGELOG.md
--   name: build
+      - git fetch --tags
+      - echo -e "### Change-Log:\n" > ./CHANGELOG.md
+      - git log "$(git tag --sort=-creatordate | grep -v latest | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | grep -v latest | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
+      - cp ./CHANGELOG.md /usr/src/CHANGELOG.md
+  - name: build
     image: golang:1.14
     volumes:
-    -   name: build-volume
+      - name: build-volume
         path: /go/src
     commands:
-    -   curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.14.0/nfpm_amd64.deb --output nfpm.deb
-    -   dpkg -i nfpm.deb && rm nfpm.deb
-    -   apt update && apt install -y gettext-base upx-ucl
-    -   go get golang.org/x/tools/cmd/goimports
-    -   go mod download
-    -   make VERSION=${DRONE_TAG} package
-    -   cp -R ./dist /go/src/
--   name: publish
+      - curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.14.0/nfpm_amd64.deb --output nfpm.deb
+      - dpkg -i nfpm.deb && rm nfpm.deb
+      - apt update && apt install -y gettext-base upx-ucl
+      - go get golang.org/x/tools/cmd/goimports
+      - go mod download
+      - make VERSION=${DRONE_TAG} package
+      - cp -R ./dist /go/src/
+  - name: publish
     image: plugins/github-release
     volumes:
-    -   name: build-volume
+      - name: build-volume
         path: /drone/src/generated
     settings:
         api_key:
-            from_secret: github_token
+          from_secret: github_token
         files:
-        -   generated/dist/*
+          - generated/dist/*
         file_exists: overwrite
         overwrite: true
         title: Version ${DRONE_TAG}
         note: generated/CHANGELOG.md
+  - name: whitelist-binary
+    image: alpine:latest
+    volumes:
+      - name: build-volume
+        path: /drone/src/generated
+    depends_on:
+      - build
+    commands:
+      - apk add -q curl
+      - curl -sL https://api.sansec.io/downloads/linux-x86_64/ecomscan -o /usr/local/bin/ecomscan
+      - chmod +x /usr/local/bin/ecomscan
+      - ecomscan --submit-whitelist ./bin/jrctl_darwin_amd64
+      - ecomscan --submit-whitelist ./bin/jrctl_linux_amd64
+      - ecomscan --submit-whitelist ./bin/jrctl_linux_arm64
+    environment:
+      ECOMSCAN_KEY:
+        from_secret: ecomscan_token
 volumes:
--   name: build-volume
+  - name: build-volume
     temp: {}
 trigger:
-    event:
-    -   tag
-    ref:
-    -   refs/tags/*
+  event:
+    - tag
+  ref:
+    - refs/tags/*
 
 ---
 
@@ -55,5 +72,14 @@ kind: secret
 name: github_token
 
 get:
-    path: github.com/data/personal-access-token/drone-publish-release
-    name: token
+  path: github.com/data/personal-access-token/drone-publish-release
+  name: token
+
+---
+
+kind: secret
+name: ecomscan_token
+
+get:
+  path: sansec.io/data/ecomscan/adf
+  name: token
