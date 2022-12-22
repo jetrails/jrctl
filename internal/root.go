@@ -81,6 +81,7 @@ func initConfig() {
 	viper.AddConfigPath("$HOME/.jrctl")
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
+	viper.SetConfigPermissions(os.FileMode(0600))
 	viper.SetDefault("servers", []config.Entry{
 		{
 			Endpoint: "127.0.0.1:27482",
@@ -89,7 +90,7 @@ func initConfig() {
 		},
 	})
 	if usr, err := user.Current(); err == nil {
-		os.MkdirAll(path.Join(usr.HomeDir, ".jrctl"), 0755)
+		os.MkdirAll(path.Join(usr.HomeDir, ".jrctl"), 0700)
 		viper.SafeWriteConfig()
 	}
 	viper.ReadInConfig()
