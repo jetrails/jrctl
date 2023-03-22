@@ -4,7 +4,6 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/jetrails/jrctl/pkg/array"
 	"github.com/jetrails/jrctl/pkg/input"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
@@ -48,16 +47,17 @@ var serverIngestCmd = &cobra.Command{
 			output.ExitWithMessage(4, "\nfailed to parse current config file\n")
 		}
 		for i, savedServer := range savedServers {
-			if array.HasValidStringValues(tags, savedServer.Types) {
+			if savedServer.Endpoint == endpoint {
 				savedServers[i].Token = tokenValue
+				savedServers[i].Types = tags
 				tbl.AddRow(Columns{
 					strings.TrimSuffix(savedServer.Endpoint, ":27482"),
-					strings.Join(savedServer.Types, ", "),
+					strings.Join(tags, ", "),
 					"Updated",
 				})
 			}
 		}
-		if force {
+		if tbl.IsEmpty() && force {
 			createdEntry := config.Entry{
 				Endpoint: endpoint,
 				Token:    tokenValue,
@@ -66,7 +66,7 @@ var serverIngestCmd = &cobra.Command{
 			savedServers = append(savedServers, createdEntry)
 			tbl.AddRow(Columns{
 				strings.TrimSuffix(createdEntry.Endpoint, ":27482"),
-				strings.Join(createdEntry.Types, ", "),
+				strings.Join(tags, ", "),
 				"Created",
 			})
 		}
