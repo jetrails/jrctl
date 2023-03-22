@@ -72,4 +72,17 @@ func UniqueStrings(items []string) []string {
 		}
 	}
 	return set
+
+}
+
+func UniqueInts(items []int) []int {
+	set := []int{}
+	track := map[int]bool{}
+	for _, item := range items {
+		if track[item] != true {
+			set = append(set, item)
+			track[item] = true
+		}
+	}
+	return set
 }
