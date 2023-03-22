@@ -42,23 +42,7 @@ steps:
         overwrite: true
         title: Version ${DRONE_TAG}
         note: generated/CHANGELOG.md
-  - name: whitelist-binary
-    image: alpine:latest
-    volumes:
-      - name: build-volume
-        path: /drone/src/generated
-    depends_on:
-      - build
-    commands:
-      - apk add -q curl
-      - curl -sL https://api.sansec.io/downloads/linux-x86_64/ecomscan -o /usr/local/bin/ecomscan
-      - chmod +x /usr/local/bin/ecomscan
-      - ecomscan --submit-whitelist ./bin/jrctl_darwin_amd64
-      - ecomscan --submit-whitelist ./bin/jrctl_linux_amd64
-      - ecomscan --submit-whitelist ./bin/jrctl_linux_arm64
-    environment:
-      ECOMSCAN_KEY:
-        from_secret: ecomscan_token
+
 volumes:
   - name: build-volume
     temp: {}
@@ -75,13 +59,4 @@ name: github_token
 
 get:
   path: github.com/data/personal-access-token/drone-publish-release
-  name: token
-
----
-
-kind: secret
-name: ecomscan_token
-
-get:
-  path: sansec.io/data/ecomscan/adf
   name: token
