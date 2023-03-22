@@ -82,11 +82,11 @@ func initConfig() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.SetConfigPermissions(os.FileMode(0600))
-	viper.SetDefault("servers", []config.Entry{
+	viper.SetDefault("nodes", []config.Entry{
 		{
 			Endpoint: "127.0.0.1:27482",
 			Token:    "REPLACE_WITH_AUTH_TOKEN",
-			Types:    []string{"localhost"},
+			Tags:    []string{"localhost"},
 		},
 	})
 	if usr, err := user.Current(); err == nil {

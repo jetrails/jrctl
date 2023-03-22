@@ -9,9 +9,9 @@ jrctl database link USER@FROM DB_NAME [flags]
 ### Options
 
 ```
-  -h, --help               help for link
-  -q, --quiet              display no output
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for link
+  -q, --quiet             display no output
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

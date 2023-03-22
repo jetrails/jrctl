@@ -21,11 +21,11 @@ func extractFirewallComment(input string) string {
 
 var firewallListCmd = &cobra.Command{
 	Use:   "list",
-	Short: "List firewall entries across configured servers",
+	Short: "List firewall entries across configured nodes",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
-			"List firewall entries across configured servers.",
-			"Specifing a server type will only display results for servers of that type.",
+			"List firewall entries across configured nodes.",
+			"Specifing a tag will display nodes that have that tag.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -36,7 +36,7 @@ var firewallListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = true
@@ -86,5 +86,5 @@ func init() {
 	firewallCmd.AddCommand(firewallListCmd)
 	firewallListCmd.Flags().SortFlags = true
 	firewallListCmd.Flags().BoolP("quiet", "q", false, "display number of entries found for each matching server")
-	firewallListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	firewallListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

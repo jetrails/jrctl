@@ -5,8 +5,8 @@ Enable specified services in deployment
 ### Synopsis
 
 Enable specified services in deployment. Services can be repeated and execution
-will happen in the order that is given. Specifing a server type will only
-display results for servers of that type.
+will happen in the order that is given. Specifing a tag will display nodes that
+have that tag.
 
 ```
 jrctl service enable SERVICE... [flags]
@@ -24,9 +24,9 @@ jrctl service enable nginx varnish php-fpm-7.2 nginx
 ### Options
 
 ```
-  -h, --help               help for enable
-  -q, --quiet              display no output
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for enable
+  -q, --quiet             display no output
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

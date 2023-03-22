@@ -24,7 +24,7 @@ var firewallAllowCloudflareCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = true
@@ -49,5 +49,5 @@ func init() {
 	firewallAllowCmd.AddCommand(firewallAllowCloudflareCmd)
 	firewallAllowCloudflareCmd.Flags().SortFlags = true
 	firewallAllowCloudflareCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	firewallAllowCloudflareCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	firewallAllowCloudflareCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

@@ -28,7 +28,7 @@ var nodeIngestCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringSlice("type")
+		tags, _ := cmd.Flags().GetStringSlice("tag")
 		force, _ := cmd.Flags().GetBool("force")
 		endpoint, _ := cmd.Flags().GetString("endpoint")
 		tokenValue := input.GetPipeData()
@@ -38,20 +38,20 @@ var nodeIngestCmd = &cobra.Command{
 
 		tbl := NewTable(Columns{
 			"Endpoint",
-			"Type(s)",
+			"Tag(s)",
 			"Action",
 		})
 
-		savedServers := []config.Entry{}
-		if err := viper.UnmarshalKey("servers", &savedServers); err != nil {
+		savedNodes := []config.Entry{}
+		if err := viper.UnmarshalKey("nodes", &savedNodes); err != nil {
 			output.ExitWithMessage(4, "\nfailed to parse current config file\n")
 		}
-		for i, savedServer := range savedServers {
-			if savedServer.Endpoint == endpoint {
-				savedServers[i].Token = tokenValue
-				savedServers[i].Types = tags
+		for i, savedNode := range savedNodes {
+			if savedNode.Endpoint == endpoint {
+				savedNodes[i].Token = tokenValue
+				savedNodes[i].Tags = tags
 				tbl.AddRow(Columns{
-					strings.TrimSuffix(savedServer.Endpoint, ":27482"),
+					strings.TrimSuffix(savedNode.Endpoint, ":27482"),
 					strings.Join(tags, ", "),
 					"Updated",
 				})
@@ -61,9 +61,9 @@ var nodeIngestCmd = &cobra.Command{
 			createdEntry := config.Entry{
 				Endpoint: endpoint,
 				Token:    tokenValue,
-				Types:    tags,
+				Tags:    tags,
 			}
-			savedServers = append(savedServers, createdEntry)
+			savedNodes = append(savedNodes, createdEntry)
 			tbl.AddRow(Columns{
 				strings.TrimSuffix(createdEntry.Endpoint, ":27482"),
 				strings.Join(tags, ", "),
@@ -72,7 +72,7 @@ var nodeIngestCmd = &cobra.Command{
 		}
 
 		if !tbl.IsEmpty() {
-			viper.Set("servers", savedServers)
+			viper.Set("nodes", savedNodes)
 			viper.WriteConfig()
 			output.AddTable(tbl)
 			output.Print()
@@ -87,7 +87,7 @@ func init() {
 	nodeIngestCmd.Flags().SortFlags = true
 	nodeIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")
 	nodeIngestCmd.Flags().StringP("endpoint", "e", "127.0.0.1:27482", "filter nodes using this endpoint")
-	nodeIngestCmd.Flags().StringSliceP("type", "t", []string{}, "types to attach to found nodes")
+	nodeIngestCmd.Flags().StringSliceP("tag", "t", []string{}, "tags to attach to found nodes")
 	nodeIngestCmd.Flags().BoolP("force", "f", false, "create new entry if no matching nodes were found")
-	nodeIngestCmd.MarkFlagRequired("type")
+	nodeIngestCmd.MarkFlagRequired("tag")
 }

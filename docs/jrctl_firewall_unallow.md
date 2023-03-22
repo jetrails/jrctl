@@ -4,8 +4,8 @@ Deletes allow entry given a source IP address and a port number
 
 ### Synopsis
 
-Removes a 'allow' entry. Able to control a single (localhost) server as well as
-cluster of servers.
+Removes a 'allow' entry. Able to control a single (localhost) node as well as
+cluster of nodes.
 
 ```
 jrctl firewall unallow [flags]
@@ -25,13 +25,13 @@ jrctl firewall unallow -t admin -a 1.1.1.1 -p 22
 ### Options
 
 ```
-  -a, --address string     ip address
-  -f, --file string        use text file with line separated ips
-  -h, --help               help for unallow
-  -p, --port int           port to unallow
-      --protocol string    specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
-  -q, --quiet              display no input
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -a, --address string    ip address
+  -f, --file string       use text file with line separated ips
+  -h, --help              help for unallow
+  -p, --port int          port to unallow
+      --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
+  -q, --quiet             display no input
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

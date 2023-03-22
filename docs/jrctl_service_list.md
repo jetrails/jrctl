@@ -4,9 +4,9 @@ List services with their statuses and abilities.
 
 ### Synopsis
 
-List services with their statuses and abilities.. Specifing a server type will
-only display results for servers of that type. Specifing the service will filter
-the list of services to include those services.
+List services with their statuses and abilities.. Specifing a tag will display
+nodes that have that tag. Specifing the service will filter the list of services
+to include those services.
 
 ```
 jrctl service list [flags]
@@ -24,10 +24,10 @@ jrctl service list -t www
 ### Options
 
 ```
-  -h, --help               help for list
-  -q, --quiet              display unique list of found services
-  -s, --service strings    filter by service
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for list
+  -q, --quiet             display unique list of found services
+  -s, --service strings   filter by service
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

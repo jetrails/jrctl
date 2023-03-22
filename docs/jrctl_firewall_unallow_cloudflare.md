@@ -20,9 +20,9 @@ jrctl firewall unallow cloudflare -t www
 ### Options
 
 ```
-  -h, --help               help for cloudflare
-  -q, --quiet              display no output
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for cloudflare
+  -q, --quiet             display no output
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

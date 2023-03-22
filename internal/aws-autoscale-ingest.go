@@ -38,7 +38,7 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 	Args: cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tag, _ := cmd.Flags().GetString("type")
+		tag, _ := cmd.Flags().GetString("tag")
 		tags := []string{tag}
 		asgName := args[0]
 
@@ -69,12 +69,12 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 		}
 
 		contexts := config.GetContexts(tags)
-		servers := []config.Entry{}
-		viper.UnmarshalKey("servers", &servers)
+		nodes := []config.Entry{}
+		viper.UnmarshalKey("nodes", &nodes)
 
 		if len(contexts) < 1 {
 			output.PrintTags()
-			output.ExitWithMessage(8, "\nno servers found with given type selector\n")
+			output.ExitWithMessage(8, "\nno nodes found with given tags\n")
 		}
 
 		if !config.ContextsHaveSameToken(contexts) {
@@ -85,7 +85,7 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 		tbl := output.CreateTable(Columns{
 			"Endpoint",
 			"Action",
-			"Type(s)",
+			"Tag(s)",
 		})
 
 		for _, context := range contexts {
@@ -95,12 +95,12 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 			} else {
 				action = "Deleted"
 				filtered := []config.Entry{}
-				for _, s := range servers {
+				for _, s := range nodes {
 					if s.Endpoint != context.Endpoint {
 						filtered = append(filtered, s)
 					}
 				}
-				servers = filtered
+				nodes = filtered
 			}
 			tbl.AddRow(Columns{
 				context.Endpoint,
@@ -119,13 +119,13 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 				entry := config.Entry{
 					Endpoint: endpoint,
 					Token:    contexts[0].Token,
-					Types:    tags,
+					Tags:    tags,
 				}
-				servers = append(servers, entry)
+				nodes = append(nodes, entry)
 			}
 		}
 
-		viper.Set("servers", servers)
+		viper.Set("nodes", nodes)
 		viper.WriteConfig()
 
 		output.Print()
@@ -137,5 +137,5 @@ func init() {
 	awsCmd.AddCommand(awsAutoscaleIngestCmd)
 	awsAutoscaleIngestCmd.Flags().SortFlags = true
 	awsAutoscaleIngestCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	awsAutoscaleIngestCmd.Flags().StringP("type", "t", "www", "filter servers using type selectors, only one selector allowed")
+	awsAutoscaleIngestCmd.Flags().StringP("tag", "t", "www", "filter nodes using tag")
 }

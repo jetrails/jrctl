@@ -7,8 +7,8 @@ Restart specified services in deployment
 Restart specified services in deployment. In order to successfully restart a
 service, the server first validates the respected service's config file. Once
 deemed valid, the service is restarted. Services can be repeated and execution
-will happen in the order that is given. Specifing a server type will only
-display results for servers of that type.
+will happen in the order that is given. Specifing a tag will display nodes that
+have that tag.
 
 ```
 jrctl service restart SERVICE... [flags]
@@ -26,9 +26,9 @@ jrctl service restart nginx varnish php-fpm-7.2 nginx
 ### Options
 
 ```
-  -h, --help               help for restart
-  -q, --quiet              display no output
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for restart
+  -q, --quiet             display no output
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

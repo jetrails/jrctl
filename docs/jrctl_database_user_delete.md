@@ -9,9 +9,9 @@ jrctl database user delete USER@HOST [flags]
 ### Options
 
 ```
-  -h, --help               help for delete
-  -q, --quiet              only display confirmation code
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for delete
+  -q, --quiet             only display confirmation code
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

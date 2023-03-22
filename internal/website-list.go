@@ -17,7 +17,7 @@ var websiteListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = true
@@ -59,5 +59,5 @@ func init() {
 	websiteCmd.AddCommand(websiteListCmd)
 	websiteListCmd.Flags().SortFlags = true
 	websiteListCmd.Flags().BoolP("quiet", "q", false, "only display site names")
-	websiteListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	websiteListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

@@ -25,7 +25,7 @@ var nodeListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		identityFilters, _ := cmd.Flags().GetStringSlice("identity")
 		tokenIDFilters, _ := cmd.Flags().GetStringSlice("token-id")
 
@@ -39,7 +39,7 @@ var nodeListCmd = &cobra.Command{
 		tbl := output.CreateTable(Columns{
 			"Hostname",
 			"Server",
-			"Type(s)",
+			"Tag(s)",
 			"Token ID",
 			"Identity",
 			"Allowed Client IPs",
@@ -63,7 +63,7 @@ var nodeListCmd = &cobra.Command{
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
 					strings.TrimSuffix(context.Endpoint, ":27482"),
-					strings.Join(context.Types, ", "),
+					strings.Join(context.Tags, ", "),
 					response.Payload.TokenID,
 					response.Payload.Identity,
 					strings.Join(response.Payload.AllowedClientIPs, ", "),
@@ -72,7 +72,7 @@ var nodeListCmd = &cobra.Command{
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
 					strings.TrimSuffix(context.Endpoint, ":27482"),
-					strings.Join(context.Types, ", "),
+					strings.Join(context.Tags, ", "),
 				})
 			}
 		}
@@ -85,7 +85,7 @@ func init() {
 	nodeCmd.AddCommand(nodeListCmd)
 	nodeListCmd.Flags().SortFlags = true
 	nodeListCmd.Flags().BoolP("quiet", "q", false, "only display versions")
-	nodeListCmd.Flags().StringArrayP("type", "t", []string{}, "filter nodes using type selectors")
+	nodeListCmd.Flags().StringArrayP("tag", "t", []string{}, "filter nodes using tags")
 	nodeListCmd.Flags().StringSliceP("identity", "i", []string{}, "filter with identity")
 	nodeListCmd.Flags().StringSliceP("token-id", "I", []string{}, "filter with token id")
 }

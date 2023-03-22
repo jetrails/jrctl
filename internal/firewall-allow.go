@@ -17,7 +17,7 @@ var firewallAllowCmd = &cobra.Command{
 		text.Paragraph([]string{
 			"Allows a specified IP address to bypass the local system firewall by creating an 'allow' entry into the permanent firewall config.",
 			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
-			"Able to control a single (localhost) server as well as cluster of servers.",
+			"Able to control a single (localhost) node as well as cluster of nodes.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -39,7 +39,7 @@ var firewallAllowCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		ports, _ := cmd.Flags().GetIntSlice("port")
 		comment, _ := cmd.Flags().GetString("comment")
 		protocol, _ := cmd.Flags().GetString("protocol")
@@ -78,7 +78,7 @@ func init() {
 	firewallCmd.AddCommand(firewallAllowCmd)
 	firewallAllowCmd.Flags().SortFlags = true
 	firewallAllowCmd.Flags().BoolP("quiet", "q", false, "display no input")
-	firewallAllowCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	firewallAllowCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 	firewallAllowCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallAllowCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
 	firewallAllowCmd.Flags().IntSliceP("port", "p", []int{}, "port to allow, can be specified multiple times")

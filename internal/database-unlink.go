@@ -17,7 +17,7 @@ var databaseUnlinkCmd = &cobra.Command{
 	Example: text.Examples([]string{}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		user, from := SplitUserAndHost(args[0])
 		dbName := args[1]
 
@@ -61,5 +61,5 @@ func init() {
 	databaseCmd.AddCommand(databaseUnlinkCmd)
 	databaseUnlinkCmd.Flags().SortFlags = true
 	databaseUnlinkCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseUnlinkCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseUnlinkCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

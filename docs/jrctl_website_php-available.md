@@ -16,9 +16,9 @@ jrctl website php-available -q
 ### Options
 
 ```
-  -h, --help               help for php-available
-  -q, --quiet              display only available php-fpm versions
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for php-available
+  -q, --quiet             display only available php-fpm versions
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

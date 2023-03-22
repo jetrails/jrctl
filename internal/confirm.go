@@ -43,7 +43,7 @@ var confirmCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		identifier := input.GetFirstArgumentOrPipe(args)
 
 		output := NewOutput(quiet, tags)
@@ -91,5 +91,5 @@ func init() {
 	RootCmd.AddCommand(confirmCmd)
 	confirmCmd.Flags().SortFlags = true
 	confirmCmd.Flags().BoolP("quiet", "q", false, "display minimal output, if any")
-	confirmCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	confirmCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

@@ -17,9 +17,9 @@ jrctl report audit -o json
 ### Options
 
 ```
-  -f, --format string      specify 'table' or 'json' (default "table")
-  -h, --help               help for audit
-  -t, --type stringArray   filter servers using type selectors
+  -f, --format string     specify 'table' or 'json' (default "table")
+  -h, --help              help for audit
+  -t, --tag stringArray   filter nodes using tags
 ```
 
 ### SEE ALSO

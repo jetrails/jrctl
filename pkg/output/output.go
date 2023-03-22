@@ -31,7 +31,7 @@ func NewOutput(quiet bool, tags []string) *Output {
 	servers := NewTable(Columns{
 		"Hostname",
 		"Server",
-		"Type(s)",
+		"Tag(s)",
 		"Response",
 	})
 	servers.Quiet = quiet
@@ -55,7 +55,7 @@ func (o *Output) AddServer(context config.Context, response *api.GenericResponse
 	o.Servers.AddRow(Columns{
 		response.Metadata["hostname"],
 		strings.TrimSuffix(context.Endpoint, ":27482"),
-		strings.Join(context.Types, ", "),
+		strings.Join(context.Tags, ", "),
 		message,
 	})
 }
@@ -69,7 +69,7 @@ func (o *Output) AddUniqueServer(context config.Context, response *api.GenericRe
 	o.Servers.AddRow(Columns{
 		response.Metadata["hostname"],
 		strings.TrimSuffix(context.Endpoint, ":27482"),
-		strings.Join(context.Types, ", "),
+		strings.Join(context.Tags, ", "),
 		message,
 	})
 }

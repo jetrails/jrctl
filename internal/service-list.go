@@ -16,7 +16,7 @@ var serviceListCmd = &cobra.Command{
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
 			"List services with their statuses and abilities..",
-			"Specifing a server type will only display results for servers of that type.",
+			"Specifing a tag will display nodes that have that tag.",
 			"Specifing the service will filter the list of services to include those services.",
 		}),
 	}),
@@ -28,7 +28,7 @@ var serviceListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		serviceSelectors, _ := cmd.Flags().GetStringSlice("service")
 
 		output := NewOutput(quiet, tags)
@@ -86,6 +86,6 @@ func init() {
 	serviceCmd.AddCommand(serviceListCmd)
 	serviceListCmd.Flags().SortFlags = true
 	serviceListCmd.Flags().BoolP("quiet", "q", false, "display unique list of found services")
-	serviceListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	serviceListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 	serviceListCmd.Flags().StringSliceP("service", "s", []string{}, "filter by service")
 }

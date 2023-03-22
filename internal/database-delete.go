@@ -17,7 +17,7 @@ var databaseDeleteCmd = &cobra.Command{
 	Example: text.Examples([]string{}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		dbName := args[0]
 
 		output := NewOutput(quiet, tags)
@@ -56,5 +56,5 @@ func init() {
 	databaseCmd.AddCommand(databaseDeleteCmd)
 	databaseDeleteCmd.Flags().SortFlags = true
 	databaseDeleteCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseDeleteCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseDeleteCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

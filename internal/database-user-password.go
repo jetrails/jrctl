@@ -32,7 +32,7 @@ var databaseUserPasswordCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		plugin, _ := cmd.Flags().GetString("plugin")
 		name, from := SplitUserAndHost(args[0])
 
@@ -72,6 +72,6 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserPasswordCmd)
 	databaseUserPasswordCmd.Flags().SortFlags = true
 	databaseUserPasswordCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseUserPasswordCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseUserPasswordCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 	databaseUserPasswordCmd.Flags().StringP("plugin", "p", "mysql_native_password", "specify auth plugin")
 }

@@ -9,9 +9,9 @@ jrctl database unlink USER@FROM DB_NAME [flags]
 ### Options
 
 ```
-  -h, --help               help for unlink
-  -q, --quiet              only display confirmation code
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for unlink
+  -q, --quiet             only display confirmation code
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

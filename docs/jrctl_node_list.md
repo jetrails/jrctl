@@ -22,8 +22,8 @@ jrctl node token
   -h, --help               help for list
   -i, --identity strings   filter with identity
   -q, --quiet              only display versions
+  -t, --tag stringArray    filter nodes using tags
   -I, --token-id strings   filter with token id
-  -t, --type stringArray   filter nodes using type selectors
 ```
 
 ### SEE ALSO

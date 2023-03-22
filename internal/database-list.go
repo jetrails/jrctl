@@ -21,7 +21,7 @@ var databaseListCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = true
@@ -73,5 +73,5 @@ func init() {
 	databaseCmd.AddCommand(databaseListCmd)
 	databaseListCmd.Flags().SortFlags = true
 	databaseListCmd.Flags().BoolP("quiet", "q", false, "only display database names")
-	databaseListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

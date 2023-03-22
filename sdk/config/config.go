@@ -11,7 +11,7 @@ import (
 type Context struct {
 	Endpoint string   `json:"endpoint"`
 	Token    string   `json:"token"`
-	Types    []string `json:"types"`
+	Tags    []string `json:"tags"`
 	Debug    bool     `json:"debug"`
 	Insecure bool     `json:"insecure"`
 }
@@ -19,7 +19,7 @@ type Context struct {
 type Entry struct {
 	Endpoint string   `json:"endpoint"`
 	Token    string   `json:"token"`
-	Types    []string `json:"types"`
+	Tags    []string `json:"tags"`
 }
 
 type TokenData struct {
@@ -55,14 +55,14 @@ func LoadContexts() []Context {
 	var contexts []Context
 	debug := env.GetBool("debug", false)
 	insecure := env.GetBool("insecure", true)
-	viper.UnmarshalKey("servers", &contexts)
+	viper.UnmarshalKey("nodes", &contexts)
 	if len(contexts) == 0 {
 		context := Context{
 			Debug:    debug,
 			Insecure: insecure,
 			Endpoint: "127.0.0.1:27482",
 			Token:    "AUTH_TOKEN_IS_NOT_CONFIGURED",
-			Types:    []string{"localhost"},
+			Tags:    []string{"localhost"},
 		}
 		contexts = append(contexts, context)
 	}
@@ -85,7 +85,7 @@ func GetContexts(filters []string) []Context {
 			targets := strings.Split(filter, ",")
 			for _, target := range targets {
 				target = strings.TrimSpace(target)
-				qualifies = qualifies && (target == "" || array.ContainsString(context.Types, target))
+				qualifies = qualifies && (target == "" || array.ContainsString(context.Tags, target))
 			}
 			if qualifies {
 				results = append(results, context)

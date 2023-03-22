@@ -20,9 +20,9 @@ jrctl node version
 ### Options
 
 ```
-  -h, --help               help for version
-  -q, --quiet              only display versions
-  -t, --type stringArray   filter nodes using type selectors
+  -h, --help              help for version
+  -q, --quiet             only display versions
+  -t, --tag stringArray   filter nodes using tags
 ```
 
 ### SEE ALSO

@@ -17,8 +17,8 @@ Reload specified services in deployment. In order to successfully reload a
 service, the server first validates the respected service's config file. Once
 deemed valid, the service is reloaded. Is passed service does not support
 reloading, then a restart will happen instead. Services can be repeated and
-execution will happen in the order that is given. Specifing a server type will
-only display results for servers of that type.
+execution will happen in the order that is given. Specifing a tag will display
+nodes that have that tag.
 
 
 .SH OPTIONS
@@ -31,8 +31,8 @@ only display results for servers of that type.
 	display no output
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP=[localhost]
-	filter servers using type selectors
+\fB\-t\fP, \fB\-\-tag\fP=[localhost]
+	filter nodes using tags
 
 
 .SH EXAMPLE

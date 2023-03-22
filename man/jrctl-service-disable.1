@@ -14,8 +14,8 @@ jrctl\-service\-disable \- Disable specified services in deployment
 .SH DESCRIPTION
 .PP
 Disable specified services in deployment. Services can be repeated and execution
-will happen in the order that is given. Specifing a server type will only
-display results for servers of that type.
+will happen in the order that is given. Specifing a tag will display nodes that
+have that tag.
 
 
 .SH OPTIONS
@@ -28,8 +28,8 @@ display results for servers of that type.
 	display no output
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP=[localhost]
-	filter servers using type selectors
+\fB\-t\fP, \fB\-\-tag\fP=[localhost]
+	filter nodes using tags
 
 
 .SH EXAMPLE

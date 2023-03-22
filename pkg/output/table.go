@@ -210,7 +210,7 @@ func (tbl *Table) ExitCodeFromResponse(res *api.GenericResponse) {
 		os.Exit(0)
 	}
 	switch res.Code {
-	// 1 is reserved for "No matching servers"
+	// 1 is reserved for "No matching nodes"
 	// 2 is reserved for "No results"
 	case 3:
 		os.Exit(3) // Reserved for "Client-Side Error"

@@ -18,7 +18,7 @@ var serviceEnableCmd = &cobra.Command{
 		text.Paragraph([]string{
 			"Enable specified services in deployment.",
 			"Services can be repeated and execution will happen in the order that is given.",
-			"Specifing a server type will only display results for servers of that type.",
+			"Specifing a tag will display nodes that have that tag.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -29,7 +29,7 @@ var serviceEnableCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = false
@@ -73,5 +73,5 @@ func init() {
 	serviceCmd.AddCommand(serviceEnableCmd)
 	serviceEnableCmd.Flags().SortFlags = true
 	serviceEnableCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	serviceEnableCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	serviceEnableCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

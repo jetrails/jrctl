@@ -1,11 +1,11 @@
 ## jrctl firewall list
 
-List firewall entries across configured servers
+List firewall entries across configured nodes
 
 ### Synopsis
 
-List firewall entries across configured servers. Specifing a server type will
-only display results for servers of that type.
+List firewall entries across configured nodes. Specifing a tag will display
+nodes that have that tag.
 
 ```
 jrctl firewall list [flags]
@@ -23,9 +23,9 @@ jrctl firewall list -t www
 ### Options
 
 ```
-  -h, --help               help for list
-  -q, --quiet              display number of entries found for each matching server
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for list
+  -q, --quiet             display number of entries found for each matching server
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

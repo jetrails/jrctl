@@ -19,7 +19,7 @@ var websitePhpSwitchCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		name := args[0]
 		version := args[1]
 
@@ -51,5 +51,5 @@ func init() {
 	websiteCmd.AddCommand(websitePhpSwitchCmd)
 	websitePhpSwitchCmd.Flags().SortFlags = true
 	websitePhpSwitchCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	websitePhpSwitchCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	websitePhpSwitchCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

@@ -13,9 +13,9 @@ jrctl\-service\-list \- List services with their statuses and abilities.
 
 .SH DESCRIPTION
 .PP
-List services with their statuses and abilities.. Specifing a server type will
-only display results for servers of that type. Specifing the service will filter
-the list of services to include those services.
+List services with their statuses and abilities.. Specifing a tag will display
+nodes that have that tag. Specifing the service will filter the list of services
+to include those services.
 
 
 .SH OPTIONS
@@ -32,8 +32,8 @@ the list of services to include those services.
 	filter by service
 
 .PP
-\fB\-t\fP, \fB\-\-type\fP=[localhost]
-	filter servers using type selectors
+\fB\-t\fP, \fB\-\-tag\fP=[localhost]
+	filter nodes using tags
 
 
 .SH EXAMPLE

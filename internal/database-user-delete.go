@@ -17,7 +17,7 @@ var databaseUserDeleteCmd = &cobra.Command{
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		name, from := SplitUserAndHost(args[0])
 
 		output := NewOutput(quiet, tags)
@@ -56,5 +56,5 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserDeleteCmd)
 	databaseUserDeleteCmd.Flags().SortFlags = true
 	databaseUserDeleteCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseUserDeleteCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseUserDeleteCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

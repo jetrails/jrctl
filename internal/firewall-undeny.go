@@ -16,7 +16,7 @@ var firewallUnDenyCmd = &cobra.Command{
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
 			"Removes a 'deny' entry.",
-			"Able to control a single (localhost) server as well as cluster of servers.",
+			"Able to control a single (localhost) node as well as cluster of nodes.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -38,7 +38,7 @@ var firewallUnDenyCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		port, _ := cmd.Flags().GetInt("port")
 		protocol, _ := cmd.Flags().GetString("protocol")
 		address, _ := cmd.Flags().GetString("address")
@@ -75,7 +75,7 @@ func init() {
 	firewallCmd.AddCommand(firewallUnDenyCmd)
 	firewallUnDenyCmd.Flags().SortFlags = true
 	firewallUnDenyCmd.Flags().BoolP("quiet", "q", false, "display no input")
-	firewallUnDenyCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	firewallUnDenyCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 	firewallUnDenyCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallUnDenyCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
 	firewallUnDenyCmd.Flags().IntP("port", "p", 0, "port to undeny")

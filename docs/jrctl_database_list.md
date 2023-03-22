@@ -17,9 +17,9 @@ jrctl database list -t db
 ### Options
 
 ```
-  -h, --help               help for list
-  -q, --quiet              only display database names
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for list
+  -q, --quiet             only display database names
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

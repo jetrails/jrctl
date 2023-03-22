@@ -31,7 +31,7 @@ var reportAuditCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		format, _ := cmd.Flags().GetString("format")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		responses := []report.AuditResponse{}
 		output := NewOutput(false, tags)
@@ -192,5 +192,5 @@ func init() {
 	reportCmd.AddCommand(reportAuditCmd)
 	reportAuditCmd.Flags().SortFlags = true
 	reportAuditCmd.Flags().StringP("format", "f", "table", "specify 'table' or 'json'")
-	reportAuditCmd.Flags().StringArrayP("type", "t", []string{}, "filter servers using type selectors")
+	reportAuditCmd.Flags().StringArrayP("tag", "t", []string{}, "filter nodes using tags")
 }

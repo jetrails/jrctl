@@ -21,7 +21,7 @@ var serviceReloadCmd = &cobra.Command{
 			"Once deemed valid, the service is reloaded.",
 			"Is passed service does not support reloading, then a restart will happen instead.",
 			"Services can be repeated and execution will happen in the order that is given.",
-			"Specifing a server type will only display results for servers of that type.",
+			"Specifing a tag will display nodes that have that tag.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -32,7 +32,7 @@ var serviceReloadCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = false
@@ -76,5 +76,5 @@ func init() {
 	serviceCmd.AddCommand(serviceReloadCmd)
 	serviceReloadCmd.Flags().SortFlags = true
 	serviceReloadCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	serviceReloadCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	serviceReloadCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

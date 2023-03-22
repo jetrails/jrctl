@@ -27,7 +27,7 @@ var databaseUserCreateCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		plugin, _ := cmd.Flags().GetString("plugin")
 		name, from := SplitUserAndHost(args[0])
 
@@ -73,6 +73,6 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserCreateCmd)
 	databaseUserCreateCmd.Flags().SortFlags = true
 	databaseUserCreateCmd.Flags().BoolP("quiet", "q", false, "only display password")
-	databaseUserCreateCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseUserCreateCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 	databaseUserCreateCmd.Flags().StringP("plugin", "p", "mysql_native_password", "specify auth plugin")
 }

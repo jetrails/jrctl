@@ -24,7 +24,7 @@ var nodeVersionCmd = &cobra.Command{
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = false
@@ -69,5 +69,5 @@ func init() {
 	nodeCmd.AddCommand(nodeVersionCmd)
 	nodeVersionCmd.Flags().SortFlags = true
 	nodeVersionCmd.Flags().BoolP("quiet", "q", false, "only display versions")
-	nodeVersionCmd.Flags().StringArrayP("type", "t", []string{}, "filter nodes using type selectors")
+	nodeVersionCmd.Flags().StringArrayP("tag", "t", []string{}, "filter nodes using tags")
 }

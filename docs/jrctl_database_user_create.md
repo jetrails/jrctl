@@ -9,10 +9,10 @@ jrctl database user create USER@HOST [flags]
 ### Options
 
 ```
-  -h, --help               help for create
-  -p, --plugin string      specify auth plugin (default "mysql_native_password")
-  -q, --quiet              only display password
-  -t, --type stringArray   filter servers using type selectors (default [localhost])
+  -h, --help              help for create
+  -p, --plugin string     specify auth plugin (default "mysql_native_password")
+  -q, --quiet             only display password
+  -t, --tag stringArray   filter nodes using tags (default [localhost])
 ```
 
 ### SEE ALSO

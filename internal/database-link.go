@@ -15,7 +15,7 @@ var databaseLinkCmd = &cobra.Command{
 	Example: text.Examples([]string{}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 		user, from := SplitUserAndHost(args[0])
 		dbName := args[1]
 
@@ -52,5 +52,5 @@ func init() {
 	databaseCmd.AddCommand(databaseLinkCmd)
 	databaseLinkCmd.Flags().SortFlags = true
 	databaseLinkCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	databaseLinkCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "filter servers using type selectors")
+	databaseLinkCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
 }

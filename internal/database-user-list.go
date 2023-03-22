@@ -16,7 +16,7 @@ var databaseUserListCmd = &cobra.Command{
 	Example: text.Examples([]string{}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
-		tags, _ := cmd.Flags().GetStringArray("type")
+		tags, _ := cmd.Flags().GetStringArray("tag")
 
 		output := NewOutput(quiet, tags)
 		output.DisplayServers = true
@@ -69,5 +69,5 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserListCmd)
 	databaseUserListCmd.Flags().SortFlags = true
 	databaseUserListCmd.Flags().BoolP("quiet", "q", false, "only display database user names")
-	databaseUserListCmd.Flags().StringArrayP("type", "t", []string{"localhost"}, "specify server type, useful for cluster")
+	databaseUserListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "specify tag, useful for cluster")
 }
