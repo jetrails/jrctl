@@ -41,7 +41,7 @@ var updateCmd = &cobra.Command{
 }
 
 func init() {
-	RootCmd.AddCommand(updateCmd)
+	versionCmd.AddCommand(updateCmd)
 	updateCmd.Flags().SortFlags = true
 	updateCmd.Flags().BoolP("quiet", "q", false, "display no output")
 }

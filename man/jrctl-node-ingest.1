@@ -1,0 +1,56 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2023" "Copyright 2023 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-node\-ingest \- Ingest node token and save it to config
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl node ingest [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Ingest node token and save it to config
+
+
+.SH OPTIONS
+.PP
+\fB\-e\fP, \fB\-\-endpoint\fP="127.0.0.1:27482"
+	filter nodes using this endpoint
+
+.PP
+\fB\-f\fP, \fB\-\-force\fP[=false]
+	create new entry if no matching nodes were found
+
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for ingest
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	output only errors
+
+.PP
+\fB\-t\fP, \fB\-\-type\fP=[]
+	types to attach to found nodes
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+echo \-n TOKEN | jrctl node ingest \-t localhost
+echo \-n TOKEN | jrctl node ingest \-t jump \-e 10.10.10.7
+echo \-n TOKEN | jrctl node ingest \-t web \-e 10.10.10.6 \-f
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-node(1)\fP

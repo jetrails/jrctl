@@ -210,6 +210,7 @@ var versionCmd = &cobra.Command{
 		"jrctl version",
 		"jrctl version -q",
 	}),
+	Args: cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		if !quiet {

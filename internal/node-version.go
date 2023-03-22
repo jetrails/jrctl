@@ -10,17 +10,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var serverVersionCmd = &cobra.Command{
+var nodeVersionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Display daemon version running on configured servers",
+	Short: "Display daemon version running on configured nodes",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
-			"Display daemon version running on configured servers.",
-			"Specifing a server type will only display results for servers of that type.",
+			"Display daemon version running on configured nodes.",
+			"Specifing a node type will only display results for nodes of that type.",
 		}),
 	}),
 	Example: text.Examples([]string{
-		"jrctl server version",
+		"jrctl node version",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
@@ -66,8 +66,8 @@ var serverVersionCmd = &cobra.Command{
 }
 
 func init() {
-	serverCmd.AddCommand(serverVersionCmd)
-	serverVersionCmd.Flags().SortFlags = true
-	serverVersionCmd.Flags().BoolP("quiet", "q", false, "only display versions")
-	serverVersionCmd.Flags().StringArrayP("type", "t", []string{}, "filter servers using type selectors")
+	nodeCmd.AddCommand(nodeVersionCmd)
+	nodeVersionCmd.Flags().SortFlags = true
+	nodeVersionCmd.Flags().BoolP("quiet", "q", false, "only display versions")
+	nodeVersionCmd.Flags().StringArrayP("type", "t", []string{}, "filter nodes using type selectors")
 }

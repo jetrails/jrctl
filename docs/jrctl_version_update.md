@@ -1,9 +1,9 @@
-## jrctl update
+## jrctl version update
 
 Check for available updates
 
 ```
-jrctl update [flags]
+jrctl version update [flags]
 ```
 
 ### Examples
@@ -21,5 +21,5 @@ jrctl update
 
 ### SEE ALSO
 
-* [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
+* [jrctl version](jrctl_version.md)	 - Display current version
 

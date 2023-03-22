@@ -18,11 +18,10 @@ our Github repository.
 
 * [jrctl database](jrctl_database.md)	 - Manage databases in deployment
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with server firewall
+* [jrctl node](jrctl_node.md)	 - Manage configured nodes
 * [jrctl report](jrctl_report.md)	 - Generate reports for deployment
 * [jrctl secret](jrctl_secret.md)	 - Interact with one-time secret service
-* [jrctl server](jrctl_server.md)	 - Manage servers in deployment
 * [jrctl service](jrctl_service.md)	 - Interact with services in deployment
-* [jrctl update](jrctl_update.md)	 - Check for available updates
 * [jrctl utility](jrctl_utility.md)	 - Auxiliary command-line tools
 * [jrctl version](jrctl_version.md)	 - Display current version
 * [jrctl website](jrctl_website.md)	 - Manage websites in deployment

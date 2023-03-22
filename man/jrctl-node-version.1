@@ -3,18 +3,18 @@
 
 .SH NAME
 .PP
-jrctl\-server\-version \- Display daemon version running on configured servers
+jrctl\-node\-version \- Display daemon version running on configured nodes
 
 
 .SH SYNOPSIS
 .PP
-\fBjrctl server version [flags]\fP
+\fBjrctl node version [flags]\fP
 
 
 .SH DESCRIPTION
 .PP
-Display daemon version running on configured servers. Specifing a server type
-will only display results for servers of that type.
+Display daemon version running on configured nodes. Specifing a node type will
+only display results for nodes of that type.
 
 
 .SH OPTIONS
@@ -28,7 +28,7 @@ will only display results for servers of that type.
 
 .PP
 \fB\-t\fP, \fB\-\-type\fP=[]
-	filter servers using type selectors
+	filter nodes using type selectors
 
 
 .SH EXAMPLE
@@ -36,7 +36,7 @@ will only display results for servers of that type.
 .RS
 
 .nf
-jrctl server version
+jrctl node version
 
 .fi
 .RE
@@ -44,4 +44,4 @@ jrctl server version
 
 .SH SEE ALSO
 .PP
-\fBjrctl\-server(1)\fP
+\fBjrctl\-node(1)\fP

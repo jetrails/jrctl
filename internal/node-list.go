@@ -11,17 +11,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var serverListCmd = &cobra.Command{
+var nodeListCmd = &cobra.Command{
 	Use:     "list",
 	Aliases: []string{"token"},
-	Short:   "Displays token information for all configured servers",
+	Short:   "Displays token information for all configured nodes",
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
-			"Displays token information for all configured servers.",
+			"Displays token information for all configured nodes.",
 		}),
 	}),
 	Example: text.Examples([]string{
-		"jrctl server token",
+		"jrctl node token",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
@@ -82,10 +82,10 @@ var serverListCmd = &cobra.Command{
 }
 
 func init() {
-	serverCmd.AddCommand(serverListCmd)
-	serverListCmd.Flags().SortFlags = true
-	serverListCmd.Flags().BoolP("quiet", "q", false, "only display versions")
-	serverListCmd.Flags().StringArrayP("type", "t", []string{}, "filter servers using type selectors")
-	serverListCmd.Flags().StringSliceP("identity", "i", []string{}, "filter with identity")
-	serverListCmd.Flags().StringSliceP("token-id", "I", []string{}, "filter with token id")
+	nodeCmd.AddCommand(nodeListCmd)
+	nodeListCmd.Flags().SortFlags = true
+	nodeListCmd.Flags().BoolP("quiet", "q", false, "only display versions")
+	nodeListCmd.Flags().StringArrayP("type", "t", []string{}, "filter nodes using type selectors")
+	nodeListCmd.Flags().StringSliceP("identity", "i", []string{}, "filter with identity")
+	nodeListCmd.Flags().StringSliceP("token-id", "I", []string{}, "filter with token id")
 }

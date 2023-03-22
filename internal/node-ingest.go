@@ -12,13 +12,13 @@ import (
 	"github.com/spf13/viper"
 )
 
-var serverIngestCmd = &cobra.Command{
+var nodeIngestCmd = &cobra.Command{
 	Use:   "ingest",
-	Short: "Ingest server token and save it to config",
+	Short: "Ingest node token and save it to config",
 	Example: text.Examples([]string{
-		"echo -n TOKEN | jrctl server ingest -t localhost",
-		"echo -n TOKEN | jrctl server ingest -t jump -e 10.10.10.7",
-		"echo -n TOKEN | jrctl server ingest -t web -e 10.10.10.6 -f",
+		"echo -n TOKEN | jrctl node ingest -t localhost",
+		"echo -n TOKEN | jrctl node ingest -t jump -e 10.10.10.7",
+		"echo -n TOKEN | jrctl node ingest -t web -e 10.10.10.6 -f",
 	}),
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if !input.HasDataInPipe() {
@@ -77,17 +77,17 @@ var serverIngestCmd = &cobra.Command{
 			output.AddTable(tbl)
 			output.Print()
 		} else {
-			output.ExitWithMessage(1, "\ncould not find any matching servers\n")
+			output.ExitWithMessage(1, "\ncould not find any matching nodes\n")
 		}
 	},
 }
 
 func init() {
-	serverCmd.AddCommand(serverIngestCmd)
-	serverIngestCmd.Flags().SortFlags = true
-	serverIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")
-	serverIngestCmd.Flags().StringSliceP("type", "t", []string{}, "filter servers using type selectors, all must match")
-	serverIngestCmd.Flags().BoolP("force", "f", false, "create new entry even if matching entries exist")
-	serverIngestCmd.Flags().StringP("endpoint", "e", "127.0.0.1:27482", "server endpoint used for new entries only")
-	serverIngestCmd.MarkFlagRequired("type")
+	nodeCmd.AddCommand(nodeIngestCmd)
+	nodeIngestCmd.Flags().SortFlags = true
+	nodeIngestCmd.Flags().BoolP("quiet", "q", false, "output only errors")
+	nodeIngestCmd.Flags().StringP("endpoint", "e", "127.0.0.1:27482", "filter nodes using this endpoint")
+	nodeIngestCmd.Flags().StringSliceP("type", "t", []string{}, "types to attach to found nodes")
+	nodeIngestCmd.Flags().BoolP("force", "f", false, "create new entry if no matching nodes were found")
+	nodeIngestCmd.MarkFlagRequired("type")
 }

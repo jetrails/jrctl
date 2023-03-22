@@ -23,4 +23,5 @@ jrctl version -q
 ### SEE ALSO
 
 * [jrctl](jrctl.md)	 - Command line tool to help interact with the >jetrails_ API.
+* [jrctl version update](jrctl_version_update.md)	 - Check for available updates
 
