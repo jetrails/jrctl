@@ -26,8 +26,13 @@ var firewallUnDenyCmd = &cobra.Command{
 		"# Multi-Server Cluster",
 		"jrctl firewall undeny -t db -a 1.1.1.1 -p 3306",
 		"jrctl firewall undeny -t admin -a 1.1.1.1 -p 22",
+		"jrctl firewall undeny -t admin -a 1.1.1.1 -p 22,2223",
 	}),
 	Args: func(cmd *cobra.Command, args []string) error {
+		ports, _ := cmd.Flags().GetIntSlice("port")
+		if len( ports ) < 1 {
+			return fmt.Errorf("must pass at least one port with the 'port' flag")
+		}
 		if !cmd.Flag("address").Changed && !cmd.Flag("file").Changed {
 			return fmt.Errorf("must pass either the 'address' or 'file' flag")
 		}
@@ -39,7 +44,7 @@ var firewallUnDenyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
 		tags, _ := cmd.Flags().GetStringArray("tag")
-		port, _ := cmd.Flags().GetInt("port")
+		ports, _ := cmd.Flags().GetIntSlice("port")
 		protocol, _ := cmd.Flags().GetString("protocol")
 		address, _ := cmd.Flags().GetString("address")
 		file, _ := cmd.Flags().GetString("file")
@@ -52,17 +57,19 @@ var firewallUnDenyCmd = &cobra.Command{
 
 		for _, context := range config.GetContexts(tags) {
 			for _, address := range addresses {
-				request := firewall.UnDenyRequest{
-					Address:  address,
-					Port:     port,
-					Protocol: protocol,
+				for _, port := range ports {
+					request := firewall.UnDenyRequest{
+						Address:  address,
+						Port:     port,
+						Protocol: protocol,
+					}
+					response := firewall.UnDeny(context, request)
+					output.AddServer(
+						context,
+						response.GetGeneric(),
+						response.GetFirstMessage(),
+					)
 				}
-				response := firewall.UnDeny(context, request)
-				output.AddServer(
-					context,
-					response.GetGeneric(),
-					response.GetFirstMessage(),
-				)
 			}
 		}
 
@@ -78,7 +85,7 @@ func init() {
 	firewallUnDenyCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 	firewallUnDenyCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallUnDenyCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
-	firewallUnDenyCmd.Flags().IntP("port", "p", 0, "port to undeny")
+	firewallUnDenyCmd.Flags().IntSliceP("port", "p", [] int {}, "port to undeny, can be specified multiple times")
 	firewallUnDenyCmd.Flags().String("protocol", "tcp", "specify 'tcp' or 'udp', default is 'tcp'")
 	firewallUnDenyCmd.MarkFlagRequired("port")
 }

@@ -20,6 +20,7 @@ jrctl firewall undeny -a 1.1.1.1 -p 22
 # Multi-Server Cluster
 jrctl firewall undeny -t db -a 1.1.1.1 -p 3306
 jrctl firewall undeny -t admin -a 1.1.1.1 -p 22
+jrctl firewall undeny -t admin -a 1.1.1.1 -p 22,2223
 ```
 
 ### Options
@@ -28,7 +29,7 @@ jrctl firewall undeny -t admin -a 1.1.1.1 -p 22
   -a, --address string    ip address
   -f, --file string       use text file with line separated ips
   -h, --help              help for undeny
-  -p, --port int          port to undeny
+  -p, --port ints         port to undeny, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
   -q, --quiet             display no input
   -t, --tag stringArray   filter nodes using tags (default [default])

@@ -20,6 +20,7 @@ jrctl firewall unallow -a 1.1.1.1 -p 22
 # Multi-Server Cluster
 jrctl firewall unallow -t db -a 1.1.1.1 -p 3306
 jrctl firewall unallow -t admin -a 1.1.1.1 -p 22
+jrctl firewall unallow -t admin -a 1.1.1.1 -p 80,443
 ```
 
 ### Options
@@ -28,7 +29,7 @@ jrctl firewall unallow -t admin -a 1.1.1.1 -p 22
   -a, --address string    ip address
   -f, --file string       use text file with line separated ips
   -h, --help              help for unallow
-  -p, --port int          port to unallow
+  -p, --port ints         port to unallow, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
   -q, --quiet             display no input
   -t, --tag stringArray   filter nodes using tags (default [default])

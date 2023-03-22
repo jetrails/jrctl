@@ -31,8 +31,8 @@ nodes.
 	help for unallow
 
 .PP
-\fB\-p\fP, \fB\-\-port\fP=0
-	port to unallow
+\fB\-p\fP, \fB\-\-port\fP=[]
+	port to unallow, can be specified multiple times
 
 .PP
 \fB\-\-protocol\fP="tcp"
@@ -58,6 +58,7 @@ jrctl firewall unallow \-a 1.1.1.1 \-p 22
 # Multi\-Server Cluster
 jrctl firewall unallow \-t db \-a 1.1.1.1 \-p 3306
 jrctl firewall unallow \-t admin \-a 1.1.1.1 \-p 22
+jrctl firewall unallow \-t admin \-a 1.1.1.1 \-p 80,443
 
 .fi
 .RE
