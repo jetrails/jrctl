@@ -69,5 +69,5 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserListCmd)
 	databaseUserListCmd.Flags().SortFlags = true
 	databaseUserListCmd.Flags().BoolP("quiet", "q", false, "only display database user names")
-	databaseUserListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "specify tag, useful for cluster")
+	databaseUserListCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "specify tag, useful for cluster")
 }

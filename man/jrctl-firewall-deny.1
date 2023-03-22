@@ -16,8 +16,7 @@ jrctl\-firewall\-deny \- Permanently denies a source IP address to a specific po
 Denies a specified IP address to bypass the local system firewall by creating an
 'deny' entry into the permanent firewall config. Grants unprivileged users
 ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) node as well as cluster of
-nodes.
+audit log. Able to control a single node as well as cluster of nodes.
 
 
 .SH OPTIONS
@@ -50,7 +49,7 @@ nodes.
 	display no input
 
 .PP
-\fB\-t\fP, \fB\-\-tag\fP=[localhost]
+\fB\-t\fP, \fB\-\-tag\fP=[default]
 	filter nodes using tags
 
 

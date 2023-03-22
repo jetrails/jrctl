@@ -49,5 +49,5 @@ func init() {
 	firewallUnAllowCmd.AddCommand(firewallUnAllowCloudflareCmd)
 	firewallUnAllowCloudflareCmd.Flags().SortFlags = true
 	firewallUnAllowCloudflareCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	firewallUnAllowCloudflareCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	firewallUnAllowCloudflareCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

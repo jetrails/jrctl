@@ -91,5 +91,5 @@ func init() {
 	RootCmd.AddCommand(confirmCmd)
 	confirmCmd.Flags().SortFlags = true
 	confirmCmd.Flags().BoolP("quiet", "q", false, "display minimal output, if any")
-	confirmCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	confirmCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

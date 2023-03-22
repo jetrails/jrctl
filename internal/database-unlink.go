@@ -61,5 +61,5 @@ func init() {
 	databaseCmd.AddCommand(databaseUnlinkCmd)
 	databaseUnlinkCmd.Flags().SortFlags = true
 	databaseUnlinkCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseUnlinkCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseUnlinkCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

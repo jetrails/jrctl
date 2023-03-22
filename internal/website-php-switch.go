@@ -51,5 +51,5 @@ func init() {
 	websiteCmd.AddCommand(websitePhpSwitchCmd)
 	websitePhpSwitchCmd.Flags().SortFlags = true
 	websitePhpSwitchCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	websitePhpSwitchCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	websitePhpSwitchCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

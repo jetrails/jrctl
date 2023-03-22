@@ -11,7 +11,7 @@ jrctl database user list [flags]
 ```
   -h, --help              help for list
   -q, --quiet             only display database user names
-  -t, --tag stringArray   specify tag, useful for cluster (default [localhost])
+  -t, --tag stringArray   specify tag, useful for cluster (default [default])
 ```
 
 ### SEE ALSO

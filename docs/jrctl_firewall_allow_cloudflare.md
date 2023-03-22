@@ -22,7 +22,7 @@ jrctl firewall allow cloudflare -t www
 ```
   -h, --help              help for cloudflare
   -q, --quiet             display no output
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

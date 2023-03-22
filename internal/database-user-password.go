@@ -72,6 +72,6 @@ func init() {
 	databaseUserCmd.AddCommand(databaseUserPasswordCmd)
 	databaseUserPasswordCmd.Flags().SortFlags = true
 	databaseUserPasswordCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseUserPasswordCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseUserPasswordCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 	databaseUserPasswordCmd.Flags().StringP("plugin", "p", "mysql_native_password", "specify auth plugin")
 }

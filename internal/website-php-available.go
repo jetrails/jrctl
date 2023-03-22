@@ -86,5 +86,5 @@ func init() {
 	websiteCmd.AddCommand(websitePhpAvailableCmd)
 	websitePhpAvailableCmd.Flags().SortFlags = true
 	websitePhpAvailableCmd.Flags().BoolP("quiet", "q", false, "display only available php-fpm versions")
-	websitePhpAvailableCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	websitePhpAvailableCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

@@ -4,8 +4,8 @@ Deletes deny entry given a source IP address and a port number
 
 ### Synopsis
 
-Removes a 'deny' entry. Able to control a single (localhost) node as well as
-cluster of nodes.
+Removes a 'deny' entry. Able to control a single node as well as cluster of
+nodes.
 
 ```
 jrctl firewall undeny [flags]
@@ -31,7 +31,7 @@ jrctl firewall undeny -t admin -a 1.1.1.1 -p 22
   -p, --port int          port to undeny
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
   -q, --quiet             display no input
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

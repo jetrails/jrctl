@@ -18,7 +18,7 @@ jrctl website php-available -q
 ```
   -h, --help              help for php-available
   -q, --quiet             display only available php-fpm versions
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

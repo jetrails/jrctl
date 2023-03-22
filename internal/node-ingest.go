@@ -16,7 +16,7 @@ var nodeIngestCmd = &cobra.Command{
 	Use:   "ingest",
 	Short: "Ingest node token and save it to config",
 	Example: text.Examples([]string{
-		"echo -n TOKEN | jrctl node ingest -t localhost",
+		"echo -n TOKEN | jrctl node ingest -t default",
 		"echo -n TOKEN | jrctl node ingest -t jump -e 10.10.10.7",
 		"echo -n TOKEN | jrctl node ingest -t web -e 10.10.10.6 -f",
 	}),

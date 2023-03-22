@@ -86,5 +86,5 @@ func init() {
 	firewallCmd.AddCommand(firewallListCmd)
 	firewallListCmd.Flags().SortFlags = true
 	firewallListCmd.Flags().BoolP("quiet", "q", false, "display number of entries found for each matching server")
-	firewallListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	firewallListCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

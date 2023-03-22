@@ -16,7 +16,7 @@ jrctl database user password USER@HOST [flags]
   -h, --help              help for password
   -p, --plugin string     specify auth plugin (default "mysql_native_password")
   -q, --quiet             only display confirmation code
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

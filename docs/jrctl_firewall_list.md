@@ -25,7 +25,7 @@ jrctl firewall list -t www
 ```
   -h, --help              help for list
   -q, --quiet             display number of entries found for each matching server
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

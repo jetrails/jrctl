@@ -59,5 +59,5 @@ func init() {
 	websiteCmd.AddCommand(websiteListCmd)
 	websiteListCmd.Flags().SortFlags = true
 	websiteListCmd.Flags().BoolP("quiet", "q", false, "only display site names")
-	websiteListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	websiteListCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

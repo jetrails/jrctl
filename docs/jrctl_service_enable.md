@@ -26,7 +26,7 @@ jrctl service enable nginx varnish php-fpm-7.2 nginx
 ```
   -h, --help              help for enable
   -q, --quiet             display no output
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

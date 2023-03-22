@@ -18,7 +18,7 @@ jrctl website php-switch example.com php-fpm-7.4 -q
 ```
   -h, --help              help for php-switch
   -q, --quiet             display no output
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

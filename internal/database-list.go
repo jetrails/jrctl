@@ -73,5 +73,5 @@ func init() {
 	databaseCmd.AddCommand(databaseListCmd)
 	databaseListCmd.Flags().SortFlags = true
 	databaseListCmd.Flags().BoolP("quiet", "q", false, "only display database names")
-	databaseListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseListCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

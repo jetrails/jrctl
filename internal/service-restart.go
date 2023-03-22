@@ -75,5 +75,5 @@ func init() {
 	serviceCmd.AddCommand(serviceRestartCmd)
 	serviceRestartCmd.Flags().SortFlags = true
 	serviceRestartCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	serviceRestartCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	serviceRestartCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

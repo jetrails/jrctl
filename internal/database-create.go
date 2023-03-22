@@ -47,5 +47,5 @@ func init() {
 	databaseCmd.AddCommand(databaseCreateCmd)
 	databaseCreateCmd.Flags().SortFlags = true
 	databaseCreateCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	databaseCreateCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseCreateCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

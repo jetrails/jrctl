@@ -73,5 +73,5 @@ func init() {
 	serviceCmd.AddCommand(serviceDisableCmd)
 	serviceDisableCmd.Flags().SortFlags = true
 	serviceDisableCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	serviceDisableCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	serviceDisableCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

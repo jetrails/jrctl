@@ -16,7 +16,7 @@ var firewallUnAllowCmd = &cobra.Command{
 	Long: text.Combine([]string{
 		text.Paragraph([]string{
 			"Removes a 'allow' entry.",
-			"Able to control a single (localhost) node as well as cluster of nodes.",
+			"Able to control a single node as well as cluster of nodes.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -75,7 +75,7 @@ func init() {
 	firewallCmd.AddCommand(firewallUnAllowCmd)
 	firewallUnAllowCmd.Flags().SortFlags = true
 	firewallUnAllowCmd.Flags().BoolP("quiet", "q", false, "display no input")
-	firewallUnAllowCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	firewallUnAllowCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 	firewallUnAllowCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallUnAllowCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
 	firewallUnAllowCmd.Flags().IntP("port", "p", 0, "port to unallow")

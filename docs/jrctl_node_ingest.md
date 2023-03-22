@@ -9,7 +9,7 @@ jrctl node ingest [flags]
 ### Examples
 
 ```
-echo -n TOKEN | jrctl node ingest -t localhost
+echo -n TOKEN | jrctl node ingest -t default
 echo -n TOKEN | jrctl node ingest -t jump -e 10.10.10.7
 echo -n TOKEN | jrctl node ingest -t web -e 10.10.10.6 -f
 ```

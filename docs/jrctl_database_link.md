@@ -11,7 +11,7 @@ jrctl database link USER@FROM DB_NAME [flags]
 ```
   -h, --help              help for link
   -q, --quiet             display no output
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

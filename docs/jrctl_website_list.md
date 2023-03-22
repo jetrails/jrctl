@@ -18,7 +18,7 @@ jrctl website list -q
 ```
   -h, --help              help for list
   -q, --quiet             only display site names
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

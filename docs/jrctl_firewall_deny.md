@@ -7,8 +7,7 @@ Permanently denies a source IP address to a specific port
 Denies a specified IP address to bypass the local system firewall by creating an
 'deny' entry into the permanent firewall config. Grants unprivileged users
 ability to manipulate the firewall in a safe and controlled manner and keeps an
-audit log. Able to control a single (localhost) node as well as cluster of
-nodes.
+audit log. Able to control a single node as well as cluster of nodes.
 
 ```
 jrctl firewall deny [flags]
@@ -35,7 +34,7 @@ jrctl firewall deny -t admin -a 1.1.1.1 -p 22 -c 'Office'
   -p, --port ints         port to deny, can be specified multiple times
       --protocol string   specify 'tcp' or 'udp', default is 'tcp' (default "tcp")
   -q, --quiet             display no input
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

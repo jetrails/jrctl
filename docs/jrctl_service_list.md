@@ -17,7 +17,7 @@ jrctl service list [flags]
 ```
 jrctl service list
 jrctl service list -t admin
-jrctl service list -t localhost
+jrctl service list -t default
 jrctl service list -t www
 ```
 
@@ -27,7 +27,7 @@ jrctl service list -t www
   -h, --help              help for list
   -q, --quiet             display unique list of found services
   -s, --service strings   filter by service
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

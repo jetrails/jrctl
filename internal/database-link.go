@@ -52,5 +52,5 @@ func init() {
 	databaseCmd.AddCommand(databaseLinkCmd)
 	databaseLinkCmd.Flags().SortFlags = true
 	databaseLinkCmd.Flags().BoolP("quiet", "q", false, "display no output")
-	databaseLinkCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseLinkCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

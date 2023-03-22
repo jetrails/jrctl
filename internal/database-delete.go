@@ -56,5 +56,5 @@ func init() {
 	databaseCmd.AddCommand(databaseDeleteCmd)
 	databaseDeleteCmd.Flags().SortFlags = true
 	databaseDeleteCmd.Flags().BoolP("quiet", "q", false, "only display confirmation code")
-	databaseDeleteCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	databaseDeleteCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 }

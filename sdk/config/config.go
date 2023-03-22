@@ -62,7 +62,7 @@ func LoadContexts() []Context {
 			Insecure: insecure,
 			Endpoint: "127.0.0.1:27482",
 			Token:    "AUTH_TOKEN_IS_NOT_CONFIGURED",
-			Tags:    []string{"localhost"},
+			Tags:    []string{"default"},
 		}
 		contexts = append(contexts, context)
 	}

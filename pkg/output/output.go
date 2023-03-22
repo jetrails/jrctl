@@ -143,7 +143,7 @@ func (o *Output) GetTagsString() string {
 func (o *Output) PrintTags() {
 	if !o.Quiet && o.DisplayTags {
 		fmt.Print(o.GetDivider())
-		fmt.Printf("Filtering servers that match the following type(s): ")
+		fmt.Printf("Filtering nodes that match tag(s): ")
 		fmt.Printf(o.GetTagsString())
 		fmt.Printf(o.GetDivider())
 	}

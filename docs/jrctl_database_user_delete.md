@@ -11,7 +11,7 @@ jrctl database user delete USER@HOST [flags]
 ```
   -h, --help              help for delete
   -q, --quiet             only display confirmation code
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

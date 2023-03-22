@@ -17,7 +17,7 @@ var firewallDenyCmd = &cobra.Command{
 		text.Paragraph([]string{
 			"Denies a specified IP address to bypass the local system firewall by creating an 'deny' entry into the permanent firewall config.",
 			"Grants unprivileged users ability to manipulate the firewall in a safe and controlled manner and keeps an audit log.",
-			"Able to control a single (localhost) node as well as cluster of nodes.",
+			"Able to control a single node as well as cluster of nodes.",
 		}),
 	}),
 	Example: text.Examples([]string{
@@ -78,7 +78,7 @@ func init() {
 	firewallCmd.AddCommand(firewallDenyCmd)
 	firewallDenyCmd.Flags().SortFlags = true
 	firewallDenyCmd.Flags().BoolP("quiet", "q", false, "display no input")
-	firewallDenyCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	firewallDenyCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 	firewallDenyCmd.Flags().StringP("address", "a", "", "ip address")
 	firewallDenyCmd.Flags().StringP("file", "f", "", "use text file with line separated ips")
 	firewallDenyCmd.Flags().IntSliceP("port", "p", []int{}, "port to deny, can be specified multiple times")

@@ -29,7 +29,7 @@ jrctl service reload nginx varnish php-fpm-7.2 nginx
 ```
   -h, --help              help for reload
   -q, --quiet             display no output
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

@@ -12,7 +12,7 @@ jrctl database user create USER@HOST [flags]
   -h, --help              help for create
   -p, --plugin string     specify auth plugin (default "mysql_native_password")
   -q, --quiet             only display password
-  -t, --tag stringArray   filter nodes using tags (default [localhost])
+  -t, --tag stringArray   filter nodes using tags (default [default])
 ```
 
 ### SEE ALSO

@@ -23,7 +23,7 @@ var serviceListCmd = &cobra.Command{
 	Example: text.Examples([]string{
 		"jrctl service list",
 		"jrctl service list -t admin",
-		"jrctl service list -t localhost",
+		"jrctl service list -t default",
 		"jrctl service list -t www",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
@@ -86,6 +86,6 @@ func init() {
 	serviceCmd.AddCommand(serviceListCmd)
 	serviceListCmd.Flags().SortFlags = true
 	serviceListCmd.Flags().BoolP("quiet", "q", false, "display unique list of found services")
-	serviceListCmd.Flags().StringArrayP("tag", "t", []string{"localhost"}, "filter nodes using tags")
+	serviceListCmd.Flags().StringArrayP("tag", "t", []string{"default"}, "filter nodes using tags")
 	serviceListCmd.Flags().StringSliceP("service", "s", []string{}, "filter by service")
 }
