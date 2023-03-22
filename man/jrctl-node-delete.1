@@ -1,0 +1,47 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2023" "Copyright 2023 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-node\-delete \- Delete node from config
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl node delete ENDPOINT [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Delete node from config
+
+
+.SH OPTIONS
+.PP
+\fB\-f\fP, \fB\-\-force\fP[=false]
+	delete without confirmation
+
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for delete
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	output only errors
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl node delete 127.0.0.1:27482
+jrctl node delete 127.0.0.1:27482 \-f
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-node(1)\fP

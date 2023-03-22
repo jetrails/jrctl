@@ -11,7 +11,7 @@ import (
 type Context struct {
 	Endpoint string   `json:"endpoint"`
 	Token    string   `json:"token"`
-	Tags    []string `json:"tags"`
+	Tags     []string `json:"tags"`
 	Debug    bool     `json:"debug"`
 	Insecure bool     `json:"insecure"`
 }
@@ -19,7 +19,7 @@ type Context struct {
 type Entry struct {
 	Endpoint string   `json:"endpoint"`
 	Token    string   `json:"token"`
-	Tags    []string `json:"tags"`
+	Tags     []string `json:"tags"`
 }
 
 type TokenData struct {
@@ -62,7 +62,7 @@ func LoadContexts() []Context {
 			Insecure: insecure,
 			Endpoint: "127.0.0.1:27482",
 			Token:    "AUTH_TOKEN_IS_NOT_CONFIGURED",
-			Tags:    []string{"default"},
+			Tags:     []string{"default"},
 		}
 		contexts = append(contexts, context)
 	}

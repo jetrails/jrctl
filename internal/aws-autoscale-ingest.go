@@ -119,7 +119,7 @@ var awsAutoscaleIngestCmd = &cobra.Command{
 				entry := config.Entry{
 					Endpoint: endpoint,
 					Token:    contexts[0].Token,
-					Tags:    tags,
+					Tags:     tags,
 				}
 				nodes = append(nodes, entry)
 			}

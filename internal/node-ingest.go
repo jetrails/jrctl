@@ -17,8 +17,8 @@ var nodeIngestCmd = &cobra.Command{
 	Short: "Ingest node token and save it to config",
 	Example: text.Examples([]string{
 		"echo -n TOKEN | jrctl node ingest -t default",
-		"echo -n TOKEN | jrctl node ingest -t jump -e 10.10.10.7",
-		"echo -n TOKEN | jrctl node ingest -t web -e 10.10.10.6 -f",
+		"echo -n TOKEN | jrctl node ingest -t jump -e 10.10.10.7:27482",
+		"echo -n TOKEN | jrctl node ingest -t web -e 10.10.10.6:27482 -f",
 	}),
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if !input.HasDataInPipe() {
@@ -51,7 +51,7 @@ var nodeIngestCmd = &cobra.Command{
 				savedNodes[i].Token = tokenValue
 				savedNodes[i].Tags = tags
 				tbl.AddRow(Columns{
-					strings.TrimSuffix(savedNode.Endpoint, ":27482"),
+					savedNode.Endpoint,
 					strings.Join(tags, ", "),
 					"Updated",
 				})
@@ -61,11 +61,11 @@ var nodeIngestCmd = &cobra.Command{
 			createdEntry := config.Entry{
 				Endpoint: endpoint,
 				Token:    tokenValue,
-				Tags:    tags,
+				Tags:     tags,
 			}
 			savedNodes = append(savedNodes, createdEntry)
 			tbl.AddRow(Columns{
-				strings.TrimSuffix(createdEntry.Endpoint, ":27482"),
+				createdEntry.Endpoint,
 				strings.Join(tags, ", "),
 				"Created",
 			})

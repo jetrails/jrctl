@@ -15,6 +15,7 @@ jrctl node version [flags]
 
 ```
 jrctl node version
+jrctl node version -t www
 ```
 
 ### Options

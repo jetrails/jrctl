@@ -86,7 +86,7 @@ func initConfig() {
 		{
 			Endpoint: "127.0.0.1:27482",
 			Token:    "REPLACE_WITH_AUTH_TOKEN",
-			Tags:    []string{"default"},
+			Tags:     []string{"default"},
 		},
 	})
 	if usr, err := user.Current(); err == nil {

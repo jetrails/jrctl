@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"strings"
-
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
 	"github.com/jetrails/jrctl/sdk/config"
@@ -21,6 +19,7 @@ var nodeVersionCmd = &cobra.Command{
 	}),
 	Example: text.Examples([]string{
 		"jrctl node version",
+		"jrctl node version -t www",
 	}),
 	Run: func(cmd *cobra.Command, args []string) {
 		quiet, _ := cmd.Flags().GetBool("quiet")
@@ -50,13 +49,13 @@ var nodeVersionCmd = &cobra.Command{
 				tbl.AddQuietEntry(response.Payload)
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
-					strings.TrimSuffix(context.Endpoint, ":27482"),
+					context.Endpoint,
 					response.Payload,
 				})
 			} else {
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
-					strings.TrimSuffix(context.Endpoint, ":27482"),
+					context.Endpoint,
 				})
 			}
 		}

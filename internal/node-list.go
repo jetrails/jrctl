@@ -62,7 +62,7 @@ var nodeListCmd = &cobra.Command{
 				tbl.AddQuietEntry(response.Payload.TokenID)
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
-					strings.TrimSuffix(context.Endpoint, ":27482"),
+					context.Endpoint,
 					strings.Join(context.Tags, ", "),
 					response.Payload.TokenID,
 					response.Payload.Identity,
@@ -71,7 +71,7 @@ var nodeListCmd = &cobra.Command{
 			} else if len(identityFilters) == 0 && len(tokenIDFilters) == 0 {
 				tbl.AddRow(Columns{
 					response.Metadata["hostname"],
-					strings.TrimSuffix(context.Endpoint, ":27482"),
+					context.Endpoint,
 					strings.Join(context.Tags, ", "),
 				})
 			}
