@@ -16,6 +16,7 @@ our Github repository.
 
 ### SEE ALSO
 
+* [jrctl alternative](jrctl_alternative.md)	 - Manage alternative programs
 * [jrctl database](jrctl_database.md)	 - Manage databases in deployment
 * [jrctl firewall](jrctl_firewall.md)	 - Interact with server firewall
 * [jrctl node](jrctl_node.md)	 - Manage configured nodes

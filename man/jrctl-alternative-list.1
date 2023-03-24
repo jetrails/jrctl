@@ -1,0 +1,48 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2023" "Copyright 2023 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-alternative\-list \- Display programs with alternative versions
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl alternative list [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Display programs with alternative versions
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for list
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	only display current versions
+
+.PP
+\fB\-t\fP, \fB\-\-tag\fP=[default]
+	filter nodes using tags
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl alternative list
+jrctl alternative list \-q
+jrctl alternative list \-t www
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-alternative(1)\fP

@@ -1,0 +1,52 @@
+.nh
+.TH "JetRails CLI" "1" "Mar 2023" "Copyright 2023 ADF, Inc. All Rights Reserved " ""
+
+.SH NAME
+.PP
+jrctl\-alternative\-switch \- Switch current version of program
+
+
+.SH SYNOPSIS
+.PP
+\fBjrctl alternative switch PROGRAM [flags]\fP
+
+
+.SH DESCRIPTION
+.PP
+Switch current version of program
+
+
+.SH OPTIONS
+.PP
+\fB\-h\fP, \fB\-\-help\fP[=false]
+	help for switch
+
+.PP
+\fB\-q\fP, \fB\-\-quiet\fP[=false]
+	display no output
+
+.PP
+\fB\-t\fP, \fB\-\-tag\fP=[default]
+	filter nodes using tags
+
+.PP
+\fB\-v\fP, \fB\-\-version\fP=""
+	version to switch to
+
+
+.SH EXAMPLE
+.PP
+.RS
+
+.nf
+jrctl alternative switch php\-cli \-v php\-cli\-8.0
+jrctl alternative switch php\-cli \-v php\-cli\-8.0 \-q
+jrctl alternative switch php\-cli \-v php\-cli\-8.0 \-t www
+
+.fi
+.RE
+
+
+.SH SEE ALSO
+.PP
+\fBjrctl\-alternative(1)\fP
