@@ -13,13 +13,13 @@ vendor: JetRails
 homepage: https://github.com/jetrails/jrctl
 license: The JetRails License
 contents:
--   src: man/*
+  - src: man/*
     dst: /usr/share/man/man1
--   src: bin/jrctl_linux_${GOARCH}
+  - src: bin/jrctl_linux_${GOARCH}
     dst: /usr/bin/jrctl
 scripts:
-    postinstall: scripts/post-install.sh
-    preremove: scripts/pre-remove.sh
+  postinstall: scripts/post-install.sh
+  preremove: scripts/pre-remove.sh
 depends:
--   bash-completion
--   man
+  - bash-completion
+  - man
