@@ -1,3 +1,5 @@
+---
+
 kind: pipeline
 type: kubernetes
 name: release-to-github
@@ -34,14 +36,14 @@ steps:
       - change-log
       - build
     settings:
-        api_key:
-          from_secret: github_token
-        files:
-          - generated/dist/*
-        file_exists: overwrite
-        overwrite: true
-        title: Version ${DRONE_TAG}
-        note: generated/CHANGELOG.md
+      api_key:
+        from_secret: github_token
+      files:
+        - generated/dist/*
+      file_exists: overwrite
+      overwrite: true
+      title: Version ${DRONE_TAG}
+      note: generated/CHANGELOG.md
 
 volumes:
   - name: build-volume
