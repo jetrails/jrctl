@@ -2,7 +2,7 @@
 > Command line tool to help interact with our API
 
 ![](https://img.shields.io/badge/License-JetRails_License-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
-![](https://img.shields.io/badge/Version-3.2.0-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
+![](https://img.shields.io/badge/Version-4.0.0-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 ![](https://img.shields.io/badge/OS-MacOS/Linux-green.svg?style=for-the-badge&labelColor=89BA40&color=282F38)
 
 ## About

@@ -16,14 +16,14 @@ steps:
       - git log "$(git tag --sort=-creatordate | grep -v latest | head -n 2 | tail -n 1)..$(git tag --sort=-creatordate | grep -v latest | head -n 1)" | grep -i "Fixed \#" | awk '{$1="- "$1};1' >> ./CHANGELOG.md
       - cp ./CHANGELOG.md /usr/src/CHANGELOG.md
   - name: build
-    image: golang:1.14
+    image: golang:1.17
     volumes:
       - name: build-volume
         path: /go/src
     commands:
       - curl -s -L https://github.com/goreleaser/nfpm/releases/download/v2.14.0/nfpm_amd64.deb --output nfpm.deb
       - dpkg -i nfpm.deb && rm nfpm.deb
-      - apt update && apt install -y gettext-base upx-ucl
+      - apt-get update -y && apt-get install -y gettext-base
       - go mod download
       - make VERSION=${DRONE_TAG} package
       - cp -R ./dist /go/src/
