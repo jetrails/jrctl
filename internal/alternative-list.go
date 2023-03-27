@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"fmt"
 	"strings"
 	. "github.com/jetrails/jrctl/pkg/output"
 	"github.com/jetrails/jrctl/pkg/text"
@@ -53,6 +54,10 @@ var alternativeListCmd = &cobra.Command{
 			}
 		}
 
+		if !quiet {
+			fmt.Println()
+			fmt.Println("WARNING: if you are trying to change php-fpm versions, checkout `jrctl website --help` instead.")
+		}
 		output.Print()
 	},
 }
