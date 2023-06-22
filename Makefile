@@ -39,9 +39,11 @@ optimize: ## Optimize binaries (false positive for malware)
 
 package: clean build-all docs ## Package binary for many distributions
 	GOARCH=amd64 envsubst < nfpm.yaml > nfpm.generated.yaml
+	GOARCH=amd64 nfpm pkg --config nfpm.generated.yaml --packager apk --target dist/$(EXECUTABLE)_$(VERSION)_linux_amd64.apk
 	GOARCH=amd64 nfpm pkg --config nfpm.generated.yaml --packager deb --target dist/$(EXECUTABLE)_$(VERSION)_linux_amd64.deb
 	GOARCH=amd64 nfpm pkg --config nfpm.generated.yaml --packager rpm --target dist/$(EXECUTABLE)_$(VERSION)_linux_amd64.rpm
 	GOARCH=arm64 envsubst < nfpm.yaml > nfpm.generated.yaml
+	GOARCH=arm64 nfpm pkg --config nfpm.generated.yaml --packager apk --target dist/$(EXECUTABLE)_$(VERSION)_linux_arm64.apk
 	GOARCH=arm64 nfpm pkg --config nfpm.generated.yaml --packager deb --target dist/$(EXECUTABLE)_$(VERSION)_linux_arm64.deb
 	GOARCH=arm64 nfpm pkg --config nfpm.generated.yaml --packager rpm --target dist/$(EXECUTABLE)_$(VERSION)_linux_arm64.rpm
 	tar -czvf ./dist/$(EXECUTABLE)_$(VERSION)_darwin_amd64.tar.gz man bin/$(EXECUTABLE)_darwin_amd64

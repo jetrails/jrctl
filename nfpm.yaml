@@ -22,6 +22,16 @@ contents:
 scripts:
   postinstall: scripts/post-install.sh
   preremove: scripts/pre-remove.sh
-depends:
-  - bash-completion
-  - man
+overrides:
+  deb:
+    depends:
+      - bash-completion
+      - man
+  rpm:
+    depends:
+      - bash-completion
+      - man
+  apk:
+    depends:
+      - bash-completion
+      - mandoc
