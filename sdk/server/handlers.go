@@ -26,6 +26,10 @@ func Version(context config.Context) VersionResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return VersionResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         "",
@@ -50,6 +54,10 @@ func TokenInfo(context config.Context) TokenResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return TokenResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,

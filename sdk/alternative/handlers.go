@@ -26,6 +26,10 @@ func List(context config.Context) ListResponse {
 		Send("{}").
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ListResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         []Entry{},
@@ -49,6 +53,10 @@ func Switch(context config.Context, data SwitchRequest) SwitchResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return SwitchResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,

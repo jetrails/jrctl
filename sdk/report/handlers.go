@@ -26,6 +26,10 @@ func Audit(context config.Context) AuditResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return AuditResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,

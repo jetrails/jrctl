@@ -26,6 +26,10 @@ func ListDatabases(context config.Context) ListDatabasesResponse {
 		Send("{}").
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ListDatabasesResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         []DatabaseWithUsers{},
@@ -50,6 +54,10 @@ func ListUsers(context config.Context) ListUsersResponse {
 		Send("{}").
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ListUsersResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         []UserWithDatabases{},
@@ -73,6 +81,10 @@ func Create(context config.Context, data CreateRequest) CreateResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return CreateResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         "",
@@ -96,6 +108,10 @@ func Delete(context config.Context, data DeleteRequest) DeleteResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return DeleteResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         ConfirmPayload{},
@@ -119,6 +135,10 @@ func UserCreate(context config.Context, data UserCreateRequest) UserCreateRespon
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UserCreateResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         "",
@@ -142,6 +162,10 @@ func UserDelete(context config.Context, data UserDeleteRequest) UserDeleteRespon
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UserDeleteResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         ConfirmPayload{},
@@ -165,6 +189,10 @@ func UserPassword(context config.Context, data UserPasswordRequest) UserPassword
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UserPasswordResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         ConfirmPayload{},
@@ -188,6 +216,10 @@ func Link(context config.Context, data LinkRequest) LinkResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return LinkResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         ConfirmPayload{},
@@ -211,6 +243,10 @@ func Unlink(context config.Context, data UnlinkRequest) UnlinkResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UnlinkResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         ConfirmPayload{},

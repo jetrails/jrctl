@@ -27,7 +27,7 @@ func ListServices(context config.Context) ListServicesResponse {
 		End()
 	if len(errs) > 0 {
 		if context.Debug {
-			fmt.Println("Error in ListServices:")
+			fmt.Println("Client Request Error:")
 			fmt.Println(errs)
 		}
 		return ListServicesResponse{
@@ -53,6 +53,10 @@ func Restart(context config.Context, data RestartRequest) RestartResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return RestartResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -76,6 +80,10 @@ func Reload(context config.Context, data ReloadRequest) ReloadResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ReloadResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -99,6 +107,10 @@ func Enable(context config.Context, data EnableRequest) EnableResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return EnableResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -122,6 +134,10 @@ func Disable(context config.Context, data DisableRequest) DisableResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return DisableResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,

@@ -26,6 +26,10 @@ func List(context config.Context) ListResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ListResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,
@@ -49,6 +53,10 @@ func Allow(context config.Context, data AllowRequest) AllowResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return AllowResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -72,6 +80,10 @@ func UnAllow(context config.Context, data UnAllowRequest) UnAllowResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UnAllowResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -95,6 +107,10 @@ func Deny(context config.Context, data DenyRequest) DenyResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return DenyResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -118,6 +134,10 @@ func UnDeny(context config.Context, data UnDenyRequest) UnDenyResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UnDenyResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         data,
@@ -142,6 +162,10 @@ func AllowCloudflare(context config.Context) AllowCloudflareResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return AllowCloudflareResponse{
 			GenericResponse: api.NewClientError(),
 			Payload: CloudflareEntries{
@@ -170,6 +194,10 @@ func UnAllowCloudflare(context config.Context) UnAllowCloudflareResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return UnAllowCloudflareResponse{
 			GenericResponse: api.NewClientError(),
 			Payload: CloudflareEntries{

@@ -25,6 +25,10 @@ func Confirm(context config.Context, data ConfirmRequest) ConfirmResponse {
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ConfirmResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,

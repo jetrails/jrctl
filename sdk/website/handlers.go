@@ -26,6 +26,10 @@ func ListWebsites(context config.Context) ListResponse {
 		Send("{}").
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return ListResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         []Properties{},
@@ -49,6 +53,10 @@ func SwitchPHP(context config.Context, data PhpSwitchRequest) PhpSwitchResponse 
 		Send(data).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return PhpSwitchResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         nil,
@@ -73,6 +81,10 @@ func AvailablePHP(context config.Context) PhpAvailableResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Client Request Error:")
+			fmt.Println(errs)
+		}
 		return PhpAvailableResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         []Availablity{},
