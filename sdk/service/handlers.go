@@ -17,7 +17,7 @@ func ListServices(context config.Context) ListServicesResponse {
 	request.SetDebug(context.Debug)
 	request.TLSClientConfig(&tls.Config{InsecureSkipVerify: context.Insecure})
 	_, body, errs := request.
-		Timeout(1*time.Second).
+		Timeout(10*time.Second).
 		Get(fmt.Sprintf("https://%s/service", context.Endpoint)).
 		Set("Content-Type", "application/json").
 		Set("User-Agent", fmt.Sprintf("jrctl/%s", version.VersionString)).
@@ -26,6 +26,10 @@ func ListServices(context config.Context) ListServicesResponse {
 		Send(`{}`).
 		End()
 	if len(errs) > 0 {
+		if context.Debug {
+			fmt.Println("Error in ListServices:")
+			fmt.Println(errs)
+		}
 		return ListServicesResponse{
 			GenericResponse: api.NewClientError(),
 			Payload:         map[string]ServiceProperties{},
