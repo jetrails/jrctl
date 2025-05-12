@@ -18,6 +18,7 @@ build: ## Build for specified platforms
 
 build-all: ## Build for all platforms
 	make OS=darwin ARCH=amd64 build
+	make OS=darwin ARCH=arm64 build
 	make OS=linux  ARCH=amd64 build
 	make OS=linux  ARCH=arm64 build
 
@@ -47,4 +48,5 @@ package: clean build-all docs ## Package binary for many distributions
 	GOARCH=arm64 nfpm pkg --config nfpm.generated.yaml --packager deb --target dist/$(EXECUTABLE)_$(VERSION)_linux_arm64.deb
 	GOARCH=arm64 nfpm pkg --config nfpm.generated.yaml --packager rpm --target dist/$(EXECUTABLE)_$(VERSION)_linux_arm64.rpm
 	tar -czvf ./dist/$(EXECUTABLE)_$(VERSION)_darwin_amd64.tar.gz man bin/$(EXECUTABLE)_darwin_amd64
+	tar -czvf ./dist/$(EXECUTABLE)_$(VERSION)_darwin_arm64.tar.gz man bin/$(EXECUTABLE)_darwin_arm64
 	rm -f nfpm.generated.yaml
