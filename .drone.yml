@@ -1,7 +1,7 @@
 ---
 
 kind: pipeline
-type: kubernetes
+type: docker
 name: release-to-github
 
 steps:
