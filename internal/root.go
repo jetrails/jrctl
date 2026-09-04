@@ -43,7 +43,7 @@ func determineIfRunningOnAWS() bool {
 		Timeout(time.Second).
 		Head("http://169.254.169.254").
 		End()
-	if len(errs) > 0 || response == nil || response.StatusCode != 200 {
+	if len(errs) > 0 || response == nil || ( response.StatusCode != 200 && response.StatusCode != 401 ) {
 		cache.Set("is-aws", []byte("no"), ttl)
 		return false
 	}
